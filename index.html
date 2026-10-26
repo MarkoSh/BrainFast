@@ -12,6 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@600&family=Noto+Sans+Cuneiform&text=%E0%B8%81%F0%92%80%AD&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
 tailwind.config = {
@@ -178,11 +179,11 @@ tailwind.config = {
   </section>
 
   <!-- MORE COURSES -->
-  <section id="more" class="py-16 md:py-20 border-t border-white/5 bg-ink-900/40">
+  <section id="more" class="py-16 md:py-20 border-t border-white/5">
     <div class="max-w-6xl mx-auto px-4">
       <h2 class="reveal text-2xl md:text-3xl font-bold text-white tracking-tight" data-i18n="moreTitle"></h2>
       <p class="reveal mt-2 text-zinc-400" data-i18n="moreSub"></p>
-      <div id="moreGrid" class="reveal mt-8 grid md:grid-cols-3 gap-4"></div>
+      <div id="moreGrid" class="reveal mt-8 grid md:grid-cols-2 gap-4"></div>
     </div>
   </section>
 </main>
@@ -224,7 +225,7 @@ const T = {
     tipsTitle: 'Как тренироваться с толком',
     statsTitle: 'Статистика', statsSub: 'Рекорд, последний результат и число сессий по каждому режиму. Хранится только в этом браузере.',
     statsReset: 'Сбросить всё', statsConfirm: 'Удалить всю статистику по всем играм? Это нельзя отменить.', statsEmpty: 'Ещё не играли',
-    moreTitle: 'Другие курсы', moreSub: 'Тот же формат — короткие тренажёры и живые фразы.',
+    moreTitle: 'Другие курсы', moreSub: 'Тот же формат и те же тренажёры — для изучения языков.',
     footer: 'тренажёры памяти и внимания',
     tagAncient: 'Древность', tagProof: 'Доказано', tagData: 'Есть данные', tagClassic: 'Классический тест', tagDebate: 'Спорно',
     play: 'Играть', help: 'Справка', stats: 'Статистика', start: 'Начать', again: 'Ещё раз', modes: 'Режим', toModes: 'К режимам',
@@ -252,7 +253,7 @@ const T = {
     tipsTitle: 'How to train well',
     statsTitle: 'Statistics', statsSub: 'Record, last result and number of sessions for every mode. Stored only in this browser.',
     statsReset: 'Reset all', statsConfirm: 'Delete all statistics for every game? This cannot be undone.', statsEmpty: 'Not played yet',
-    moreTitle: 'More courses', moreSub: 'Same format — short drills and real phrases.',
+    moreTitle: 'More courses', moreSub: 'Same format, same drills — for learning languages.',
     footer: 'memory and attention trainers',
     tagAncient: 'Ancient', tagProof: 'Proven', tagData: 'Some evidence', tagClassic: 'Classic test', tagDebate: 'Debated',
     play: 'Play', help: 'Guide', stats: 'Stats', start: 'Start', again: 'Again', modes: 'Mode', toModes: 'Modes',
@@ -280,7 +281,7 @@ const T = {
     tipsTitle: 'ฝึกอย่างไรให้ได้ผล',
     statsTitle: 'สถิติ', statsSub: 'สถิติสูงสุด ผลล่าสุด และจำนวนครั้งที่เล่นในแต่ละโหมด เก็บไว้ในเบราว์เซอร์นี้เท่านั้น',
     statsReset: 'ล้างทั้งหมด', statsConfirm: 'ลบสถิติของทุกเกมใช่ไหม ย้อนกลับไม่ได้', statsEmpty: 'ยังไม่ได้เล่น',
-    moreTitle: 'คอร์สอื่น ๆ', moreSub: 'รูปแบบเดียวกัน: แบบฝึกสั้น ๆ และประโยคที่ใช้จริง',
+    moreTitle: 'คอร์สอื่น ๆ', moreSub: 'รูปแบบเดียวกัน แบบฝึกแบบเดียวกัน สำหรับเรียนภาษา',
     footer: 'เครื่องฝึกความจำและสมาธิ',
     tagAncient: 'โบราณ', tagProof: 'พิสูจน์แล้ว', tagData: 'มีหลักฐานบางส่วน', tagClassic: 'แบบทดสอบคลาสสิก', tagDebate: 'ยังถกเถียง',
     play: 'เล่น', help: 'คู่มือ', stats: 'สถิติ', start: 'เริ่ม', again: 'อีกครั้ง', modes: 'โหมด', toModes: 'เลือกโหมด',
@@ -933,9 +934,12 @@ const TIPS = [
   ['footprints', tri('Ходьба и спорт помогают мозгу сильнее любой игры — игры их дополняют, а не заменяют.', 'Walking and exercise help the brain more than any game — games add to them, not replace them.', 'การเดินและออกกำลังกายช่วยสมองได้มากกว่าเกมใด ๆ เกมเป็นตัวเสริม ไม่ใช่ตัวแทน')],
 ];
 const SITES = [
-  { url: 'https://thai.dateonymous.com/', name: ['Thai', 'Fast'], glyph: 'ก', d: tri('Тайский с нуля: звуки, тоны, алфавит и живые фразы.', 'Thai from zero: sounds, tones, the alphabet and real phrases.', 'ภาษาไทยจากศูนย์ เสียง วรรณยุกต์ ตัวอักษร และประโยคที่ใช้จริง') },
-  { url: 'https://eng.dateonymous.com/', name: ['Eng', 'Fast'], glyph: 'Aa', d: tri('Американский английский: звуки, фразы, этикет и чаевые.', 'American English: sounds, phrases, etiquette and tipping.', 'ภาษาอังกฤษแบบอเมริกัน เสียง ประโยค มารยาท และการให้ทิป') },
-  { url: 'https://sumer.dateonymous.com/', name: ['Sumer', 'Fast'], glyph: '𒀭', d: tri('Шумерский и клинопись: язык первых табличек.', 'Sumerian and cuneiform: the language of the first tablets.', 'ภาษาสุเมเรียนและอักษรลิ่ม ภาษาของแผ่นดินเหนียวยุคแรก') },
+  { url: 'https://thai.dateonymous.com/', name: ['Thai', 'Fast'], glyph: 'ก', t: tri('Тайский с нуля', 'Thai from zero', 'ภาษาไทยจากศูนย์'),
+    d: tri('Звуки, тоны, алфавит и живые фразы для кафе, такси и рынка. Пропись тайских букв.', 'Sounds, tones, the alphabet and real phrases for cafés, taxis and markets. Thai letter copybook.', 'เสียง วรรณยุกต์ ตัวอักษร และประโยคที่ใช้จริงในร้านกาแฟ แท็กซี่ และตลาด พร้อมแบบฝึกคัดตัวอักษรไทย') },
+  { url: 'https://eng.dateonymous.com/', name: ['Eng', 'Fast'], glyph: 'Aa', t: tri('Американский английский', 'American English', 'ภาษาอังกฤษแบบอเมริกัน'),
+    d: tri('Звуки, интонация, фразы для кафе, Uber и отеля, этикет и чаевые.', 'Sounds, intonation, phrases for cafés, Uber and hotels, etiquette and tipping.', 'เสียง น้ำเสียง ประโยคสำหรับร้านกาแฟ อูเบอร์ และโรงแรม มารยาท และการให้ทิป') },
+  { url: 'https://sumer.dateonymous.com/', name: ['Sumer', 'Fast'], glyph: '𒀭', t: tri('Шумерский и клинопись', 'Sumerian & cuneiform', 'ภาษาสุเมเรียนและอักษรลิ่ม'),
+    d: tri('Язык первых табличек: клинопись, грамматика и строки из настоящих текстов.', 'The language of the first tablets: cuneiform, grammar and lines from real texts.', 'ภาษาของแผ่นดินเหนียวยุคแรก: อักษรลิ่ม ไวยากรณ์ และข้อความจากต้นฉบับจริง') },
 ];
 
 /* ================= GAME OVERLAY ================= */
@@ -1107,9 +1111,16 @@ function renderStats() {
   </button>`).join('');
 }
 function renderMore() {
-  $('#moreGrid').innerHTML = SITES.map(s => `<a href="${s.url}" target="_blank" rel="noopener" class="group flex items-center gap-4 rounded-2xl border border-white/10 bg-ink-900 p-5 hover:border-accent/50 transition">
-    <span class="grid place-items-center w-14 h-14 shrink-0 rounded-2xl bg-accent/10 text-accent text-2xl font-bold">${s.glyph}</span>
-    <span class="min-w-0"><span class="block font-bold text-white"><span>${s.name[0]}<span class="text-accent">${s.name[1]}</span></span></span><span class="block mt-1 text-sm text-zinc-400 leading-relaxed">${L(s.d)}</span></span></a>`).join('');
+  $('#moreGrid').innerHTML = SITES.map(x => `
+    <a href="${x.url}" target="_blank" rel="noopener" class="group flex items-center gap-5 rounded-3xl border border-white/10 bg-ink-900 p-6 hover:border-accent/50 hover:-translate-y-1 transition duration-300">
+      <span class="grid place-items-center w-16 h-16 shrink-0 rounded-2xl bg-accent/10 text-3xl font-semibold text-accent" style="font-family:'Noto Sans Thai','Noto Sans Cuneiform',Inter,sans-serif">${x.glyph}</span>
+      <span class="flex-1 min-w-0">
+        <span class="flex items-center gap-1.5 text-sm font-bold text-white"><i data-lucide="zap" class="w-3.5 h-3.5 text-accent"></i><span>${x.name[0]}<span class="text-accent">${x.name[1]}</span></span></span>
+        <span class="block mt-1 text-lg font-semibold text-white">${L(x.t)}</span>
+        <span class="block mt-1 text-sm text-zinc-400 leading-relaxed">${L(x.d)}</span>
+      </span>
+      <i data-lucide="arrow-up-right" class="w-5 h-5 shrink-0 text-zinc-500 group-hover:text-accent transition"></i>
+    </a>`).join('');
 }
 function navFill() {
   $('#navMenu > div').innerHTML = $$('header nav > div.lg\\:flex a').map(a => `<a href="${a.getAttribute('href')}" class="rounded-lg px-3 py-2.5 text-zinc-300 hover:bg-white/5 hover:text-white transition">${a.textContent}</a>`).join('');
