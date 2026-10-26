@@ -1,0 +1,1150 @@
+<!doctype html>
+<html lang="ru" class="scroll-smooth">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BrainFast — память, скорость мышления, внимание</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#09090b">
+<meta name="description" content="Тренажёры памяти, скорости мышления и периферического зрения: игры на очки, статистика по каждому режиму, древние и проверенные наукой методики.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: { extend: {
+    fontFamily: { sans: ['Inter', 'Noto Sans Thai', 'system-ui', 'sans-serif'] },
+    colors: { ink: { 950: '#09090b', 900: '#101114', 800: '#17191d', 700: '#23262c', 600: '#33373f' }, accent: '#e8b04b' }
+  } }
+}
+</script>
+<script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+<style>
+  body { background: #09090b; }
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s, transform .7s cubic-bezier(.2,.8,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  @keyframes shake { 20%,60% { transform: translateX(-6px) } 40%,80% { transform: translateX(6px) } }
+  .shake { animation: shake .4s; }
+  @keyframes pop { 50% { transform: scale(1.06) } }
+  .pop { animation: pop .3s; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
+  .fade-up { animation: fadeUp .35s ease-out both; }
+  #navMenu:not(.hidden) { animation: navIn .2s ease-out; } @keyframes navIn { from { opacity: 0; transform: translateY(-6px) } }
+  .bf-key { height: 3.5rem; border-radius: .8rem; border: 1px solid #ffffff1a; background: #101114; font-size: 1.25rem; font-weight: 600; color: #fff; transition: background .15s, transform .1s; }
+  .bf-key:hover { background: #ffffff0d; } .bf-key:active { transform: scale(.96); }
+  .cell { display: grid; place-items: center; border-radius: .6rem; border: 1px solid #ffffff14; background: #101114; font-weight: 700; color: #fff; user-select: none; transition: background .12s, border-color .12s; }
+  .cell:hover { border-color: #e8b04b66; }
+  .ok-flash { background: #34d39933 !important; border-color: #34d399 !important; }
+  .bad-flash { background: #fb718533 !important; border-color: #fb7185 !important; }
+  .lit { background: #e8b04b !important; border-color: #e8b04b !important; box-shadow: 0 0 24px #e8b04b88; }
+  .card3d { perspective: 800px; }
+  .card3d > div { transition: transform .35s; transform-style: preserve-3d; }
+  .card3d.open > div, .card3d.done > div { transform: rotateY(180deg); }
+  .card3d .f, .card3d .b { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  .card3d .b { transform: rotateY(180deg); }
+  .mask { background: repeating-conic-gradient(#ffffff26 0 25%, #0000 0 50%) 0 0/14px 14px; }
+</style>
+</head>
+<body class="bg-ink-950 text-zinc-300 font-sans antialiased selection:bg-accent/30">
+
+<header class="fixed top-0 inset-x-0 z-40 border-b border-white/5 bg-ink-950/75 backdrop-blur-xl">
+  <nav class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
+    <a href="#top" class="flex items-center gap-2 font-bold tracking-tight text-white">
+      <span class="grid place-items-center w-8 h-8 rounded-lg bg-accent text-ink-950"><i data-lucide="zap" class="w-4 h-4"></i></span>
+      <span class="hidden min-[360px]:inline">BrainFast</span>
+    </a>
+    <div class="hidden lg:flex items-center gap-5 text-sm text-zinc-400">
+      <a href="#memory" class="hover:text-white transition" data-i18n="navMemory"></a>
+      <a href="#speed" class="hover:text-white transition" data-i18n="navSpeed"></a>
+      <a href="#vision" class="hover:text-white transition" data-i18n="navVision"></a>
+      <a href="#methods" class="hover:text-white transition" data-i18n="navMethods"></a>
+      <a href="#stats" class="hover:text-white transition" data-i18n="navStats"></a>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="flex rounded-lg border border-white/10 p-0.5 text-xs font-semibold" role="group" aria-label="Language">
+        <button data-lang="ru" class="px-2.5 py-1.5 rounded-md transition">RU</button>
+        <button data-lang="en" class="px-2.5 py-1.5 rounded-md transition">EN</button>
+        <button data-lang="th" class="px-2.5 py-1.5 rounded-md transition">TH</button>
+      </div>
+      <button id="navBtn" class="lg:hidden grid place-items-center w-9 h-9 rounded-lg border border-white/10 text-zinc-300 hover:text-white transition" aria-label="Menu" aria-expanded="false" aria-controls="navMenu">
+        <i data-lucide="menu" class="w-5 h-5 nav-closed"></i><i data-lucide="x" class="w-5 h-5 nav-opened hidden"></i>
+      </button>
+    </div>
+  </nav>
+  <div id="navMenu" class="lg:hidden hidden border-t border-white/5">
+    <div class="max-w-6xl mx-auto px-4 py-3 grid grid-cols-2 gap-1 text-sm"></div>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+    <div class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,rgba(232,176,75,.12),transparent_60%)]"></div>
+    <div class="absolute inset-0 -z-10 opacity-[.07] bg-[linear-gradient(#fff_1px,transparent_1px),linear-gradient(90deg,#fff_1px,transparent_1px)] bg-[size:48px_48px]"></div>
+    <div class="max-w-6xl mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
+      <div class="reveal">
+        <p class="inline-flex items-center gap-2 rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-400"><i data-lucide="timer" class="w-3.5 h-3.5 text-accent"></i><span data-i18n="heroBadge"></span></p>
+        <h1 class="mt-6 text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-[1.05]" data-i18n-html="heroTitle"></h1>
+        <p class="mt-6 text-lg text-zinc-400 max-w-xl" data-i18n="heroSub"></p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="#memory" class="inline-flex items-center gap-2 rounded-xl bg-accent px-5 py-3 font-semibold text-ink-950 hover:brightness-110 transition"><span data-i18n="heroCta"></span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+          <a href="#methods" class="inline-flex items-center gap-2 rounded-xl border border-white/10 px-5 py-3 font-semibold text-white hover:bg-white/5 transition"><i data-lucide="scroll-text" class="w-4 h-4"></i><span data-i18n="heroCta2"></span></a>
+        </div>
+        <dl class="mt-10 grid grid-cols-3 gap-6 max-w-md">
+          <div><dt class="text-2xl font-bold text-white" id="statGames"></dt><dd class="text-sm text-zinc-500" data-i18n="statGames"></dd></div>
+          <div><dt class="text-2xl font-bold text-white" id="statModes"></dt><dd class="text-sm text-zinc-500" data-i18n="statModes"></dd></div>
+          <div><dt class="text-2xl font-bold text-white" id="statPlayed"></dt><dd class="text-sm text-zinc-500" data-i18n="statPlayed"></dd></div>
+        </dl>
+      </div>
+      <div class="reveal rounded-3xl border border-white/10 bg-ink-900/80 p-6 md:p-8 shadow-2xl">
+        <div class="flex items-center justify-between">
+          <p class="flex items-center gap-2 text-sm text-zinc-400"><span class="w-2 h-2 rounded-full bg-emerald-400"></span><span data-i18n="warmTitle"></span></p>
+          <button id="warmShuffle" class="grid place-items-center w-9 h-9 rounded-lg border border-white/10 text-zinc-400 hover:text-white transition" aria-label="shuffle"><i data-lucide="shuffle" class="w-4 h-4"></i></button>
+        </div>
+        <p class="mt-2 text-sm text-zinc-500" data-i18n="warmSub"></p>
+        <div id="warmList" class="mt-5 space-y-3"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMORY -->
+  <section id="memory" class="py-20 md:py-28 border-t border-white/5">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="reveal max-w-2xl">
+        <p class="font-mono text-sm text-accent">01</p>
+        <h2 class="mt-2 text-3xl md:text-4xl font-bold text-white tracking-tight" data-i18n="catMemory"></h2>
+        <p class="mt-3 text-zinc-400" data-i18n="catMemorySub"></p>
+      </div>
+      <div data-cat="memory" class="reveal mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    </div>
+  </section>
+
+  <!-- SPEED -->
+  <section id="speed" class="py-20 md:py-28 border-t border-white/5 bg-ink-900/40">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="reveal max-w-2xl">
+        <p class="font-mono text-sm text-accent">02</p>
+        <h2 class="mt-2 text-3xl md:text-4xl font-bold text-white tracking-tight" data-i18n="catSpeed"></h2>
+        <p class="mt-3 text-zinc-400" data-i18n="catSpeedSub"></p>
+      </div>
+      <div data-cat="speed" class="reveal mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    </div>
+  </section>
+
+  <!-- VISION -->
+  <section id="vision" class="py-20 md:py-28 border-t border-white/5">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="reveal max-w-2xl">
+        <p class="font-mono text-sm text-accent">03</p>
+        <h2 class="mt-2 text-3xl md:text-4xl font-bold text-white tracking-tight" data-i18n="catVision"></h2>
+        <p class="mt-3 text-zinc-400" data-i18n="catVisionSub"></p>
+      </div>
+      <div data-cat="vision" class="reveal mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    </div>
+  </section>
+
+  <!-- METHODS -->
+  <section id="methods" class="py-20 md:py-28 border-t border-white/5 bg-ink-900/40">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="reveal max-w-2xl">
+        <p class="font-mono text-sm text-accent">04</p>
+        <h2 class="mt-2 text-3xl md:text-4xl font-bold text-white tracking-tight" data-i18n="metTitle"></h2>
+        <p class="mt-3 text-zinc-400" data-i18n="metSub"></p>
+      </div>
+      <div id="metGrid" class="reveal mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+      <div class="reveal mt-12 rounded-2xl border border-white/10 bg-ink-900 p-6 md:p-8">
+        <h3 class="flex items-center gap-2 font-semibold text-white"><i data-lucide="lightbulb" class="w-5 h-5 text-accent"></i><span data-i18n="tipsTitle"></span></h3>
+        <ul id="tipsList" class="mt-5 grid md:grid-cols-2 gap-x-8 gap-y-4"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section id="stats" class="py-20 md:py-28 border-t border-white/5">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="reveal flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div class="max-w-2xl">
+          <p class="font-mono text-sm text-accent">05</p>
+          <h2 class="mt-2 text-3xl md:text-4xl font-bold text-white tracking-tight" data-i18n="statsTitle"></h2>
+          <p class="mt-3 text-zinc-400" data-i18n="statsSub"></p>
+        </div>
+        <button id="statsReset" class="self-start md:self-auto inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2.5 text-sm text-zinc-400 hover:border-rose-400/60 hover:text-rose-300 transition"><i data-lucide="trash-2" class="w-4 h-4"></i><span data-i18n="statsReset"></span></button>
+      </div>
+      <div id="statsGrid" class="reveal mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    </div>
+  </section>
+
+  <!-- MORE COURSES -->
+  <section id="more" class="py-16 md:py-20 border-t border-white/5 bg-ink-900/40">
+    <div class="max-w-6xl mx-auto px-4">
+      <h2 class="reveal text-2xl md:text-3xl font-bold text-white tracking-tight" data-i18n="moreTitle"></h2>
+      <p class="reveal mt-2 text-zinc-400" data-i18n="moreSub"></p>
+      <div id="moreGrid" class="reveal mt-8 grid md:grid-cols-3 gap-4"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="border-t border-white/5 py-8 text-center text-sm text-zinc-600">
+  <p>BrainFast · <span data-i18n="footer"></span></p>
+  <a href="https://github.com/MarkoSh/BrainFast" target="_blank" rel="noopener" class="mt-3 inline-flex items-center gap-1.5 text-zinc-500 hover:text-accent transition"><i data-lucide="github" class="w-4 h-4"></i>github.com/MarkoSh/BrainFast</a>
+</footer>
+
+<!-- GAME OVERLAY -->
+<div id="game" class="fixed inset-0 z-50 hidden bg-ink-950/95 backdrop-blur-xl overflow-y-auto">
+  <div class="max-w-3xl mx-auto px-4 py-5 md:py-8">
+    <div class="flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3 min-w-0">
+        <span id="gIcon" class="grid place-items-center w-10 h-10 shrink-0 rounded-xl bg-accent/10 text-accent"></span>
+        <h2 id="gTitle" class="text-xl md:text-2xl font-bold text-white truncate"></h2>
+      </div>
+      <button id="gClose" class="grid place-items-center w-10 h-10 shrink-0 rounded-xl border border-white/10 text-zinc-400 hover:text-white transition" aria-label="close"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+    <div id="gTabs" class="mt-5 inline-flex rounded-xl border border-white/10 p-1 text-sm font-semibold"></div>
+    <div id="gBody" class="mt-6"></div>
+  </div>
+</div>
+
+<script>
+/* ================= UI TEXT ================= */
+const T = {
+  ru: {
+    navMemory: 'Память', navSpeed: 'Скорость', navVision: 'Внимание', navMethods: 'Методики', navStats: 'Статистика',
+    heroBadge: '10 минут в день · игры на очки', heroTitle: 'Тренируй мозг.<br><span class="text-accent">Быстро и честно.</span>',
+    heroSub: 'Память, скорость мышления и периферическое зрение: короткие игры, свой рекорд в каждом режиме и методики — от дворца памяти Симонида до исследований, которые реально проверяли пользу.',
+    heroCta: 'Начать с памяти', heroCta2: 'Методики',
+    statGames: 'игр', statModes: 'режимов', statPlayed: 'сыграно',
+    warmTitle: 'Разминка дня', warmSub: 'По одной игре из каждого раздела — минут на десять.',
+    catMemory: 'Память', catMemorySub: 'Удерживать, повторять, связывать: рабочая память, зрительно-пространственная память и древний дворец памяти.',
+    catSpeed: 'Скорость мышления', catSpeedSub: 'Не просто вспомнить, а быстро решить: счёт на время, счёт на счётах в уме, египетское умножение и тест Струпа.',
+    catVision: 'Внимание и периферия', catVisionSub: 'Таблицы Шульте и тренировка «полезного поля зрения» — та, что лучше всех показала себя в долгих исследованиях.',
+    metTitle: 'Проверено временем и наукой', metSub: 'Откуда взялись тренажёры и что о них известно. Метка показывает, насколько метод проверен: древняя практика, классический тест, доказанная польза или спорный вопрос.',
+    tipsTitle: 'Как тренироваться с толком',
+    statsTitle: 'Статистика', statsSub: 'Рекорд, последний результат и число сессий по каждому режиму. Хранится только в этом браузере.',
+    statsReset: 'Сбросить всё', statsConfirm: 'Удалить всю статистику по всем играм? Это нельзя отменить.', statsEmpty: 'Ещё не играли',
+    moreTitle: 'Другие курсы', moreSub: 'Тот же формат — короткие тренажёры и живые фразы.',
+    footer: 'тренажёры памяти и внимания',
+    tagAncient: 'Древность', tagProof: 'Доказано', tagData: 'Есть данные', tagClassic: 'Классический тест', tagDebate: 'Спорно',
+    play: 'Играть', help: 'Справка', stats: 'Статистика', start: 'Начать', again: 'Ещё раз', modes: 'Режим', toModes: 'К режимам',
+    best: 'Рекорд', last: 'Последний', sessions: 'Сессий', noData: 'нет данных', newRecord: 'Новый рекорд!', result: 'Результат', noScore: 'Ни одного верного ответа — результат не записан.',
+    hAbout: 'Что это', hHow: 'Как играть', hTips: 'Как лучше', hSci: 'Что говорит наука', hSrc: 'Источники', playAgainChart: 'Сыграйте ещё раз, чтобы увидеть график',
+    memorize: 'Запоминайте', yourTurn: 'Ваша очередь', ok: 'Верно', wrong: 'Неверно', answerWas: 'Было:', length: 'Длина', score: 'Счёт', time: 'Время', errors: 'Ошибки', moves: 'Ходы',
+    next: 'Дальше', prev: 'Назад', recall: 'Вспоминать', match: 'Совпадает', step: 'Шаг', target: 'Найдите', round: 'Раунд', speed: 'Скорость', sum: 'Сумма',
+    plImagine: 'Представьте яркую нелепую сцену: «{w}» прямо здесь — {l}. Чем смешнее и крупнее, тем лучше.', plWhich: 'Что лежало здесь?', plLearn: 'Прогулка по дому',
+    egPick: 'Отметьте строки, у которых левые числа дают в сумме {a}', egAdd: 'Теперь сложите правые числа отмеченных строк', egLeft: 'Слева выбрано',
+    stInk: 'Каким цветом написано слово?', stWord: 'Какой цвет назван словом?', ufCenter: 'Что было в центре?', ufWhere: 'Где была машина?', ufShow: 'Показ',
+    shFind: 'Найдено', sec: 'с', ms: 'мс',
+    colors: ['красный', 'зелёный', 'синий', 'жёлтый'],
+  },
+  en: {
+    navMemory: 'Memory', navSpeed: 'Speed', navVision: 'Attention', navMethods: 'Methods', navStats: 'Stats',
+    heroBadge: '10 minutes a day · games with scores', heroTitle: 'Train your brain.<br><span class="text-accent">Fast and honest.</span>',
+    heroSub: 'Memory, thinking speed and peripheral vision: short games, your own record in every mode, and methods from Simonides’ memory palace to the studies that actually tested what works.',
+    heroCta: 'Start with memory', heroCta2: 'Methods',
+    statGames: 'games', statModes: 'modes', statPlayed: 'played',
+    warmTitle: 'Daily warm-up', warmSub: 'One game from each section — about ten minutes.',
+    catMemory: 'Memory', catMemorySub: 'Hold, repeat, connect: working memory, visuospatial memory and the ancient memory palace.',
+    catSpeed: 'Thinking speed', catSpeedSub: 'Not just recall but solve fast: timed arithmetic, mental abacus, Egyptian multiplication and the Stroop test.',
+    catVision: 'Attention & periphery', catVisionSub: 'Schulte tables and “useful field of view” training — the one that held up best in long-term studies.',
+    metTitle: 'Tested by time and science', metSub: 'Where these trainers come from and what is known about them. The tag shows how well tested a method is: ancient practice, classic test, proven benefit or open question.',
+    tipsTitle: 'How to train well',
+    statsTitle: 'Statistics', statsSub: 'Record, last result and number of sessions for every mode. Stored only in this browser.',
+    statsReset: 'Reset all', statsConfirm: 'Delete all statistics for every game? This cannot be undone.', statsEmpty: 'Not played yet',
+    moreTitle: 'More courses', moreSub: 'Same format — short drills and real phrases.',
+    footer: 'memory and attention trainers',
+    tagAncient: 'Ancient', tagProof: 'Proven', tagData: 'Some evidence', tagClassic: 'Classic test', tagDebate: 'Debated',
+    play: 'Play', help: 'Guide', stats: 'Stats', start: 'Start', again: 'Again', modes: 'Mode', toModes: 'Modes',
+    best: 'Record', last: 'Last', sessions: 'Sessions', noData: 'no data', newRecord: 'New record!', result: 'Result', noScore: 'No correct answers — the result was not saved.',
+    hAbout: 'What it is', hHow: 'How to play', hTips: 'How to do it well', hSci: 'What science says', hSrc: 'Sources', playAgainChart: 'Play once more to see a chart',
+    memorize: 'Memorize', yourTurn: 'Your turn', ok: 'Correct', wrong: 'Wrong', answerWas: 'It was:', length: 'Length', score: 'Score', time: 'Time', errors: 'Errors', moves: 'Moves',
+    next: 'Next', prev: 'Back', recall: 'Recall', match: 'Match', step: 'Step', target: 'Find', round: 'Round', speed: 'Speed', sum: 'Sum',
+    plImagine: 'Picture a vivid, absurd scene: “{w}” right here — {l}. The bigger and sillier, the better.', plWhich: 'What was here?', plLearn: 'Walk through the house',
+    egPick: 'Mark the rows whose left numbers add up to {a}', egAdd: 'Now add the right numbers of the marked rows', egLeft: 'Left side picked',
+    stInk: 'What colour is the ink?', stWord: 'Which colour does the word name?', ufCenter: 'What was in the centre?', ufWhere: 'Where was the car?', ufShow: 'Shown for',
+    shFind: 'Found', sec: 's', ms: 'ms',
+    colors: ['red', 'green', 'blue', 'yellow'],
+  },
+  th: {
+    navMemory: 'ความจำ', navSpeed: 'ความเร็ว', navVision: 'สมาธิ', navMethods: 'วิธีฝึก', navStats: 'สถิติ',
+    heroBadge: 'วันละ 10 นาที · เกมเก็บคะแนน', heroTitle: 'ฝึกสมอง<br><span class="text-accent">เร็วและตรงไปตรงมา</span>',
+    heroSub: 'ความจำ ความเร็วในการคิด และการมองเห็นรอบข้าง: เกมสั้น ๆ สถิติสูงสุดของคุณในทุกโหมด และวิธีฝึกตั้งแต่วังแห่งความจำของซิโมนิดีสไปจนถึงงานวิจัยที่พิสูจน์ผลจริง',
+    heroCta: 'เริ่มที่ความจำ', heroCta2: 'วิธีฝึก',
+    statGames: 'เกม', statModes: 'โหมด', statPlayed: 'เล่นแล้ว',
+    warmTitle: 'วอร์มสมองประจำวัน', warmSub: 'เล่นเกมละหนึ่งจากแต่ละหมวด ประมาณสิบนาที',
+    catMemory: 'ความจำ', catMemorySub: 'จำ ทวน และเชื่อมโยง: ความจำใช้งาน ความจำเชิงภาพและตำแหน่ง และวังแห่งความจำแบบโบราณ',
+    catSpeed: 'ความเร็วในการคิด', catSpeedSub: 'ไม่ใช่แค่นึกออก แต่ต้องคิดให้ไว: คิดเลขแข่งเวลา ลูกคิดในใจ การคูณแบบอียิปต์ และแบบทดสอบสทรูป',
+    catVision: 'สมาธิและการมองรอบข้าง', catVisionSub: 'ตารางชุลเทอ และการฝึก “ขอบเขตการมองเห็นที่ใช้งานได้” ซึ่งได้ผลดีที่สุดในงานวิจัยระยะยาว',
+    metTitle: 'ผ่านการพิสูจน์จากกาลเวลาและวิทยาศาสตร์', metSub: 'ที่มาของเครื่องฝึกเหล่านี้และสิ่งที่รู้เกี่ยวกับมัน ป้ายบอกว่าวิธีนั้นผ่านการพิสูจน์แค่ไหน: วิธีโบราณ แบบทดสอบคลาสสิก มีหลักฐานชัด หรือยังถกเถียงกันอยู่',
+    tipsTitle: 'ฝึกอย่างไรให้ได้ผล',
+    statsTitle: 'สถิติ', statsSub: 'สถิติสูงสุด ผลล่าสุด และจำนวนครั้งที่เล่นในแต่ละโหมด เก็บไว้ในเบราว์เซอร์นี้เท่านั้น',
+    statsReset: 'ล้างทั้งหมด', statsConfirm: 'ลบสถิติของทุกเกมใช่ไหม ย้อนกลับไม่ได้', statsEmpty: 'ยังไม่ได้เล่น',
+    moreTitle: 'คอร์สอื่น ๆ', moreSub: 'รูปแบบเดียวกัน: แบบฝึกสั้น ๆ และประโยคที่ใช้จริง',
+    footer: 'เครื่องฝึกความจำและสมาธิ',
+    tagAncient: 'โบราณ', tagProof: 'พิสูจน์แล้ว', tagData: 'มีหลักฐานบางส่วน', tagClassic: 'แบบทดสอบคลาสสิก', tagDebate: 'ยังถกเถียง',
+    play: 'เล่น', help: 'คู่มือ', stats: 'สถิติ', start: 'เริ่ม', again: 'อีกครั้ง', modes: 'โหมด', toModes: 'เลือกโหมด',
+    best: 'สถิติสูงสุด', last: 'ล่าสุด', sessions: 'จำนวนครั้ง', noData: 'ยังไม่มีข้อมูล', newRecord: 'ทำสถิติใหม่!', result: 'ผลลัพธ์', noScore: 'ยังไม่มีคำตอบที่ถูก จึงไม่ได้บันทึกผล',
+    hAbout: 'คืออะไร', hHow: 'วิธีเล่น', hTips: 'เคล็ดลับ', hSci: 'วิทยาศาสตร์ว่าอย่างไร', hSrc: 'แหล่งข้อมูล', playAgainChart: 'เล่นอีกครั้งเพื่อดูกราฟ',
+    memorize: 'จำไว้', yourTurn: 'ถึงตาคุณ', ok: 'ถูกต้อง', wrong: 'ผิด', answerWas: 'คำตอบคือ:', length: 'ความยาว', score: 'คะแนน', time: 'เวลา', errors: 'ผิด', moves: 'จำนวนครั้ง',
+    next: 'ถัดไป', prev: 'ย้อนกลับ', recall: 'เริ่มนึก', match: 'ตรงกัน', step: 'ขั้น', target: 'หา', round: 'รอบ', speed: 'ความเร็ว', sum: 'ผลรวม',
+    plImagine: 'นึกภาพให้ชัดและพิลึก: “{w}” อยู่ตรงนี้ที่{l} ยิ่งใหญ่และตลกยิ่งจำง่าย', plWhich: 'ตรงนี้มีอะไรอยู่?', plLearn: 'เดินชมบ้าน',
+    egPick: 'เลือกแถวที่ตัวเลขด้านซ้ายรวมกันได้ {a}', egAdd: 'จากนั้นบวกตัวเลขด้านขวาของแถวที่เลือก', egLeft: 'ด้านซ้ายที่เลือก',
+    stInk: 'ตัวหนังสือเป็นสีอะไร?', stWord: 'คำนี้หมายถึงสีอะไร?', ufCenter: 'ตรงกลางมีอะไร?', ufWhere: 'รถอยู่ตรงไหน?', ufShow: 'แสดง',
+    shFind: 'หาได้', sec: 'วิ', ms: 'มิลลิวินาที',
+    colors: ['แดง', 'เขียว', 'น้ำเงิน', 'เหลือง'],
+  },
+};
+
+/* ================= DATA ================= */
+// method-of-loci route through a house and the words to place there
+const LOCI = [
+  ['door-open', 'входная дверь', 'the front door', 'ประตูหน้าบ้าน'], ['footprints', 'коврик у порога', 'the doormat', 'พรมเช็ดเท้า'],
+  ['shirt', 'вешалка', 'the coat rack', 'ราวแขวนเสื้อ'], ['key', 'ключница', 'the key hook', 'ที่แขวนกุญแจ'],
+  ['clock', 'часы на стене', 'the wall clock', 'นาฬิกาแขวนผนัง'], ['sofa', 'диван', 'the sofa', 'โซฟา'], ['tv', 'телевизор', 'the TV', 'โทรทัศน์'],
+  ['lamp', 'торшер', 'the floor lamp', 'โคมไฟตั้งพื้น'], ['armchair', 'кресло', 'the armchair', 'เก้าอี้นวม'], ['sun', 'окно', 'the window', 'หน้าต่าง'],
+  ['utensils', 'обеденный стол', 'the dining table', 'โต๊ะกินข้าว'], ['flame', 'плита', 'the stove', 'เตาแก๊ส'], ['refrigerator', 'холодильник', 'the fridge', 'ตู้เย็น'],
+  ['bath', 'ванна', 'the bathtub', 'อ่างอาบน้ำ'], ['shower-head', 'душ', 'the shower', 'ฝักบัว'], ['bed', 'кровать', 'the bed', 'เตียง'],
+  ['book-open', 'книжная полка', 'the bookshelf', 'ชั้นหนังสือ'], ['flower-2', 'цветок на подоконнике', 'the plant on the sill', 'กระถางต้นไม้ริมหน้าต่าง'],
+  ['fence', 'балкон', 'the balcony', 'ระเบียง'], ['mountain', 'вид с балкона', 'the view from the balcony', 'วิวจากระเบียง'],
+];
+const WORDS = [
+  ['яблоко', 'apple', 'แอปเปิล'], ['зонт', 'umbrella', 'ร่ม'], ['кошка', 'cat', 'แมว'], ['гитара', 'guitar', 'กีตาร์'], ['лодка', 'boat', 'เรือ'],
+  ['рыба', 'fish', 'ปลา'], ['колокол', 'bell', 'ระฆัง'], ['дерево', 'tree', 'ต้นไม้'], ['яйцо', 'egg', 'ไข่'], ['барабан', 'drum', 'กลอง'],
+  ['ракета', 'rocket', 'จรวด'], ['звезда', 'star', 'ดาว'], ['шляпа', 'hat', 'หมวก'], ['слон', 'elephant', 'ช้าง'], ['банан', 'banana', 'กล้วย'],
+  ['мяч', 'ball', 'ลูกบอล'], ['змея', 'snake', 'งู'], ['корона', 'crown', 'มงกุฎ'], ['якорь', 'anchor', 'สมอเรือ'], ['перо', 'feather', 'ขนนก'],
+  ['фотоаппарат', 'camera', 'กล้องถ่ายรูป'], ['велосипед', 'bicycle', 'จักรยาน'], ['самолёт', 'plane', 'เครื่องบิน'], ['вишня', 'cherry', 'เชอร์รี่'],
+  ['морковь', 'carrot', 'แครอท'], ['привидение', 'ghost', 'ผี'], ['облако', 'cloud', 'เมฆ'], ['снеговик', 'snowman', 'ตุ๊กตาหิมะ'], ['лимон', 'lemon', 'มะนาว'],
+  ['тигр', 'tiger', 'เสือ'], ['свеча', 'candle', 'เทียน'], ['арбуз', 'watermelon', 'แตงโม'], ['воздушный шар', 'balloon', 'ลูกโป่ง'], ['лестница', 'ladder', 'บันได'],
+];
+const PAIR_ICONS = ['star', 'heart', 'leaf', 'cloud', 'snowflake', 'cherry', 'carrot', 'bike', 'plane', 'camera', 'bird', 'ghost', 'anchor', 'feather', 'music', 'crown', 'gem', 'fish', 'cat', 'apple', 'bell', 'rocket', 'sun', 'moon'];
+const CORSI = [[10, 16], [44, 6], [76, 18], [24, 44], [58, 36], [84, 52], [8, 76], [42, 70], [72, 84]];
+const INKS = ['#f87171', '#4ade80', '#60a5fa', '#facc15'];
+
+/* ================= HELPERS ================= */
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const store = {
+  get(k, d) { try { return localStorage.getItem(k) ?? d } catch (e) { return d } },
+  set(k, v) { try { localStorage.setItem(k, v) } catch (e) {} },
+  del(k) { try { localStorage.removeItem(k) } catch (e) {} },
+};
+const LANGS = ['ru', 'en', 'th'];
+let lang = store.get('bf-lang', LANGS.find(l => (navigator.language || '').startsWith(l)) || 'en');
+const t = k => T[lang][k] ?? T.en[k];
+const L = o => o[lang] ?? o.en;                        // { ru, en, th } -> current language
+const tri = (ru, en, th) => ({ ru, en, th });
+const fill = (s, v) => s.replace(/\{(\w+)\}/g, (_, k) => v[k]);
+const esc = v => String(v).replace(/[&<>"]/g, c => `&#${c.charCodeAt(0)};`);
+const icons = () => lucide.createIcons();
+const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const shuffle = a => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = rnd(0, i); [a[i], a[j]] = [a[j], a[i]] } return a };
+const word = w => w[{ ru: 0, en: 1, th: 2 }[lang]];
+const locus = l => l[{ ru: 1, en: 2, th: 3 }[lang]];
+const fmtSec = v => `${(+v).toFixed(1)} ${t('sec')}`;
+
+/* --- statistics: per game and mode, history of { v, d } in localStorage --- */
+const SK = (g, m) => `bf:${g}:${m}`;
+const hist = (g, m) => { try { return JSON.parse(store.get(SK(g, m), '[]')) } catch (e) { return [] } };
+const better = (G, a, b) => b == null || (G.lower ? a < b : a > b);
+function bestOf(G, m) { let b = null; hist(G.id, m).forEach(h => { if (better(G, h.v, b)) b = h.v }); return b }
+function record(G, m, v) { const h = hist(G.id, m); h.push({ v, d: Date.now() }); store.set(SK(G.id, m), JSON.stringify(h.slice(-300))) }
+const totalPlayed = () => GAMES.reduce((n, G) => n + G.modes.reduce((k, m) => k + hist(G.id, m.k).length, 0), 0);
+
+function spark(G, h) {
+  if (h.length < 2) return `<p class="h-14 grid place-items-center text-xs text-zinc-600">${t('playAgainChart')}</p>`;
+  const v = h.map(x => G.lower ? -x.v : x.v), lo = Math.min(...v), hi = Math.max(...v), r = hi - lo || 1;
+  const pts = v.map((y, i) => `${(i / (v.length - 1) * 100).toFixed(1)},${(32 - (y - lo) / r * 28).toFixed(1)}`).join(' ');
+  return `<svg viewBox="0 0 100 36" preserveAspectRatio="none" class="w-full h-14"><polygon points="0,36 ${pts} 100,36" fill="#e8b04b" fill-opacity=".12"/><polyline points="${pts}" fill="none" stroke="#e8b04b" stroke-width="1.6" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg>`;
+}
+
+/* --- shared widgets --- */
+const keypad = () => `<div class="mt-5 grid grid-cols-3 gap-2 max-w-xs mx-auto select-none">${[1, 2, 3, 4, 5, 6, 7, 8, 9, '⌫', 0, '✓'].map(k => `<button type="button" data-k="${k}" class="bf-key ${k === '✓' ? '!bg-accent !text-ink-950' : ''}">${k}</button>`).join('')}</div>`;
+// digit input from the on-screen pad and the physical keyboard
+function pad(c, { digit, back, ok }) {
+  c.el.addEventListener('click', e => {
+    const k = e.target.closest('[data-k]')?.dataset.k; if (k == null) return;
+    k === '⌫' ? back() : k === '✓' ? ok() : digit(k);
+  });
+  c.onKey(e => { if (/^\d$/.test(e.key)) digit(e.key); else if (e.key === 'Backspace') back(); else if (e.key === 'Enter') ok() });
+}
+const hud = items => `<div class="flex flex-wrap items-center justify-center gap-2 text-sm">${items.filter(Boolean).map(([k, v, id]) => `<span class="rounded-full border border-white/10 bg-ink-900 px-3 py-1 text-zinc-400">${k}: <b ${id ? `id="${id}"` : ''} class="text-white">${v}</b></span>`).join('')}</div>`;
+const bar = () => `<div class="mt-4 h-1.5 rounded-full bg-white/10 overflow-hidden"><div id="cd" class="h-full bg-accent" style="width:100%"></div></div>`;
+// countdown: updates the bar and ends the round
+function countdown(c, sec, end) {
+  const t0 = Date.now();
+  c.every(() => {
+    const left = sec - (Date.now() - t0) / 1000;
+    const b = c.el.querySelector('#cd'); if (b) b.style.width = Math.max(0, left / sec * 100) + '%';
+    if (left <= 0) end();
+  }, 100);
+}
+const flash = (node, cls, ms = 350) => { if (!node) return; node.classList.add(cls); setTimeout(() => node.classList.remove(cls), ms) };
+const msg = (txt, cls = 'text-zinc-400') => `<p class="mt-4 text-center text-sm ${cls}">${txt}</p>`;
+
+/* ================= GAMES ================= */
+// Each game: { id, cat, icon, name, short, modes: [{ k, name }], lower (smaller score is better), fmt, tags, help, run(c) }
+// run(c) draws into c.el and calls c.done(score) at the end; timers and keys go through c.later / c.every / c.onKey.
+const GAMES = [];
+
+/* --- digit span --- */
+GAMES.push({
+  id: 'span', cat: 'memory', icon: 'list-ordered', tags: ['classic', 'ancient'], fmt: v => v,
+  name: tri('Цифровой ряд', 'Digit span', 'จำลำดับตัวเลข'),
+  short: tri('Запомни цифры и повтори — прямо или задом наперёд.', 'Memorize the digits and repeat them, forwards or backwards.', 'จำตัวเลขแล้วพิมพ์ตาม ทั้งเรียงปกติและย้อนกลับ'),
+  modes: [{ k: 'fwd', name: tri('Прямой', 'Forward', 'ตามลำดับ') }, { k: 'bwd', name: tri('Обратный', 'Backward', 'ย้อนกลับ') }],
+  help: {
+    about: tri('Классический тест объёма рабочей памяти: цифры появляются по одной, затем их нужно повторить. Ряд растёт, пока память не «переполнится».', 'The classic working-memory span test: digits appear one by one and you repeat them. The row grows until memory overflows.', 'แบบทดสอบความจำใช้งานแบบคลาสสิก ตัวเลขขึ้นทีละตัว แล้วให้พิมพ์ตาม แถวจะยาวขึ้นเรื่อย ๆ จนจำไม่ไหว'),
+    how: tri('Смотрите на цифры, потом наберите их на панели или клавиатуре. Верно — ряд длиннее на одну цифру. Две ошибки подряд — конец. Счёт — самый длинный верный ряд. В обратном режиме вводите с конца.', 'Watch the digits, then type them on the pad or keyboard. Correct — the row grows by one. Two misses in a row end the game. Score: the longest correct row. In backward mode type from the end.', 'ดูตัวเลข แล้วพิมพ์บนแป้นหรือคีย์บอร์ด ถูกแล้วแถวจะยาวขึ้นหนึ่งตัว ผิดสองครั้งติดกันจบเกม คะแนนคือแถวที่ยาวที่สุดที่ตอบถูก โหมดย้อนกลับให้พิมพ์จากตัวท้าย'),
+    tips: tri('Разбивайте ряд на группы по 3–4 цифры, как номер телефона, и проговаривайте их про себя. Для обратного режима «перечитайте» группы мысленно с конца.', 'Split the row into groups of 3–4 digits, like a phone number, and say them to yourself. For backward mode, reread the groups in your head from the end.', 'แบ่งตัวเลขเป็นกลุ่มละ 3–4 ตัวเหมือนเบอร์โทรศัพท์ แล้วท่องในใจ โหมดย้อนกลับให้นึกอ่านกลุ่มจากท้ายมาหน้า'),
+    sci: tri('Большинство взрослых удерживают около 7 цифр (Миллер, 1956), а настоящая ёмкость — около 4 смысловых групп (Коуэн, 2001): поэтому группировка так помогает. Обратный порядок сложнее — он требует не только хранить, но и перерабатывать. Ведийские чтецы тысячелетиями тренировали то же самое: в джата-патхе слова текста повторяют вперёд, назад и снова вперёд.', 'Most adults hold about 7 digits (Miller, 1956), while true capacity is about 4 meaningful chunks (Cowan, 2001) — which is why grouping helps so much. Backward order is harder: it needs processing, not just storage. Vedic reciters trained the same thing for millennia: in jaṭā-pāṭha the words are recited forwards, backwards and forwards again.', 'ผู้ใหญ่ส่วนใหญ่จำได้ราว 7 ตัว (มิลเลอร์ ค.ศ. 1956) แต่ความจุจริงคือราว 4 กลุ่มที่มีความหมาย (โควาน ค.ศ. 2001) การจัดกลุ่มจึงช่วยมาก การทวนย้อนกลับยากกว่าเพราะต้องประมวลผลด้วย นักสวดพระเวทฝึกแบบนี้มาหลายพันปี ในวิธีชฏาปาฐะ คำจะถูกสวดไปข้างหน้า ย้อนกลับ และไปข้างหน้าอีกครั้ง'),
+    src: [['Miller, 1956', 'https://doi.org/10.1037/h0043158'], ['Cowan, 2001', 'https://doi.org/10.1017/S0140525X01003922'], ['Vedic chant', 'https://en.wikipedia.org/wiki/Vedic_chant']],
+  },
+  run(c) {
+    const back = c.mode === 'bwd';
+    let len = 3, fails = 0, best = 0, seq = [], inp = '';
+    const round = () => {
+      seq = Array.from({ length: len }, () => rnd(0, 9)); inp = '';
+      c.el.innerHTML = hud([[t('length'), len], [t('best'), best]]) + `<p class="mt-8 text-center text-sm text-zinc-500">${t('memorize')}</p><p id="sd" class="mt-2 h-32 grid place-items-center text-8xl font-extrabold text-white tabular-nums"></p>`;
+      let i = 0;
+      const show = () => {
+        const d = c.el.querySelector('#sd');
+        if (i >= len) return ask();
+        d.textContent = seq[i++];
+        c.later(() => { d.textContent = ''; c.later(show, 250) }, 750);
+      };
+      c.later(show, 700);
+    };
+    const ask = () => {
+      c.el.innerHTML = hud([[t('length'), len], [t('best'), best]]) + `<p class="mt-8 text-center text-sm text-zinc-500">${t('yourTurn')}${back ? ' · ←' : ''}</p><p id="si" class="mt-2 h-16 text-center text-5xl font-bold tracking-[.3em] text-accent tabular-nums"></p>` + keypad() + `<div id="sm"></div>`;
+      asking = true; showIn();
+    };
+    let asking = false, checking = false;
+    const showIn = () => { const e = c.el.querySelector('#si'); if (e) e.textContent = inp.padEnd(len, '·') };
+    pad(c, {
+      digit: d => { if (asking && inp.length < len) { inp += d; showIn(); if (inp.length === len) c.later(check, 150) } },
+      back: () => { if (asking) { inp = inp.slice(0, -1); showIn() } },
+      ok: () => asking && inp.length === len && check(),
+    });
+    const check = () => {
+      if (checking) return; checking = true; asking = false;
+      const want = (back ? [...seq].reverse() : seq).join('');
+      if (inp === want) { best = len; len++; fails = 0; c.el.querySelector('#sm').innerHTML = msg(t('ok'), 'text-emerald-300') }
+      else { fails++; c.el.querySelector('#sm').innerHTML = msg(`${t('wrong')} · ${t('answerWas')} ${want}`, 'text-rose-300') }
+      c.later(() => { checking = false; fails >= 2 ? c.done(best) : round() }, 1100);
+    };
+    round();
+  },
+});
+
+/* --- Corsi blocks --- */
+GAMES.push({
+  id: 'corsi', cat: 'memory', icon: 'grid-3x3', tags: ['classic'], fmt: v => v,
+  name: tri('Блоки Корси', 'Corsi blocks', 'บล็อกคอร์ซี'),
+  short: tri('Запомни, в каком порядке загорались квадраты.', 'Remember the order in which the squares lit up.', 'จำลำดับที่สี่เหลี่ยมสว่างขึ้น'),
+  modes: [{ k: 'fwd', name: tri('Прямой', 'Forward', 'ตามลำดับ') }, { k: 'bwd', name: tri('Обратный', 'Backward', 'ย้อนกลับ') }],
+  help: {
+    about: tri('Пространственный двойник цифрового ряда: девять квадратов, разбросанных по полю, загораются по очереди. Тест придумал Филип Корси в 1972 году.', 'The spatial twin of digit span: nine scattered squares light up one by one. Philip Corsi devised the test in 1972.', 'แบบทดสอบคู่แฝดเชิงพื้นที่ของการจำตัวเลข สี่เหลี่ยมเก้าช่องที่วางกระจายจะสว่างทีละช่อง ฟิลิป คอร์ซี คิดค้นในปี 1972'),
+    how: tri('Смотрите, затем нажмите квадраты в том же порядке (в обратном режиме — с конца). Верно — последовательность длиннее. Две ошибки подряд — конец. Счёт — самая длинная верная последовательность.', 'Watch, then tap the squares in the same order (backward mode: from the end). Correct — the sequence grows. Two misses in a row end the game. Score: the longest correct sequence.', 'ดูให้ดี แล้วแตะสี่เหลี่ยมตามลำดับเดิม (โหมดย้อนกลับเริ่มจากช่องสุดท้าย) ถูกแล้วลำดับจะยาวขึ้น ผิดสองครั้งติดกันจบเกม คะแนนคือลำดับที่ยาวที่สุดที่ตอบถูก'),
+    tips: tri('Не пытайтесь запомнить квадраты по отдельности — следите за «рисунком» пути: зигзаг, треугольник, возврат. Взгляд можно вести за вспышками.', 'Don’t memorize squares one by one — follow the shape of the path: a zigzag, a triangle, a return. Let your eyes follow the flashes.', 'อย่าจำทีละช่อง ให้จำ “รูปทรง” ของเส้นทาง เช่น ซิกแซก สามเหลี่ยม หรือย้อนกลับ ปล่อยสายตาตามแสงไป'),
+    sci: tri('У здоровых взрослых объём Корси обычно 5–6 — немного меньше, чем для цифр. Зрительно-пространственная и словесная память — разные системы: можно хорошо помнить цифры и хуже — пути, и наоборот.', 'Healthy adults usually reach a Corsi span of 5–6, a little below digit span. Visuospatial and verbal memory are separate systems: you can be good at digits and weaker at paths, or the other way round.', 'ผู้ใหญ่ทั่วไปจำได้ราว 5–6 ช่อง น้อยกว่าตัวเลขเล็กน้อย ความจำเชิงภาพและตำแหน่งกับความจำด้านภาษาเป็นคนละระบบ บางคนจำตัวเลขเก่งแต่จำเส้นทางได้น้อยกว่า หรือกลับกัน'),
+    src: [['Corsi block-tapping test', 'https://en.wikipedia.org/wiki/Corsi_block-tapping_test']],
+  },
+  run(c) {
+    const back = c.mode === 'bwd';
+    let len = 2, fails = 0, best = 0, seq = [], taps = [], input = false;
+    c.el.innerHTML = hud([[t('length'), len, 'cl'], [t('best'), best, 'cb']]) + `<p id="cm" class="mt-4 text-center text-sm text-zinc-500"></p>
+      <div id="cbox" class="relative mx-auto mt-4 w-full max-w-md aspect-square rounded-2xl border border-white/10 bg-ink-900">${CORSI.map(([x, y], i) => `<button type="button" data-b="${i}" class="cell absolute" style="left:${x}%;top:${y}%;width:15%;height:15%"></button>`).join('')}</div><div id="cr"></div>`;
+    const blk = i => c.el.querySelector(`[data-b="${i}"]`);
+    const round = () => {
+      c.el.querySelector('#cl').textContent = len; c.el.querySelector('#cb').textContent = best; c.el.querySelector('#cr').innerHTML = '';
+      c.el.querySelector('#cm').textContent = t('memorize');
+      seq = []; while (seq.length < len) { const b = rnd(0, 8); if (b !== seq[seq.length - 1]) seq.push(b) }
+      taps = []; input = false;
+      let i = 0;
+      const show = () => {
+        if (i >= len) { input = true; c.el.querySelector('#cm').textContent = t('yourTurn') + (back ? ' · ←' : ''); return }
+        const b = blk(seq[i++]); b.classList.add('lit');
+        c.later(() => { b.classList.remove('lit'); c.later(show, 250) }, 600);
+      };
+      c.later(show, 700);
+    };
+    c.el.addEventListener('click', e => {
+      const b = e.target.closest('[data-b]'); if (!b || !input) return;
+      taps.push(+b.dataset.b); flash(b, 'lit', 200);
+      if (taps.length < len) return;
+      input = false;
+      const want = back ? [...seq].reverse() : seq, ok = want.every((x, i) => x === taps[i]);
+      if (ok) { best = len; len++; fails = 0; c.el.querySelector('#cr').innerHTML = msg(t('ok'), 'text-emerald-300') }
+      else { fails++; c.el.querySelector('#cr').innerHTML = msg(t('wrong'), 'text-rose-300') }
+      c.later(() => fails >= 2 ? c.done(best) : round(), 1000);
+    });
+    round();
+  },
+});
+
+/* --- pairs --- */
+GAMES.push({
+  id: 'pairs', cat: 'memory', icon: 'layout-grid', tags: ['classic'], lower: true, fmt: v => v,
+  name: tri('Пары', 'Pairs', 'จับคู่'),
+  short: tri('Найди все пары карточек за минимум ходов.', 'Find every pair of cards in as few moves as possible.', 'หาไพ่ที่เป็นคู่ให้ครบโดยใช้จำนวนครั้งน้อยที่สุด'),
+  modes: [{ k: '12', name: tri('12 карт', '12 cards', '12 ใบ') }, { k: '16', name: tri('16 карт', '16 cards', '16 ใบ') }, { k: '24', name: tri('24 карты', '24 cards', '24 ใบ') }],
+  help: {
+    about: tri('Знакомая всем «Мемори»: карточки лежат рубашкой вверх, за ход открываются две. Тренирует запоминание мест и связей «что где лежит».', 'The well-known Memory game: cards lie face down and you turn two per move. It trains remembering places and what lies where.', 'เกมจับคู่ที่ทุกคนรู้จัก ไพ่คว่ำอยู่ เปิดได้ครั้งละสองใบ ช่วยฝึกจำตำแหน่งและว่าอะไรอยู่ตรงไหน'),
+    how: tri('Открывайте по две карточки. Совпали — остаются открытыми, нет — переворачиваются обратно. Счёт — число ходов (пар открытых карточек), меньше — лучше.', 'Turn over two cards at a time. A match stays open, otherwise they flip back. Score: the number of moves (pairs turned), lower is better.', 'เปิดครั้งละสองใบ ถ้าตรงกันจะเปิดค้างไว้ ถ้าไม่ตรงจะคว่ำกลับ คะแนนคือจำนวนครั้งที่เปิด ยิ่งน้อยยิ่งดี'),
+    tips: tri('Называйте про себя каждую открытую картинку и её место: «звезда — второй ряд, слева». Начинайте с одного угла и открывайте систематически, а не вразброс.', 'Name every card you see and its place to yourself: “star — second row, left”. Start in one corner and work systematically, not at random.', 'พูดในใจชื่อภาพและตำแหน่งทุกครั้ง เช่น “ดาว แถวสอง ซ้าย” เริ่มจากมุมหนึ่งแล้วเปิดอย่างเป็นระบบ ไม่สุ่มไปมา'),
+    sci: tri('Проговаривание (словесное кодирование) — проверенный способ удержать зрительную информацию дольше: у места появляется «ярлык» в словесной памяти.', 'Naming things aloud or silently (verbal coding) is a well-tested way to hold visual information longer: the place gets a label in verbal memory too.', 'การพูดชื่อสิ่งที่เห็น (การเข้ารหัสด้วยคำ) เป็นวิธีที่ได้ผลในการจำภาพให้นานขึ้น เพราะตำแหน่งจะมี “ป้ายชื่อ” อยู่ในความจำด้านภาษาด้วย'),
+    src: [],
+  },
+  run(c) {
+    const n = +c.mode, cols = n === 24 ? 6 : 4, pics = shuffle(PAIR_ICONS).slice(0, n / 2), cards = shuffle([...pics, ...pics]);
+    let open = [], found = 0, moves = 0, lock = false;
+    c.el.innerHTML = hud([[t('moves'), 0, 'pm'], [t('best'), c.best ?? '—']]) + `<div class="mt-6 grid gap-2 sm:gap-3 mx-auto max-w-lg" style="grid-template-columns:repeat(${cols},minmax(0,1fr))">${cards.map((p, i) => `
+      <button type="button" data-c="${i}" class="card3d aspect-square"><div class="relative w-full h-full">
+        <span class="f absolute inset-0 rounded-xl border border-white/10 bg-ink-800 grid place-items-center"><i data-lucide="zap" class="w-5 h-5 text-white/10"></i></span>
+        <span class="b absolute inset-0 rounded-xl border border-accent/40 bg-accent/10 grid place-items-center text-accent"><i data-lucide="${p}" class="w-7 h-7 sm:w-8 sm:h-8"></i></span>
+      </div></button>`).join('')}</div>`;
+    icons();
+    c.el.addEventListener('click', e => {
+      const b = e.target.closest('[data-c]'); if (!b || lock || b.classList.contains('open') || b.classList.contains('done')) return;
+      b.classList.add('open'); open.push(b);
+      if (open.length < 2) return;
+      moves++; c.el.querySelector('#pm').textContent = moves;
+      const [x, y] = open; open = [];
+      if (cards[x.dataset.c] === cards[y.dataset.c]) {
+        x.classList.replace('open', 'done'); y.classList.replace('open', 'done'); found += 2;
+        if (found === n) c.later(() => c.done(moves), 500);
+      } else { lock = true; c.later(() => { x.classList.remove('open'); y.classList.remove('open'); lock = false }, 750) }
+    });
+  },
+});
+
+/* --- memory palace --- */
+GAMES.push({
+  id: 'palace', cat: 'memory', icon: 'castle', tags: ['ancient', 'proof'], fmt: v => v,
+  name: tri('Дворец памяти', 'Memory palace', 'วังแห่งความจำ'),
+  short: tri('Разложи слова по комнатам дома и пройди маршрут заново.', 'Place words around a house and walk the route again.', 'วางคำไว้ตามจุดต่าง ๆ ในบ้าน แล้วเดินเส้นทางเดิมอีกครั้ง'),
+  modes: [{ k: '10', name: tri('10 слов', '10 words', '10 คำ') }, { k: '15', name: tri('15 слов', '15 words', '15 คำ') }, { k: '20', name: tri('20 слов', '20 words', '20 คำ') }],
+  help: {
+    about: tri('Метод локусов — самая древняя техника памяти. По легенде, поэт Симонид Кеосский (около 500 г. до н. э.) опознал гостей обрушившегося пиршественного зала, вспомнив, кто где сидел. Цицерон, «Риторика к Гереннию» и Квинтилиан описали метод для ораторов: знакомый маршрут, по которому раскладывают образы.', 'The method of loci is the oldest memory technique. Legend says the poet Simonides of Ceos (c. 500 BCE) identified the guests of a collapsed banquet hall by recalling where each had sat. Cicero, the Rhetorica ad Herennium and Quintilian taught it to orators: a familiar route along which you place images.', 'วิธีโลไซเป็นเทคนิคความจำที่เก่าแก่ที่สุด ตำนานเล่าว่ากวีซิโมนิดีสแห่งคีโอส (ราว 500 ปีก่อน ค.ศ.) ระบุตัวแขกในห้องจัดเลี้ยงที่ถล่มได้ เพราะจำได้ว่าใครนั่งตรงไหน ซิเซโร ตำรา Rhetorica ad Herennium และควินทิเลียนสอนวิธีนี้แก่นักพูด คือใช้เส้นทางที่คุ้นเคยแล้ววางภาพไว้ตามจุดต่าง ๆ'),
+    how: tri('Сначала прогулка: на каждом месте дома лежит слово — представьте сцену и нажмите «Дальше». Затем маршрут повторяется без слов: для каждого места выберите, что там лежало. Счёт — число верных ответов.', 'First the walk: each spot in the house holds a word — picture the scene and press Next. Then the route repeats without words: for each spot choose what was there. Score: the number of correct answers.', 'เริ่มจากเดินชมบ้าน แต่ละจุดมีคำวางอยู่ ให้นึกภาพแล้วกด “ถัดไป” จากนั้นเดินเส้นทางเดิมโดยไม่มีคำ เลือกว่าแต่ละจุดมีอะไร คะแนนคือจำนวนคำตอบที่ถูก'),
+    tips: tri('Образ должен быть ярким, крупным, нелепым и в движении: не «яблоко у двери», а «гигантское яблоко выбивает дверь». Добавьте звук, запах, себя в сцене. Маршрут всегда проходите в одном направлении.', 'Make the image vivid, huge, absurd and moving: not “an apple by the door” but “a giant apple smashing through the door”. Add sound, smell and yourself. Always walk the route in the same direction.', 'ภาพต้องชัด ใหญ่ พิลึก และเคลื่อนไหว ไม่ใช่ “แอปเปิลข้างประตู” แต่ “แอปเปิลยักษ์พังประตูเข้ามา” ใส่เสียง กลิ่น และตัวคุณเองลงไปในภาพ เดินเส้นทางไปทางเดียวกันเสมอ'),
+    sci: tri('В исследовании в журнале Neuron (Дреслер и др., 2017) обычные люди за 6 недель тренировки методом локусов стали запоминать списки слов почти как чемпионы мира по памяти, эффект держался месяцами и сопровождался перестройкой связей в мозге. Почти все чемпионы по памяти пользуются именно этим методом.', 'In a study in Neuron (Dresler et al., 2017), ordinary people trained with the method of loci for 6 weeks and came close to world memory champions on word lists; the effect lasted for months and came with rewired brain networks. Almost all memory champions use this method.', 'งานวิจัยในวารสาร Neuron (เดรสเลอร์และคณะ ค.ศ. 2017) พบว่าคนทั่วไปที่ฝึกวิธีโลไซ 6 สัปดาห์ จำรายการคำได้ใกล้เคียงแชมป์ความจำโลก ผลอยู่ได้นานหลายเดือนและสมองมีการเชื่อมต่อใหม่ แชมป์ความจำเกือบทุกคนใช้วิธีนี้'),
+    src: [['Dresler et al., 2017', 'https://doi.org/10.1016/j.neuron.2017.02.003'], ['Method of loci', 'https://artofmemory.com/wiki/Method_of_Loci']],
+  },
+  run(c) {
+    const n = +c.mode, words = shuffle(WORDS).slice(0, n), places = LOCI.slice(0, n), order = shuffle(words);
+    let i = 0, score = 0;
+    const spot = (p, inner) => `<div class="fade-up mt-6 rounded-2xl border border-white/10 bg-ink-900 p-6 text-center">
+      <span class="mx-auto grid place-items-center w-16 h-16 rounded-2xl bg-accent/10 text-accent"><i data-lucide="${p[0]}" class="w-8 h-8"></i></span>
+      <p class="mt-3 text-lg text-zinc-300">${locus(p)}</p>${inner}</div>`;
+    const learn = () => {
+      const p = places[i], w = word(words[i]);
+      c.el.innerHTML = hud([[t('plLearn'), `${i + 1} / ${n}`]]) + spot(p, `<p class="mt-4 text-4xl font-extrabold text-white">${esc(w)}</p><p class="mt-4 text-sm text-zinc-500 max-w-md mx-auto">${esc(fill(t('plImagine'), { w, l: locus(p) }))}</p>`) + `
+        <div class="mt-6 flex justify-center gap-3">${i ? `<button data-a="prev" class="rounded-xl border border-white/10 px-5 py-3 font-semibold hover:bg-white/5 transition">${t('prev')}</button>` : ''}
+        <button data-a="next" class="rounded-xl bg-accent px-6 py-3 font-semibold text-ink-950 hover:brightness-110 transition">${i < n - 1 ? t('next') : t('recall')}</button></div>`;
+      icons();
+    };
+    const ask = () => {
+      const p = places[i];
+      c.el.innerHTML = hud([[t('step'), `${i + 1} / ${n}`], [t('score'), score]]) + spot(p, `<p class="mt-2 text-sm text-zinc-500">${t('plWhich')}</p>`) + `
+        <div class="mt-5 flex flex-wrap justify-center gap-2">${order.map((w, k) => `<button data-w="${k}" class="rounded-xl border border-white/10 bg-ink-900 px-4 py-2.5 text-white hover:border-accent/60 transition">${esc(word(w))}</button>`).join('')}</div>`;
+      icons();
+    };
+    let phase = 'learn', busy = false;
+    c.el.addEventListener('click', e => {
+      const a = e.target.closest('[data-a]')?.dataset.a, w = e.target.closest('[data-w]');
+      if (phase === 'learn' && a) { if (a === 'prev') i--; else if (i < n - 1) i++; else { phase = 'ask'; i = 0; return ask() } return learn() }
+      if (phase === 'ask' && w && !busy) {
+        busy = true;
+        const ok = order[w.dataset.w] === words[i];
+        if (ok) score++;
+        flash(w, ok ? 'ok-flash' : 'bad-flash', 600);
+        if (!ok) flash(c.el.querySelector(`[data-w="${order.indexOf(words[i])}"]`), 'ok-flash', 600);
+        c.later(() => { busy = false; i++; i < n ? ask() : c.done(score) }, 650);
+      }
+    });
+    learn();
+  },
+});
+
+/* --- n-back --- */
+GAMES.push({
+  id: 'nback', cat: 'memory', icon: 'square-stack', tags: ['debate'], fmt: v => `${v}%`,
+  name: tri('N-назад', 'N-back', 'เอ็นแบ็ก'),
+  short: tri('Совпадает ли место квадрата с тем, что было N шагов назад?', 'Is the square where it was N steps ago?', 'สี่เหลี่ยมอยู่ตำแหน่งเดียวกับเมื่อ N ขั้นก่อนหรือไม่?'),
+  modes: [{ k: '1', name: tri('1 назад', '1-back', '1 ขั้น') }, { k: '2', name: tri('2 назад', '2-back', '2 ขั้น') }, { k: '3', name: tri('3 назад', '3-back', '3 ขั้น') }],
+  help: {
+    about: tri('Задача на обновление рабочей памяти: квадрат вспыхивает в одной из девяти клеток, а вы держите в голове последние N позиций.', 'A working-memory updating task: a square flashes in one of nine cells while you keep the last N positions in mind.', 'งานฝึกอัปเดตความจำใช้งาน สี่เหลี่ยมจะสว่างในหนึ่งในเก้าช่อง และคุณต้องจำตำแหน่ง N ครั้งล่าสุดไว้'),
+    how: tri('Каждые 2,5 секунды загорается клетка. Если она та же, что N шагов назад, нажмите «Совпадает» (или пробел). Если нет — ничего не делайте. Счёт — процент верных решений.', 'A cell lights up every 2.5 seconds. If it is the same as N steps back, press Match (or Space). Otherwise do nothing. Score: the percentage of correct decisions.', 'ทุก 2.5 วินาทีจะมีช่องสว่างขึ้น ถ้าเป็นช่องเดียวกับเมื่อ N ขั้นก่อน ให้กด “ตรงกัน” (หรือ Space) ถ้าไม่ใช่ไม่ต้องกด คะแนนคือร้อยละของการตัดสินใจที่ถูก'),
+    tips: tri('Проговаривайте позиции номерами («пять, два, пять…») и сдвигайте «окно» в уме. Переходите на следующий N, когда стабильно набираете больше 85%.', 'Name the positions as numbers (“five, two, five…”) and slide the window in your head. Move up a level once you score above 85% consistently.', 'พูดตำแหน่งเป็นตัวเลขในใจ (“ห้า สอง ห้า…”) แล้วเลื่อน “หน้าต่าง” ในหัว เลื่อนระดับเมื่อทำได้เกิน 85% อย่างสม่ำเสมอ'),
+    sci: tri('Честно: n-back хорошо улучшает сам n-back и похожие задачи, но перенос на интеллект и «общую» память спорный. Большие мета-анализы (Мельби-Лервог и др., 2016) переноса не нашли, мета-анализ только по n-back (Ау и др., 2015) — небольшой эффект. Играйте как разминку внимания, а не как волшебную таблетку.', 'Honestly: n-back reliably improves n-back and similar tasks, but transfer to intelligence or memory in general is debated. Large meta-analyses (Melby-Lervåg et al., 2016) found no transfer; one limited to n-back (Au et al., 2015) found a small effect. Treat it as an attention warm-up, not a magic pill.', 'พูดตรง ๆ: เอ็นแบ็กทำให้เก่งเอ็นแบ็กและงานคล้ายกันได้จริง แต่ผลต่อเชาวน์ปัญญาหรือความจำโดยรวมยังถกเถียงกันอยู่ การวิเคราะห์อภิมานขนาดใหญ่ (เมลบี-เลอร์โวกและคณะ ค.ศ. 2016) ไม่พบการถ่ายโอน ส่วนงานที่ดูเฉพาะเอ็นแบ็ก (เอาและคณะ ค.ศ. 2015) พบผลเล็กน้อย ให้เล่นเป็นการวอร์มสมาธิ ไม่ใช่ยาวิเศษ'),
+    src: [['Melby-Lervåg, Redick & Hulme, 2016', 'https://doi.org/10.1177/1745691616635612'], ['Au et al., 2015', 'https://pubmed.ncbi.nlm.nih.gov/25102926/']],
+  },
+  run(c) {
+    const n = +c.mode, total = 20 + n, seq = [];
+    for (let i = 0; i < total; i++) {
+      if (i >= n && Math.random() < .3) seq.push(seq[i - n]);
+      else { let p; do p = rnd(0, 8); while (i >= n && p === seq[i - n]); seq.push(p) }
+    }
+    let i = -1, pressed = false, good = 0;
+    c.el.innerHTML = hud([[t('step'), `0 / ${total}`, 'ns'], [`N`, n]]) + `
+      <div class="mt-6 mx-auto grid grid-cols-3 gap-2 w-64 sm:w-72">${Array.from({ length: 9 }, (_, k) => `<div data-n="${k}" class="cell aspect-square"></div>`).join('')}</div>
+      <button id="nm" class="mt-6 mx-auto flex items-center gap-2 rounded-xl border border-white/10 px-8 py-4 text-lg font-semibold text-white hover:border-accent/60 transition"><i data-lucide="equal" class="w-5 h-5"></i>${t('match')}</button>`;
+    icons();
+    const press = () => {
+      if (i < n || pressed) return; pressed = true;
+      const ok = seq[i] === seq[i - n];
+      flash(c.el.querySelector('#nm'), ok ? 'ok-flash' : 'bad-flash', 400);
+    };
+    c.el.querySelector('#nm').onclick = press;
+    c.onKey(e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); press() } });
+    const step = () => {
+      if (i >= n) { const target = seq[i] === seq[i - n]; if (pressed === target) good++ }
+      if (++i >= total) return c.done(Math.round(good / (total - n) * 100));
+      pressed = false;
+      c.el.querySelector('#ns').textContent = `${i + 1} / ${total}`;
+      const cell = c.el.querySelector(`[data-n="${seq[i]}"]`);
+      cell.classList.add('lit'); c.later(() => cell.classList.remove('lit'), 500);
+      c.later(step, 2500);
+    };
+    c.later(step, 800);
+  },
+});
+
+/* --- timed arithmetic --- */
+function mathTask(mode) {
+  if (mode === 'add') { const a = rnd(10, 99), b = rnd(10, 99); return Math.random() < .5 ? [`${a} + ${b}`, a + b] : [`${Math.max(a, b)} − ${Math.min(a, b)}`, Math.abs(a - b)] }
+  if (mode === 'mul') { const a = rnd(2, 12), b = rnd(2, 12); return Math.random() < .5 ? [`${a} × ${b}`, a * b] : [`${a * b} ÷ ${a}`, b] }
+  const a = rnd(2, 20), b = rnd(2, 9), k = rnd(2, 9), r = rnd(0, 2);
+  if (r === 0) return [`${a} + ${b} × ${k}`, a + b * k];
+  if (r === 1) return [`(${a} + ${b}) × ${k}`, (a + b) * k];
+  return [`${b * k + a} − ${b} × ${k}`, a];
+}
+GAMES.push({
+  id: 'math', cat: 'speed', icon: 'calculator', tags: ['data'], fmt: v => v,
+  name: tri('Счёт на время', 'Speed arithmetic', 'คิดเลขแข่งเวลา'),
+  short: tri('Сколько примеров решишь за 60 секунд?', 'How many problems can you solve in 60 seconds?', 'คุณแก้โจทย์ได้กี่ข้อใน 60 วินาที?'),
+  modes: [{ k: 'add', name: tri('+ и −', '+ and −', '+ และ −') }, { k: 'mul', name: tri('× и ÷', '× and ÷', '× และ ÷') }, { k: 'mix', name: tri('Два действия', 'Two steps', 'สองขั้นตอน') }],
+  help: {
+    about: tri('Скорость мышления в чистом виде: простые примеры, но на время. Цель — не просто решить, а довести счёт до автоматизма, чтобы голова освобождалась для сложного.', 'Thinking speed in its plainest form: simple problems against the clock. The aim is not just to solve but to make arithmetic automatic, freeing your head for harder things.', 'ความเร็วในการคิดแบบตรงไปตรงมา โจทย์ง่ายแต่แข่งกับเวลา เป้าหมายคือคิดให้เป็นอัตโนมัติ สมองจะได้ว่างไว้คิดเรื่องที่ยากกว่า'),
+    how: tri('Набирайте ответ на панели или клавиатуре — верный засчитывается сразу. Неверный — пример трясётся, сотрите и попробуйте снова. В режиме «два действия» помните: умножение раньше сложения.', 'Type the answer on the pad or keyboard — a correct one counts at once. A wrong one shakes; delete and try again. In two-step mode remember: multiply before you add.', 'พิมพ์คำตอบบนแป้นหรือคีย์บอร์ด ถ้าถูกจะนับทันที ถ้าผิดโจทย์จะสั่น ให้ลบแล้วลองใหม่ ในโหมดสองขั้นตอนจำไว้ว่าคูณก่อนบวก'),
+    tips: tri('Считайте слева направо: 47 + 38 = 47 + 30 + 8. Для вычитания добирайте до круглого: 82 − 47 → от 47 до 50 это 3, до 82 ещё 32, итого 35. Таблицу умножения добейте до мгновенного ответа — это фундамент всего остального.', 'Work left to right: 47 + 38 = 47 + 30 + 8. For subtraction count up to a round number: 82 − 47 → 3 to reach 50, 32 more to 82, total 35. Drill the times table until answers are instant — everything else rests on it.', 'คิดจากซ้ายไปขวา: 47 + 38 = 47 + 30 + 8 การลบให้นับขึ้นไปหาเลขกลม: 82 − 47 → จาก 47 ถึง 50 คือ 3 ถึง 82 อีก 32 รวม 35 ฝึกสูตรคูณจนตอบได้ทันที เพราะเป็นพื้นฐานของทุกอย่าง'),
+    sci: tri('Беглость в арифметических фактах (ответ «из памяти», а не подсчётом) хорошо связана с успехами в математике и тренируется короткими регулярными упражнениями на время. Это узкий навык — но очень полезный.', 'Fluency with arithmetic facts (answers recalled, not counted out) is closely tied to success in maths and improves with short, regular timed practice. It is a narrow skill — but a very useful one.', 'ความคล่องในข้อเท็จจริงทางเลขคณิต (ตอบจากความจำ ไม่ใช่นับนิ้ว) สัมพันธ์กับความสำเร็จด้านคณิตศาสตร์ และพัฒนาได้ด้วยการฝึกสั้น ๆ จับเวลาอย่างสม่ำเสมอ เป็นทักษะเฉพาะทาง แต่มีประโยชน์มาก'),
+    src: [],
+  },
+  run(c) {
+    let solved = 0, q, inp = '', over = false;
+    c.el.innerHTML = hud([[t('score'), 0, 'ms'], [t('best'), c.best ?? '—']]) + bar() + `<p id="mq" class="mt-10 text-center text-5xl md:text-6xl font-extrabold text-white tabular-nums"></p><p id="mi" class="mt-4 h-14 text-center text-4xl font-bold text-accent tabular-nums"></p>` + keypad();
+    const next = () => { q = mathTask(c.mode); inp = ''; c.el.querySelector('#mq').textContent = q[0] + ' ='; c.el.querySelector('#mi').textContent = '?' };
+    const check = () => {
+      if (+inp === q[1]) { solved++; c.el.querySelector('#ms').textContent = solved; flash(c.el.querySelector('#mq'), 'pop', 300); next() }
+      else if (inp.length >= String(q[1]).length) { flash(c.el.querySelector('#mq'), 'shake', 400); inp = ''; c.el.querySelector('#mi').textContent = '?' }
+    };
+    pad(c, {
+      digit: d => { if (over || inp.length >= 4) return; inp += d; c.el.querySelector('#mi').textContent = inp; check() },
+      back: () => { inp = inp.slice(0, -1); c.el.querySelector('#mi').textContent = inp || '?' },
+      ok: () => { if (inp) { if (+inp !== q[1]) { flash(c.el.querySelector('#mq'), 'shake', 400); inp = ''; c.el.querySelector('#mi').textContent = '?' } else check() } },
+    });
+    next();
+    countdown(c, 60, () => { if (!over) { over = true; c.done(solved) } });
+  },
+});
+
+/* --- flash anzan --- */
+GAMES.push({
+  id: 'anzan', cat: 'speed', icon: 'sigma', tags: ['ancient', 'data'], lower: true, fmt: v => `${v} ${t('ms')}`,
+  name: tri('Флеш-анзан', 'Flash anzan', 'แฟลชอันซัน'),
+  short: tri('Числа мелькают одно за другим — сложи их в уме.', 'Numbers flash one after another — add them in your head.', 'ตัวเลขแวบขึ้นทีละตัว บวกในใจให้ทัน'),
+  modes: [{ k: 'd1n5', name: tri('5 однозначных', '5 one-digit', 'หลักเดียว 5 ตัว') }, { k: 'd1n10', name: tri('10 однозначных', '10 one-digit', 'หลักเดียว 10 ตัว') }, { k: 'd2n5', name: tri('5 двузначных', '5 two-digit', 'สองหลัก 5 ตัว') }],
+  help: {
+    about: tri('Анзан — счёт на воображаемых счётах. Китайский суаньпань известен с середины II тысячелетия н. э., японские соробан — с XVI века. Опытные счётчики не считают цифры, а «видят» костяшки и двигают их в уме; на соревнованиях складывают по 15 трёхзначных чисел, мелькающих за 2 секунды.', 'Anzan is calculating on an imagined abacus. The Chinese suanpan dates back many centuries, the Japanese soroban to the 16th century. Experts don’t count digits — they “see” the beads and move them in their mind; in competitions they add 15 three-digit numbers flashed within 2 seconds.', 'อันซันคือการคิดเลขด้วยลูกคิดในจินตนาการ ลูกคิดจีนมีมาหลายร้อยปี ลูกคิดญี่ปุ่นโซโรบันมีตั้งแต่ศตวรรษที่ 16 ผู้เชี่ยวชาญไม่ได้นับตัวเลข แต่ “เห็น” ลูกคิดและเลื่อนในใจ ในการแข่งขันมีการบวกเลขสามหลัก 15 ตัวที่แวบขึ้นภายใน 2 วินาที'),
+    how: tri('Числа показываются по одному. Держите в уме текущую сумму, а в конце введите её. Верно — следующий раунд быстрее, ошибка — медленнее. 8 раундов. Счёт — самый быстрый интервал (мс на число), на котором вы ответили верно; меньше — лучше.', 'Numbers appear one at a time. Keep a running total and type it at the end. Correct — the next round is faster, wrong — slower. 8 rounds. Score: the fastest interval (ms per number) you answered correctly at; lower is better.', 'ตัวเลขจะขึ้นทีละตัว บวกสะสมในใจแล้วพิมพ์ผลรวมตอนท้าย ถูกแล้วรอบต่อไปจะเร็วขึ้น ผิดจะช้าลง มีทั้งหมด 8 รอบ คะแนนคือช่วงเวลาที่เร็วที่สุด (มิลลิวินาทีต่อตัวเลข) ที่ตอบถูก ยิ่งน้อยยิ่งดี'),
+    tips: tri('Не проговаривайте числа — сразу прибавляйте и держите только сумму. Пары до 10 (3+7, 6+4) складывайте мгновенно. Если знакомы со счётами, представьте их и двигайте костяшки в такт числам.', 'Don’t say the numbers to yourself — add straight away and keep only the total. Pairs to 10 (3+7, 6+4) should be instant. If you know the abacus, picture it and move the beads in time with the numbers.', 'อย่าท่องตัวเลข ให้บวกทันทีและจำแค่ผลรวม คู่ที่รวมได้ 10 (3+7, 6+4) ต้องตอบได้ทันที ถ้ารู้จักลูกคิด ให้นึกภาพลูกคิดและเลื่อนลูกตามจังหวะตัวเลข'),
+    sci: tri('В трёхлетнем рандомизированном исследовании с детьми (Барнер и др., 2016) обучение анзану улучшило арифметику сильнее обычных занятий. Но «общих» способностей вроде рабочей памяти оно не прибавило — это тренировка счёта, а не всего мозга.', 'In a three-year randomized trial with children (Barner et al., 2016), mental abacus training improved arithmetic more than regular lessons. It did not boost general abilities such as working memory — it trains calculation, not the whole brain.', 'งานวิจัยแบบสุ่มสามปีกับเด็ก (บาร์เนอร์และคณะ ค.ศ. 2016) พบว่าการฝึกลูกคิดในใจพัฒนาเลขคณิตได้มากกว่าการเรียนปกติ แต่ไม่ได้เพิ่มความสามารถทั่วไปอย่างความจำใช้งาน จึงเป็นการฝึกคิดเลข ไม่ใช่ฝึกทั้งสมอง'),
+    src: [['Barner et al., 2016', 'https://dash.harvard.edu/bitstream/handle/1/41364831/Barneretal.inpress.pdf?sequence=1']],
+  },
+  run(c) {
+    const cnt = c.mode === 'd1n10' ? 10 : 5, two = c.mode === 'd2n5';
+    let round = 0, ms = 1000, best = null, nums = [], inp = '';
+    const play = () => {
+      round++; nums = Array.from({ length: cnt }, () => two ? rnd(10, 99) : rnd(1, 9)); inp = '';
+      c.el.innerHTML = hud([[t('round'), `${round} / 8`], [t('speed'), `${ms} ${t('ms')}`], [t('best'), best ? `${best} ${t('ms')}` : '—']]) + `<p id="an" class="mt-10 h-40 grid place-items-center text-8xl md:text-9xl font-extrabold text-white tabular-nums"></p>`;
+      let i = 0;
+      const show = () => {
+        const d = c.el.querySelector('#an');
+        if (i >= cnt) return ask();
+        d.textContent = nums[i++];
+        c.later(() => { d.textContent = ''; c.later(show, Math.round(ms * .25)) }, Math.round(ms * .75));
+      };
+      c.later(show, 900);
+    };
+    const ask = () => {
+      c.el.innerHTML = hud([[t('round'), `${round} / 8`], [t('speed'), `${ms} ${t('ms')}`]]) + `<p class="mt-8 text-center text-sm text-zinc-500">${t('sum')}?</p><p id="ai" class="mt-2 h-16 text-center text-5xl font-bold text-accent tabular-nums">?</p>` + keypad() + `<div id="am"></div>`;
+      asking = true;
+    };
+    let asking = false;
+    pad(c, {
+        digit: d => { if (asking && inp.length < 4) { inp += d; c.el.querySelector('#ai').textContent = inp } },
+        back: () => { if (asking) { inp = inp.slice(0, -1); c.el.querySelector('#ai').textContent = inp || '?' } },
+        ok: () => {
+          if (!asking || !inp) return; asking = false;
+          const sum = nums.reduce((a, b) => a + b, 0), ok = +inp === sum;
+          if (ok) { best = best == null ? ms : Math.min(best, ms); ms = Math.max(200, Math.round(ms * .85)) } else ms = Math.min(2000, Math.round(ms * 1.2));
+          c.el.querySelector('#am').innerHTML = ok ? msg(t('ok'), 'text-emerald-300') : msg(`${t('wrong')} · ${nums.join(' + ')} = ${sum}`, 'text-rose-300');
+          c.later(() => round < 8 ? play() : c.done(best), 1300);
+        },
+    });
+    play();
+  },
+});
+
+/* --- Egyptian multiplication --- */
+GAMES.push({
+  id: 'egypt', cat: 'speed', icon: 'landmark', tags: ['ancient'], lower: true, fmt: fmtSec,
+  name: tri('Египетское умножение', 'Egyptian multiplication', 'การคูณแบบอียิปต์'),
+  short: tri('Умножай удвоением, как писцы папируса Ринда.', 'Multiply by doubling, like the scribes of the Rhind papyrus.', 'คูณด้วยการทบสอง แบบอาลักษณ์ในกระดาษปาปิรัสไรนด์'),
+  modes: [{ k: '2x2', name: tri('2 × 2 цифры', '2 × 2 digits', '2 × 2 หลัก') }, { k: '3x2', name: tri('3 × 2 цифры', '3 × 2 digits', '3 × 2 หลัก') }],
+  help: {
+    about: tri('Египтяне не учили таблицу умножения: им хватало удвоения и сложения. Способ записан в папирусе Ринда (около 1550 г. до н. э.). Чтобы умножить 41 × 59, писец удваивал 59: 1→59, 2→118, 4→236, 8→472, 16→944, 32→1888, затем брал строки, где слева в сумме 41 (32 + 8 + 1), и складывал правые: 1888 + 472 + 59 = 2419.', 'Egyptians did not learn a times table: doubling and adding were enough. The method is recorded in the Rhind papyrus (c. 1550 BCE). To multiply 41 × 59, a scribe doubled 59: 1→59, 2→118, 4→236, 8→472, 16→944, 32→1888, then took the rows whose left numbers sum to 41 (32 + 8 + 1) and added the right side: 1888 + 472 + 59 = 2419.', 'ชาวอียิปต์ไม่ได้ท่องสูตรคูณ ใช้แค่การทบสองและการบวก วิธีนี้บันทึกอยู่ในกระดาษปาปิรัสไรนด์ (ราว 1550 ปีก่อน ค.ศ.) ถ้าจะคูณ 41 × 59 อาลักษณ์จะทบ 59: 1→59, 2→118, 4→236, 8→472, 16→944, 32→1888 แล้วเลือกแถวที่ตัวซ้ายรวมได้ 41 (32 + 8 + 1) และบวกตัวขวา: 1888 + 472 + 59 = 2419'),
+    how: tri('Таблица удвоений уже готова. Отметьте строки, у которых левые числа дают первый множитель (начинайте с самого большого), затем сложите в уме правые числа отмеченных строк и введите результат. 3 примера, счёт — общее время, меньше — лучше.', 'The doubling table is ready. Mark the rows whose left numbers add up to the first factor (start with the largest), then add the right numbers of the marked rows in your head and type the result. 3 problems; score: total time, lower is better.', 'ตารางทบสองเตรียมไว้แล้ว เลือกแถวที่ตัวซ้ายรวมกันได้ตัวตั้ง (เริ่มจากตัวใหญ่สุด) จากนั้นบวกตัวขวาของแถวที่เลือกในใจแล้วพิมพ์ผล มี 3 ข้อ คะแนนคือเวลารวม ยิ่งน้อยยิ่งดี'),
+    tips: tri('Выбор строк — это двоичная запись числа: берите самую большую степень двойки, которая помещается, и повторяйте с остатком. Правые числа складывайте от больших к меньшим.', 'Picking rows is writing the number in binary: take the largest power of two that fits, then repeat with what is left. Add the right numbers from largest to smallest.', 'การเลือกแถวก็คือการเขียนเลขฐานสอง เลือกกำลังของสองที่ใหญ่ที่สุดที่ไม่เกิน แล้วทำซ้ำกับส่วนที่เหลือ บวกตัวขวาจากมากไปน้อย'),
+    sci: tri('Тот же принцип «удвой и сложи» лежит в основе того, как умножают компьютеры: множитель раскладывается на степени двойки. А ещё это отличная тренировка удержания нескольких чисел и сложения в уме.', 'The same double-and-add idea is how computers multiply: the factor is broken into powers of two. It is also great practice in holding several numbers and adding in your head.', 'หลัก “ทบแล้วบวก” แบบเดียวกันคือวิธีที่คอมพิวเตอร์ใช้คูณเลข โดยแยกตัวคูณเป็นกำลังของสอง และยังเป็นการฝึกจำตัวเลขหลายตัวพร้อมบวกในใจที่ดีมาก'),
+    src: [['Mathematics in Egyptian Papyri', 'https://mathshistory.st-andrews.ac.uk/HistTopics/Egyptian_papyri/']],
+  },
+  run(c) {
+    const big = c.mode === '3x2', t0 = Date.now();
+    let task = 0, a, b, rows, picked, inp;
+    const draw = () => {
+      const left = [...picked].reduce((s, k) => s + rows[k][0], 0), ready = left === a;
+      c.el.innerHTML = hud([[t('step'), `${task} / 3`], [t('best'), c.best != null ? fmtSec(c.best) : '—']]) + `
+        <p class="mt-6 text-center text-5xl font-extrabold text-white tabular-nums">${a} × ${b}</p>
+        <p class="mt-3 text-center text-sm text-zinc-500">${ready ? t('egAdd') : fill(t('egPick'), { a })}</p>
+        <div class="mt-5 mx-auto max-w-xs space-y-1.5">${rows.map(([l, r], k) => `<button type="button" data-r="${k}" ${ready ? 'disabled' : ''} class="w-full flex justify-between rounded-xl border px-4 py-2 font-mono text-lg tabular-nums transition ${picked.has(k) ? 'border-accent bg-accent/10 text-white' : 'border-white/10 bg-ink-900 text-zinc-400 hover:border-accent/50'}"><span>${l}</span><span>${r}</span></button>`).join('')}</div>
+        <p class="mt-3 text-center text-sm ${left > a ? 'text-rose-300' : 'text-zinc-500'}">${t('egLeft')}: <b class="text-white">${left}</b> / ${a}</p>
+        ${ready ? `<p id="ei" class="mt-4 h-12 text-center text-4xl font-bold text-accent tabular-nums">${inp || '?'}</p>` + keypad() : ''}`;
+    };
+    const next = () => {
+      if (++task > 3) return c.done(Math.round((Date.now() - t0) / 100) / 10);
+      a = big ? rnd(101, 999) : rnd(11, 99); b = rnd(11, 99); picked = new Set(); inp = '';
+      rows = []; for (let p = 1; p <= a; p *= 2) rows.push([p, p * b]);
+      draw();
+    };
+    c.el.addEventListener('click', e => {
+      const r = e.target.closest('[data-r]'); if (!r) return;
+      const k = +r.dataset.r; picked.has(k) ? picked.delete(k) : picked.add(k); draw();
+    });
+    pad(c, {
+      digit: d => { if (inp.length < 6 && c.el.querySelector('#ei')) { inp += d; c.el.querySelector('#ei').textContent = inp } },
+      back: () => { inp = inp.slice(0, -1); const e = c.el.querySelector('#ei'); if (e) e.textContent = inp || '?' },
+      ok: () => {
+        const e = c.el.querySelector('#ei'); if (!e || !inp) return;
+        if (+inp === a * b) { flash(e, 'pop'); c.later(next, 350) } else { flash(e, 'shake', 400); inp = ''; e.textContent = '?' }
+      },
+    });
+    next();
+  },
+});
+
+/* --- Stroop --- */
+GAMES.push({
+  id: 'stroop', cat: 'speed', icon: 'palette', tags: ['classic'], fmt: v => v,
+  name: tri('Тест Струпа', 'Stroop test', 'แบบทดสอบสทรูป'),
+  short: tri('Слово «красный», написанное синим: какой цвет?', 'The word “red” written in blue: which colour?', 'คำว่า “แดง” เขียนด้วยสีน้ำเงิน: สีอะไร?'),
+  modes: [{ k: 'ink', name: tri('Цвет чернил', 'Ink colour', 'สีตัวหนังสือ') }, { k: 'word', name: tri('Смысл слова', 'Word meaning', 'ความหมายของคำ') }],
+  help: {
+    about: tri('Знаменитый тест Джона Ридли Струпа (1935): назвать цвет, которым написано слово, трудно, когда само слово называет другой цвет. Мозг читает автоматически, и это чтение нужно подавить.', 'John Ridley Stroop’s famous test (1935): naming the ink colour is hard when the word itself names another colour. The brain reads automatically, and that reading has to be held back.', 'แบบทดสอบชื่อดังของจอห์น ริดลีย์ สทรูป (ค.ศ. 1935) การบอกสีของตัวหนังสือนั้นยาก ถ้าตัวคำเองบอกสีอื่น เพราะสมองอ่านโดยอัตโนมัติและต้องห้ามการอ่านนั้นไว้'),
+    how: tri('Режим «цвет чернил»: нажмите кружок того цвета, которым написано слово. Режим «смысл слова»: нажмите цвет, который слово называет. Можно клавишами 1–4. 45 секунд, счёт — верные минус ошибки.', 'Ink colour mode: tap the circle matching the ink of the word. Word meaning mode: tap the colour the word names. Keys 1–4 work too. 45 seconds; score: correct minus mistakes.', 'โหมดสีตัวหนังสือ: แตะวงกลมสีเดียวกับสีของตัวหนังสือ โหมดความหมายของคำ: แตะสีที่คำนั้นบอก กดปุ่ม 1–4 ก็ได้ เวลา 45 วินาที คะแนนคือข้อที่ถูกลบข้อที่ผิด'),
+    tips: tri('Слегка расфокусируйте взгляд на слове — так проще увидеть цвет, а не буквы. Не гонитесь за скоростью в первые секунды: ошибки отнимают очки.', 'Slightly defocus your eyes on the word — it’s easier to see the colour rather than the letters. Don’t rush the first seconds: mistakes cost points.', 'มองคำแบบไม่โฟกัสเต็มที่ จะเห็นสีง่ายกว่าตัวอักษร อย่ารีบในช่วงแรก เพราะคำตอบที่ผิดจะหักคะแนน'),
+    sci: tri('Струп-эффект — одна из самых воспроизводимых находок психологии и стандартная мера «тормозного контроля» — умения подавить привычную реакцию. Тренировка улучшает результат в самом тесте; перенос на повседневную жизнь не доказан.', 'The Stroop effect is one of the most replicated findings in psychology and a standard measure of inhibitory control — holding back a habitual response. Practice improves the test itself; transfer to daily life is unproven.', 'ปรากฏการณ์สทรูปเป็นหนึ่งในผลการทดลองที่ทำซ้ำได้มากที่สุดในจิตวิทยา และเป็นมาตรวัดมาตรฐานของการยับยั้งการตอบสนองที่เคยชิน การฝึกช่วยให้ทำแบบทดสอบได้ดีขึ้น แต่ยังไม่พิสูจน์ว่าช่วยในชีวิตประจำวัน'),
+    src: [['Stroop, 1935', 'https://doi.org/10.1037/h0054651']],
+  },
+  run(c) {
+    let right = 0, wrong = 0, ans = 0, over = false;
+    c.el.innerHTML = hud([[t('score'), 0, 'ss'], [t('best'), c.best ?? '—']]) + bar() + `<p class="mt-6 text-center text-sm text-zinc-500">${t(c.mode === 'ink' ? 'stInk' : 'stWord')}</p><p id="sw" class="mt-4 h-28 grid place-items-center text-6xl md:text-7xl font-extrabold"></p>
+      <div class="mt-6 flex justify-center gap-4">${INKS.map((col, k) => `<button data-s="${k}" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-4 border-white/10 hover:scale-105 transition relative" style="background:${col}" aria-label="${t('colors')[k]}"><span class="absolute -bottom-6 inset-x-0 text-xs text-zinc-600">${k + 1}</span></button>`).join('')}</div>`;
+    const next = () => {
+      const w = rnd(0, 3); let ink = w;
+      if (Math.random() < .75) while (ink === w) ink = rnd(0, 3);
+      ans = c.mode === 'ink' ? ink : w;
+      const el = c.el.querySelector('#sw'); el.textContent = t('colors')[w]; el.style.color = INKS[ink];
+    };
+    const pick = k => {
+      if (over) return;
+      k === ans ? right++ : wrong++;
+      flash(c.el.querySelector(`[data-s="${k}"]`), k === ans ? 'ok-flash' : 'bad-flash', 250);
+      c.el.querySelector('#ss').textContent = right - wrong; next();
+    };
+    c.el.addEventListener('click', e => { const b = e.target.closest('[data-s]'); if (b) pick(+b.dataset.s) });
+    c.onKey(e => { if (/^[1-4]$/.test(e.key)) pick(+e.key - 1) });
+    next();
+    countdown(c, 45, () => { if (!over) { over = true; c.done(Math.max(0, right - wrong)) } });
+  },
+});
+
+/* --- Schulte tables --- */
+GAMES.push({
+  id: 'schulte', cat: 'vision', icon: 'hash', tags: ['classic'], lower: true, fmt: fmtSec,
+  name: tri('Таблицы Шульте', 'Schulte tables', 'ตารางชุลเทอ'),
+  short: tri('Найди числа по порядку, не отводя взгляд от центра.', 'Find the numbers in order without leaving the centre.', 'หาตัวเลขตามลำดับโดยไม่ละสายตาจากตรงกลาง'),
+  modes: [{ k: 'c5', name: tri('Классика 5×5', 'Classic 5×5', 'คลาสสิก 5×5') }, { k: 'mix', name: tri('Перемешивание', 'Reshuffle', 'สลับทุกครั้ง') }, { k: 'gorbov', name: tri('Горбова: красно-чёрная', 'Gorbov red-black', 'กอร์บอฟ แดง-ดำ') }],
+  help: {
+    about: tri('Таблицы приписывают немецкому психиатру Вальтеру Шульте (1910–1972), который с 1960 года руководил университетской нервной клиникой в Тюбингене и известен открытием антидепрессивного эффекта лишения сна. Оригинальную публикацию с таблицами найти не удалось — поэтому сомнения понятны. В СССР таблицы стали классикой психодиагностики внимания, а психолог Ф. Д. Горбов придумал красно-чёрный вариант на переключение внимания.', 'The tables are attributed to the German psychiatrist Walter Schulte (1910–1972), who headed Tübingen’s university neuropsychiatric clinic from 1960 and is known for discovering the antidepressant effect of sleep deprivation. His original publication of the tables could not be found, so doubts are understandable. In the USSR the tables became a staple of attention testing, and the psychologist F. D. Gorbov added the red-black version for switching attention.', 'ตารางนี้ถือกันว่าเป็นของจิตแพทย์ชาวเยอรมัน วัลเทอร์ ชุลเทอ (ค.ศ. 1910–1972) ผู้อำนวยการคลินิกประสาทวิทยามหาวิทยาลัยทือบิงเงินตั้งแต่ ค.ศ. 1960 และเป็นผู้ค้นพบว่าการอดนอนช่วยบรรเทาซึมเศร้า แต่ยังหาสิ่งพิมพ์ต้นฉบับเรื่องตารางของเขาไม่พบ จึงเข้าใจได้ที่มีข้อสงสัย ในสหภาพโซเวียต ตารางนี้กลายเป็นแบบทดสอบสมาธิมาตรฐาน และนักจิตวิทยา เอฟ. ดี. กอร์บอฟ คิดแบบแดง-ดำสำหรับฝึกสลับความสนใจ'),
+    how: tri('Классика: нажмите числа от 1 до 25 по порядку. Перемешивание: после каждого верного нажатия числа меняют места. Горбова: 25 белых и 24 красных числа; чередуйте белое по возрастанию и красное по убыванию: б1, к24, б2, к23… до б25. Счёт — время, меньше — лучше.', 'Classic: tap 1 to 25 in order. Reshuffle: the numbers move after every correct tap. Gorbov: 25 white and 24 red numbers; alternate white ascending and red descending: w1, r24, w2, r23… up to w25. Score: time, lower is better.', 'คลาสสิก: แตะเลข 1 ถึง 25 ตามลำดับ แบบสลับ: ตัวเลขจะเปลี่ยนที่ทุกครั้งที่แตะถูก กอร์บอฟ: มีเลขสีขาว 25 ตัวและสีแดง 24 ตัว ให้สลับขาวจากน้อยไปมากกับแดงจากมากไปน้อย: ข1, ด24, ข2, ด23… จนถึง ข25 คะแนนคือเวลา ยิ่งน้อยยิ่งดี'),
+    tips: tri('Смотрите в центр таблицы (красная точка) и старайтесь видеть всю таблицу целиком, «периферией», не бегая глазами. Сначала добивайтесь ровного ритма, потом — скорости. Хорошие результаты для 5×5 — около 20–30 секунд, отличные — меньше 15.', 'Keep your eyes on the centre (the red dot) and try to take in the whole table at once with your periphery, without darting around. Aim for a steady rhythm first, then speed. Good 5×5 times are around 20–30 seconds, excellent ones under 15.', 'มองที่กลางตาราง (จุดแดง) แล้วพยายามเห็นทั้งตารางด้วยสายตารอบข้าง ไม่กวาดตาไปมา ทำจังหวะให้สม่ำเสมอก่อน แล้วค่อยเพิ่มความเร็ว ตาราง 5×5 ผลดีคือราว 20–30 วินาที ผลดีเยี่ยมคือต่ำกว่า 15'),
+    sci: tri('Таблицы Шульте — прежде всего диагностический инструмент: по времени и его колебаниям оценивают устойчивость и переключение внимания. Время с практикой уверенно падает, но строгих исследований о том, что они расширяют «периферическое зрение» в жизни, почти нет. Если цель — именно поле зрения, лучше всего проверена тренировка UFOV (соседняя игра).', 'Schulte tables are first of all a diagnostic tool: time and its variation measure the stability and switching of attention. Times reliably drop with practice, but there is little rigorous research showing they widen real-life peripheral vision. If the field of view is your goal, UFOV training (the next game) is far better tested.', 'ตารางชุลเทอเป็นเครื่องมือวินิจฉัยเป็นหลัก ใช้เวลาและความแปรปรวนวัดความมั่นคงและการสลับความสนใจ เวลาจะลดลงเมื่อฝึก แต่แทบไม่มีงานวิจัยเข้มงวดที่แสดงว่าช่วยขยายการมองเห็นรอบข้างในชีวิตจริง ถ้าเป้าหมายคือขอบเขตการมองเห็น การฝึกแบบ UFOV (เกมถัดไป) ผ่านการพิสูจน์มากกว่ามาก'),
+    src: [['Walter Schulte — LEO-BW', 'https://www.leo-bw.de/en/detail/-/Detail/details/DOKUMENT/ubt_portraits/34989/Schulte%20Walter'], ['Uni Tübingen: Geschichte der Klinik', 'https://www.medizin.uni-tuebingen.de/de/das-klinikum/einrichtungen/kliniken/psychiatrie-und-psychotherapie/allgemeine-psychiatrie/geschichte-der-klinik']],
+  },
+  run(c) {
+    const gorbov = c.mode === 'gorbov', side = gorbov ? 7 : 5;
+    // order of targets: [number, red?]
+    const order = gorbov ? Array.from({ length: 49 }, (_, k) => k % 2 ? [24 - (k - 1) / 2, true] : [k / 2 + 1, false]) : Array.from({ length: 25 }, (_, k) => [k + 1, false]);
+    let cells = shuffle(order), at = 0, errs = 0;
+    const t0 = Date.now();
+    const draw = () => {
+      c.el.querySelector('#sg').innerHTML = cells.map(([n, red], k) => `<button type="button" data-q="${k}" class="cell aspect-square ${gorbov ? 'text-lg sm:text-2xl' : 'text-2xl sm:text-3xl'} ${red ? '!text-rose-400' : ''}">${n}</button>`).join('');
+    };
+    c.el.innerHTML = hud([[t('time'), '0.0', 'st'], [t('shFind'), `0 / ${order.length}`, 'sf'], [t('errors'), 0, 'se']]) + `
+      <div class="relative mt-6 mx-auto w-full max-w-md"><div id="sg" class="grid gap-1.5" style="grid-template-columns:repeat(${side},minmax(0,1fr))"></div>
+      <span class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_10px_#f43f5e]"></span></div>`;
+    draw();
+    c.every(() => { const e = c.el.querySelector('#st'); if (e) e.textContent = ((Date.now() - t0) / 1000).toFixed(1) }, 100);
+    c.el.addEventListener('click', e => {
+      const b = e.target.closest('[data-q]'); if (!b) return;
+      const [n, red] = cells[b.dataset.q], [wn, wred] = order[at];
+      if (n !== wn || red !== wred) { errs++; c.el.querySelector('#se').textContent = errs; return flash(b, 'bad-flash', 300) }
+      at++; c.el.querySelector('#sf').textContent = `${at} / ${order.length}`;
+      if (at === order.length) return c.done(Math.round((Date.now() - t0) / 100) / 10);
+      if (c.mode === 'mix') { cells = shuffle(cells); draw() } else flash(b, 'ok-flash', 200);
+    });
+  },
+});
+
+/* --- useful field of view --- */
+GAMES.push({
+  id: 'ufov', cat: 'vision', icon: 'scan-eye', tags: ['proof'], lower: true, fmt: v => `${v} ${t('ms')}`,
+  name: tri('Поле зрения (UFOV)', 'Field of view (UFOV)', 'ขอบเขตการมองเห็น (UFOV)'),
+  short: tri('Центр и периферия за доли секунды: что в центре и где машина?', 'Centre and periphery in a split second: what’s in the middle and where is the car?', 'ตรงกลางและรอบข้างในเสี้ยววินาที: ตรงกลางคืออะไร และรถอยู่ที่ไหน?'),
+  modes: [{ k: 'div', name: tri('Разделённое внимание', 'Divided attention', 'แบ่งความสนใจ') }, { k: 'sel', name: tri('С помехами', 'With distractors', 'มีสิ่งรบกวน') }],
+  help: {
+    about: tri('«Полезное поле зрения» — область, из которой вы успеваете извлечь информацию за один взгляд. С возрастом и усталостью оно сужается. Задача: за доли секунды заметить, что в центре, и одновременно — где на периферии мелькнула машина.', 'The “useful field of view” is the area you can take information from in a single glance. It narrows with age and fatigue. The task: in a split second, see what is in the centre and at the same time where a car flashed in the periphery.', '“ขอบเขตการมองเห็นที่ใช้งานได้” คือพื้นที่ที่คุณรับข้อมูลได้ในการมองครั้งเดียว ซึ่งจะแคบลงตามอายุและความเหนื่อยล้า งานนี้คือการเห็นว่าตรงกลางมีอะไร และพร้อมกันนั้นเห็นว่ารถแวบขึ้นที่ไหนรอบ ๆ ในเสี้ยววินาที'),
+    how: tri('Смотрите в центр. На мгновение появятся легковушка или грузовик в центре и машина на одном из 8 направлений, потом — рябь. Ответьте, что было в центре, и нажмите место машины. Оба ответа верны — показ короче, ошибка — длиннее. 24 попытки, счёт — время показа, к которому вы пришли (мс), меньше — лучше.', 'Look at the centre. A car or a truck appears in the middle for an instant, plus a car in one of 8 directions, then a mask. Say what was in the centre and tap where the car was. Both right — the display gets shorter, a miss — longer. 24 trials; score: the display time you settle at (ms), lower is better.', 'มองที่ตรงกลาง จะมีรถเก๋งหรือรถบรรทุกขึ้นตรงกลางชั่วพริบตา พร้อมรถอีกคันในหนึ่งใน 8 ทิศ แล้วตามด้วยภาพลายรบกวน ตอบว่าตรงกลางเป็นอะไร แล้วแตะตำแหน่งของรถ ถูกทั้งสองข้อ เวลาแสดงจะสั้นลง ผิดจะยาวขึ้น มี 24 ครั้ง คะแนนคือเวลาแสดงที่คุณทำได้ (มิลลิวินาที) ยิ่งน้อยยิ่งดี'),
+    tips: tri('Не двигайте глаза — периферия должна работать сама. Сядьте так, чтобы поле занимало заметную часть экрана, и держите одинаковое расстояние от раза к разу. Режим с помехами включайте, когда в обычном стабильно выходите ниже 100 мс.', 'Don’t move your eyes — let the periphery do the work. Sit so the field fills a good part of the screen and keep the same distance each time. Switch to the distractor mode once you are steadily under 100 ms in the basic one.', 'อย่าขยับตา ปล่อยให้สายตารอบข้างทำงานเอง นั่งให้พื้นที่เกมกินส่วนใหญ่ของจอ และนั่งห่างเท่าเดิมทุกครั้ง เปลี่ยนไปโหมดมีสิ่งรบกวนเมื่อทำได้ต่ำกว่า 100 มิลลิวินาทีอย่างสม่ำเสมอ'),
+    sci: tri('Это лучше всего проверенная «мозговая» тренировка. В рандомизированном исследовании ACTIVE (2802 пожилых человека) такие упражнения на скорость обработки снизили риск деменции на 29% за 10 лет (Эдвардс и др., 2017), а в других работах — число аварий по вине водителя. Тренировки памяти и рассуждений в том же исследовании такого эффекта не дали. Наша версия — упрощённая, но устроена так же: центр + периферия + маска + адаптивное время.', 'This is the best-tested brain training there is. In the randomized ACTIVE trial (2,802 older adults), this kind of speed-of-processing training cut dementia risk by 29% over 10 years (Edwards et al., 2017), and other studies found fewer at-fault car crashes. Memory and reasoning training in the same trial showed no such effect. Ours is a simplified version built the same way: centre + periphery + mask + adaptive timing.', 'นี่คือการฝึกสมองที่ผ่านการพิสูจน์มากที่สุด ในงานวิจัยแบบสุ่ม ACTIVE (ผู้สูงอายุ 2,802 คน) การฝึกความเร็วในการประมวลผลแบบนี้ลดความเสี่ยงสมองเสื่อมได้ 29% ใน 10 ปี (เอ็ดเวิร์ดส์และคณะ ค.ศ. 2017) และงานอื่นพบว่าอุบัติเหตุที่ผู้ขับเป็นฝ่ายผิดลดลง ส่วนการฝึกความจำและการใช้เหตุผลในงานเดียวกันไม่ได้ผลแบบนี้ เวอร์ชันของเราเป็นแบบย่อแต่หลักการเดียวกัน: ตรงกลาง + รอบข้าง + ภาพรบกวน + เวลาที่ปรับตามความสามารถ'),
+    src: [['Edwards et al., 2017', 'https://doi.org/10.1016/j.trci.2017.09.002'], ['ACTIVE (BrainHQ summary)', 'https://www.brainhq.com/world-class-science/published-research/active-study']],
+  },
+  run(c) {
+    const sel = c.mode === 'sel', trials = 24, pos = Array.from({ length: 8 }, (_, k) => [50 + 40 * Math.cos(k * Math.PI / 4), 50 + 40 * Math.sin(k * Math.PI / 4)]);
+    const inner = Array.from({ length: 8 }, (_, k) => [50 + 22 * Math.cos((k + .5) * Math.PI / 4), 50 + 22 * Math.sin((k + .5) * Math.PI / 4)]);
+    let n = 0, D = 400, last = [], center, where;
+    const at = ([x, y], html, cls = '') => `<span class="absolute -translate-x-1/2 -translate-y-1/2 ${cls}" style="left:${x}%;top:${y}%">${html}</span>`;
+    c.el.innerHTML = hud([[t('step'), `1 / ${trials}`, 'us'], [t('ufShow'), `${D} ${t('ms')}`, 'ud']]) + `
+      <div id="uf" class="relative mt-6 mx-auto w-full max-w-md aspect-square rounded-full border border-white/10 bg-ink-900 overflow-hidden">
+        ${at([50, 50], '<span class="block w-16 h-16 rounded-xl border border-white/15 bg-ink-800"></span>')}
+        ${at([50, 50], '<i data-lucide="plus" class="w-6 h-6 text-zinc-500"></i>', 'uf-fix')}
+        ${at([50, 50], '<i data-lucide="car" class="w-10 h-10 text-white"></i>', 'uf-c0 invisible')}${at([50, 50], '<i data-lucide="truck" class="w-10 h-10 text-white"></i>', 'uf-c1 invisible')}
+        ${pos.map((p, k) => at(p, '<i data-lucide="car" class="w-8 h-8 text-white"></i>', `uf-t${k} invisible`)).join('')}
+        ${sel ? pos.map((p, k) => at(p, '▲', `uf-d uf-dp${k} invisible text-2xl text-zinc-500`)).join('') + inner.map(p => at(p, '▲', 'uf-d invisible text-2xl text-zinc-500')).join('') : ''}
+        <div class="uf-mask mask absolute inset-0 hidden"></div>
+        ${pos.map((p, k) => at(p, `<button type="button" data-p="${k}" class="w-11 h-11 rounded-full border-2 border-accent/60 bg-accent/10 hover:bg-accent/30 transition"></button>`, 'uf-pick hidden')).join('')}
+      </div><div id="uq" class="mt-5 min-h-[64px] flex flex-wrap items-center justify-center gap-3"></div>`;
+    icons();
+    const $u = s => c.el.querySelectorAll(s), show = (s, on) => $u(s).forEach(e => e.classList.toggle('invisible', !on));
+    let ansC = null;
+    const trial = () => {
+      c.el.querySelector('#us').textContent = `${n + 1} / ${trials}`; c.el.querySelector('#ud').textContent = `${D} ${t('ms')}`;
+      center = rnd(0, 1); where = rnd(0, 7); ansC = null;
+      $u('.uf-pick').forEach(e => e.classList.add('hidden')); c.el.querySelector('#uq').innerHTML = '';
+      show('.uf-fix', true);
+      c.later(() => {
+        show('.uf-fix', false); show(`.uf-c${center}`, true); show(`.uf-t${where}`, true);
+        if (sel) { show('.uf-d', true); show(`.uf-dp${where}`, false) }
+        c.later(() => {
+          show(`.uf-c${center}`, false); show(`.uf-t${where}`, false); if (sel) show('.uf-d', false);
+          c.el.querySelector('.uf-mask').classList.remove('hidden');
+          c.later(() => { c.el.querySelector('.uf-mask').classList.add('hidden'); askCenter() }, 300);
+        }, D);
+      }, 700);
+    };
+    const askCenter = () => {
+      c.el.querySelector('#uq').innerHTML = `<span class="w-full text-center text-sm text-zinc-500">${t('ufCenter')}</span>` + ['car', 'truck'].map((ic, k) => `<button data-c="${k}" class="grid place-items-center w-20 h-14 rounded-xl border border-white/10 bg-ink-900 hover:border-accent/60 transition"><i data-lucide="${ic}" class="w-7 h-7 text-white"></i></button>`).join('');
+      icons();
+    };
+    c.el.addEventListener('click', e => {
+      const cb = e.target.closest('[data-c]'), pb = e.target.closest('[data-p]');
+      if (cb && ansC == null) {
+        ansC = +cb.dataset.c;
+        c.el.querySelector('#uq').innerHTML = `<span class="text-sm text-zinc-500">${t('ufWhere')}</span>`;
+        $u('.uf-pick').forEach(x => x.classList.remove('hidden'));
+      } else if (pb && ansC != null) {
+        const ok = ansC === center && +pb.dataset.p === where;
+        flash(pb, ok ? 'ok-flash' : 'bad-flash', 400);
+        if (!ok) flash(c.el.querySelector(`[data-p="${where}"]`), 'ok-flash', 400);
+        last.push(D); D = ok ? Math.max(17, Math.round(D * .8)) : Math.min(500, Math.round(D * 1.25));
+        ansC = -1;
+        c.later(() => {
+          if (++n >= trials) { const s = last.slice(-8).sort((a, b) => a - b); return c.done(Math.round((s[3] + s[4]) / 2)) }
+          trial();
+        }, 500);
+      }
+    });
+    trial();
+  },
+});
+
+/* ================= METHODS & TIPS ================= */
+const TAGS = { ancient: ['tagAncient', 'text-violet-300 border-violet-400/30 bg-violet-400/5'], proof: ['tagProof', 'text-emerald-300 border-emerald-400/30 bg-emerald-400/5'],
+  data: ['tagData', 'text-accent border-accent/30 bg-accent/5'], classic: ['tagClassic', 'text-sky-300 border-sky-400/30 bg-sky-400/5'], debate: ['tagDebate', 'text-rose-300 border-rose-400/30 bg-rose-400/5'] };
+const tagHTML = k => `<span class="shrink-0 rounded-full border px-2.5 py-0.5 text-xs font-medium ${TAGS[k][1]}">${t(TAGS[k][0])}</span>`;
+const METHODS = [
+  { era: tri('~500 до н. э.', '~500 BCE', '~500 ปีก่อน ค.ศ.'), icon: 'castle', tags: ['ancient', 'proof'], game: 'palace',
+    t: tri('Дворец памяти Симонида', 'Simonides’ memory palace', 'วังแห่งความจำของซิโมนิดีส'),
+    d: tri('Знакомый маршрут, по которому раскладывают яркие образы. Описан у Цицерона и в «Риторике к Гереннию»; в 2017 году показано, что за 6 недель он выводит новичков почти на уровень чемпионов.', 'A familiar route along which you place vivid images. Described by Cicero and the Rhetorica ad Herennium; in 2017 it was shown to bring novices close to champions in 6 weeks.', 'เส้นทางที่คุ้นเคยซึ่งใช้วางภาพที่ชัดเจน ซิเซโรและตำรา Rhetorica ad Herennium บรรยายไว้ ใน ค.ศ. 2017 พบว่าภายใน 6 สัปดาห์ช่วยให้มือใหม่ใกล้ระดับแชมป์') },
+  { era: tri('> 3000 лет', '> 3,000 years', '> 3,000 ปี'), icon: 'repeat', tags: ['ancient'], game: 'span',
+    t: tri('Ведийские «плетения» текста', 'Vedic recitation braids', 'การสวดแบบถักเปียของพระเวท'),
+    d: tri('Ригведу тысячелетиями передавали устно — и без разночтений. Секрет в способах чтения: слова повторяют парами вперёд и назад (джата-патха, «коса»), а в гхана-патхе — сложной «колокольной» цепочкой. Наш обратный режим — маленький шаг в ту сторону.', 'The Rigveda was passed on orally for millennia without variant readings. The secret is in the recitation styles: words are repeated in pairs forwards and backwards (jaṭā-pāṭha, “the braid”), and in ghana-pāṭha in an elaborate “bell” chain. Our backward mode is a small step in that direction.', 'ฤคเวทถูกถ่ายทอดด้วยปากเปล่ามาหลายพันปีโดยไม่มีความคลาดเคลื่อน เคล็ดลับอยู่ที่วิธีสวด: ท่องคำเป็นคู่ไปข้างหน้าและย้อนกลับ (ชฏาปาฐะ “ถักเปีย”) และในฆนปาฐะเป็นห่วงโซ่ “ระฆัง” ที่ซับซ้อน โหมดย้อนกลับของเราคือก้าวเล็ก ๆ ไปในทางนั้น') },
+  { era: tri('~1550 до н. э.', '~1550 BCE', '~1550 ปีก่อน ค.ศ.'), icon: 'landmark', tags: ['ancient'], game: 'egypt',
+    t: tri('Египетское умножение', 'Egyptian multiplication', 'การคูณแบบอียิปต์'),
+    d: tri('Папирус Ринда: любое умножение через удвоение и сложение. Без таблицы умножения — зато отличная гимнастика для удержания чисел.', 'The Rhind papyrus: any multiplication through doubling and adding. No times table needed — and great exercise in holding numbers in mind.', 'กระดาษปาปิรัสไรนด์: คูณได้ทุกจำนวนด้วยการทบสองและการบวก ไม่ต้องใช้สูตรคูณ และเป็นการฝึกจำตัวเลขที่ดีเยี่ยม') },
+  { era: tri('~1800 до н. э.', '~1800 BCE', '~1800 ปีก่อน ค.ศ.'), icon: 'scroll-text', tags: ['ancient'], link: 'https://sumer.dateonymous.com/',
+    t: tri('Школа писцов Шумера', 'The Sumerian scribal school', 'โรงเรียนอาลักษณ์สุเมเรียน'),
+    d: tri('В эдубе, «доме табличек», учили зубрёжкой с образцом: учитель писал, ученик копировал рядом и повторял, пока не сдаст. Так заучивали и таблицы умножения в шестидесятеричной системе. Подробнее — в курсе SumerFast.', 'In the edubba, the “tablet house”, pupils learned by rote from a model: the teacher wrote, the pupil copied next to it until he passed. Multiplication tables in base 60 were learned the same way. More in the SumerFast course.', 'ในเอดุบบา “บ้านแห่งแผ่นดินเหนียว” นักเรียนท่องจำจากต้นแบบ ครูเขียน นักเรียนคัดลอกข้าง ๆ จนสอบผ่าน สูตรคูณฐานหกสิบก็เรียนแบบนี้ อ่านต่อได้ในคอร์ส SumerFast') },
+  { era: tri('Средние века — сегодня', 'Medieval times — today', 'ยุคกลาง — ปัจจุบัน'), icon: 'sigma', tags: ['ancient', 'data'], game: 'anzan',
+    t: tri('Счёты и анзан', 'Abacus and anzan', 'ลูกคิดและอันซัน'),
+    d: tri('Суаньпань и соробан, а потом и счёты в уме. Рандомизированное исследование (2016) подтвердило: анзан улучшает арифметику, хотя на «общие» способности не влияет.', 'The suanpan and the soroban, and then the abacus in your head. A randomized trial (2016) confirmed that anzan improves arithmetic, though it does not change general abilities.', 'ลูกคิดจีนและโซโรบัน แล้วต่อด้วยลูกคิดในใจ งานวิจัยแบบสุ่ม (ค.ศ. 2016) ยืนยันว่าอันซันช่วยพัฒนาเลขคณิต แม้จะไม่เปลี่ยนความสามารถทั่วไป') },
+  { era: '1935', icon: 'palette', tags: ['classic'], game: 'stroop',
+    t: tri('Тест Струпа', 'The Stroop test', 'แบบทดสอบสทรูป'),
+    d: tri('Классика экспериментальной психологии: как быстро вы подавляете автоматическое чтение. Один из самых воспроизводимых эффектов в науке о мышлении.', 'A classic of experimental psychology: how fast you can hold back automatic reading. One of the most replicated effects in the science of thinking.', 'แบบทดสอบคลาสสิกของจิตวิทยาเชิงทดลอง วัดว่าคุณยับยั้งการอ่านอัตโนมัติได้เร็วแค่ไหน เป็นหนึ่งในผลที่ทำซ้ำได้มากที่สุดในศาสตร์แห่งการคิด') },
+  { era: tri('XX век', '20th century', 'ศตวรรษที่ 20'), icon: 'hash', tags: ['classic'], game: 'schulte',
+    t: tri('Таблицы Шульте и Горбова', 'Schulte and Gorbov tables', 'ตารางชุลเทอและกอร์บอฟ'),
+    d: tri('Приписываются тюбингенскому психиатру Вальтеру Шульте (1910–1972); красно-чёрный вариант — советского психолога Ф. Д. Горбова. Хороши для замера внимания; в расширении периферического зрения строгих доказательств мало.', 'Attributed to the Tübingen psychiatrist Walter Schulte (1910–1972); the red-black version is by the Soviet psychologist F. D. Gorbov. Good for measuring attention; strict evidence that they widen peripheral vision is thin.', 'ถือว่าเป็นของจิตแพทย์แห่งทือบิงเงิน วัลเทอร์ ชุลเทอ (ค.ศ. 1910–1972) ส่วนแบบแดง-ดำเป็นของนักจิตวิทยาโซเวียต เอฟ. ดี. กอร์บอฟ เหมาะสำหรับวัดสมาธิ แต่หลักฐานเข้มงวดว่าช่วยขยายการมองรอบข้างยังมีน้อย') },
+  { era: '1998 — 2017', icon: 'scan-eye', tags: ['proof'], game: 'ufov',
+    t: tri('Тренировка поля зрения (ACTIVE)', 'Field-of-view training (ACTIVE)', 'การฝึกขอบเขตการมองเห็น (ACTIVE)'),
+    d: tri('Самое длинное и крупное исследование мозговых тренировок: у тренировавших скорость обработки (UFOV) риск деменции через 10 лет был на 29% ниже.', 'The longest, largest study of brain training: people who trained processing speed (UFOV) had a 29% lower dementia risk ten years later.', 'งานวิจัยการฝึกสมองที่ยาวและใหญ่ที่สุด ผู้ที่ฝึกความเร็วในการประมวลผล (UFOV) มีความเสี่ยงสมองเสื่อมต่ำกว่า 29% ในอีกสิบปีต่อมา') },
+  { era: '2008 — 2016', icon: 'square-stack', tags: ['debate'], game: 'nback',
+    t: tri('N-back и «прокачка интеллекта»', 'N-back and “IQ boosting”', 'เอ็นแบ็กกับการ “เพิ่มไอคิว”'),
+    d: tri('Громкие обещания поднять интеллект не подтвердились в больших мета-анализах: улучшается в основном сам тренируемый навык. Полезно знать, чтобы не переплачивать за «чудо-приложения».', 'Bold promises to raise intelligence did not hold up in large meta-analyses: mostly the trained skill itself improves. Worth knowing before paying for “miracle apps”.', 'คำสัญญาว่าจะเพิ่มเชาวน์ปัญญาไม่ได้รับการยืนยันในการวิเคราะห์อภิมานขนาดใหญ่ สิ่งที่ดีขึ้นส่วนใหญ่คือทักษะที่ฝึกเท่านั้น ควรรู้ไว้ก่อนจ่ายเงินให้ “แอปมหัศจรรย์”') },
+];
+const TIPS = [
+  ['calendar-clock', tri('Коротко и каждый день: 10–15 минут лучше часа раз в неделю.', 'Short and daily: 10–15 minutes beat an hour once a week.', 'สั้น ๆ แต่ทุกวัน 10–15 นาทีดีกว่าชั่วโมงเดียวต่อสัปดาห์')],
+  ['trending-up', tri('Играйте на грани: если всё легко, переходите на следующий режим.', 'Play at your edge: if it feels easy, move up a mode.', 'เล่นให้ใกล้ขีดจำกัด ถ้ารู้สึกง่ายให้เลื่อนไปโหมดถัดไป')],
+  ['moon', tri('Сон закрепляет выученное: самые честные рекорды — после хорошей ночи.', 'Sleep consolidates what you learned: honest records come after a good night.', 'การนอนช่วยตอกย้ำสิ่งที่เรียน สถิติที่แท้จริงมักมาหลังนอนหลับเต็มอิ่ม')],
+  ['shuffle', tri('Чередуйте разделы: память, скорость и внимание тренируются по-разному.', 'Rotate sections: memory, speed and attention are trained differently.', 'สลับหมวด เพราะความจำ ความเร็ว และสมาธิฝึกต่างกัน')],
+  ['chart-line', tri('Смотрите на тренд, а не на один результат: разброс от дня к дню — норма.', 'Watch the trend, not a single score: day-to-day variation is normal.', 'ดูแนวโน้ม ไม่ใช่ผลครั้งเดียว ผลที่ขึ้นลงในแต่ละวันเป็นเรื่องปกติ')],
+  ['footprints', tri('Ходьба и спорт помогают мозгу сильнее любой игры — игры их дополняют, а не заменяют.', 'Walking and exercise help the brain more than any game — games add to them, not replace them.', 'การเดินและออกกำลังกายช่วยสมองได้มากกว่าเกมใด ๆ เกมเป็นตัวเสริม ไม่ใช่ตัวแทน')],
+];
+const SITES = [
+  { url: 'https://thai.dateonymous.com/', name: ['Thai', 'Fast'], glyph: 'ก', d: tri('Тайский с нуля: звуки, тоны, алфавит и живые фразы.', 'Thai from zero: sounds, tones, the alphabet and real phrases.', 'ภาษาไทยจากศูนย์ เสียง วรรณยุกต์ ตัวอักษร และประโยคที่ใช้จริง') },
+  { url: 'https://eng.dateonymous.com/', name: ['Eng', 'Fast'], glyph: 'Aa', d: tri('Американский английский: звуки, фразы, этикет и чаевые.', 'American English: sounds, phrases, etiquette and tipping.', 'ภาษาอังกฤษแบบอเมริกัน เสียง ประโยค มารยาท และการให้ทิป') },
+  { url: 'https://sumer.dateonymous.com/', name: ['Sumer', 'Fast'], glyph: '𒀭', d: tri('Шумерский и клинопись: язык первых табличек.', 'Sumerian and cuneiform: the language of the first tablets.', 'ภาษาสุเมเรียนและอักษรลิ่ม ภาษาของแผ่นดินเหนียวยุคแรก') },
+];
+
+/* ================= GAME OVERLAY ================= */
+const GAME = Object.fromEntries(GAMES.map(G => [G.id, G]));
+const modeKey = id => store.get(`bf-mode:${id}`, GAME[id].modes[0].k);
+let cur = null;   // { G, tab, mode, ctx }
+
+function makeCtx(el, G, mode) {
+  const timers = [], keys = [];
+  const ctx = {
+    el, mode, best: bestOf(G, mode),
+    later: (f, ms) => timers.push(setTimeout(f, ms)),
+    every: (f, ms) => timers.push(setInterval(f, ms)),
+    onKey: f => keys.push(f),
+    key: e => keys.forEach(f => f(e)),
+    stop() { timers.forEach(clearTimeout); timers.length = 0; keys.length = 0 },
+    done(v) { ctx.stop(); showResult(G, mode, v) },
+  };
+  return ctx;
+}
+function stopGame() { cur?.ctx?.stop(); if (cur) cur.ctx = null }
+
+function openGame(id, tab = 'play') {
+  stopGame();
+  const G = GAME[id];
+  cur = { G, tab, mode: modeKey(id), ctx: null };
+  $('#game').classList.remove('hidden'); document.body.classList.add('overflow-hidden');
+  renderGame();
+}
+function closeGame() { stopGame(); cur = null; $('#game').classList.add('hidden'); document.body.classList.remove('overflow-hidden'); renderCards(); renderStats(); renderHero() }
+
+function renderGame() {
+  const { G } = cur;
+  $('#gIcon').innerHTML = `<i data-lucide="${G.icon}" class="w-5 h-5"></i>`;
+  $('#gTitle').textContent = L(G.name);
+  $('#gTabs').innerHTML = [['play', 'play'], ['help', 'book-open'], ['stats', 'chart-line']].map(([k, ic]) => `<button data-tab="${k}" class="flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-lg transition ${cur.tab === k ? 'bg-white text-ink-950' : 'text-zinc-400 hover:text-white'}"><i data-lucide="${ic}" class="w-4 h-4"></i>${t(k)}</button>`).join('');
+  ({ play: renderStart, help: renderHelp, stats: renderGameStats })[cur.tab]();
+  icons();
+}
+const chip = on => `rounded-xl border px-4 py-2 text-sm font-semibold transition ${on ? 'border-accent bg-accent/10 text-white' : 'border-white/10 text-zinc-400 hover:text-white'}`;
+function renderStart() {
+  const { G, mode } = cur, b = bestOf(G, mode);
+  $('#gBody').innerHTML = `<div class="fade-up">
+    <p class="text-zinc-400">${L(G.short)}</p>
+    <p class="mt-6 text-xs uppercase tracking-wider text-zinc-500">${t('modes')}</p>
+    <div class="mt-2 flex flex-wrap gap-2">${G.modes.map(m => `<button data-mode="${m.k}" class="${chip(m.k === mode)}">${L(m.name)}</button>`).join('')}</div>
+    <div class="mt-6 rounded-2xl border border-white/10 bg-ink-900 p-5">
+      <div class="flex items-center justify-between gap-4"><span class="text-sm text-zinc-500">${t('best')}</span><span class="text-2xl font-bold text-white">${b == null ? '—' : G.fmt(b)}</span></div>
+      <p class="mt-4 text-sm text-zinc-400 leading-relaxed">${L(G.help.how)}</p>
+    </div>
+    <button id="gStart" class="mt-6 w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-8 py-4 text-lg font-semibold text-ink-950 hover:brightness-110 transition"><i data-lucide="play" class="w-5 h-5"></i>${t('start')}</button>
+  </div>`;
+}
+function startGame() {
+  stopGame();
+  const root = document.createElement('div'); root.className = 'fade-up';
+  $('#gBody').replaceChildren(root);
+  cur.ctx = makeCtx(root, cur.G, cur.mode);
+  cur.G.run(cur.ctx);
+  icons();
+}
+function showResult(G, mode, v) {
+  const prev = bestOf(G, mode), ok = v != null;
+  if (ok) record(G, mode, v);
+  const rec = ok && better(G, v, prev);
+  $('#gBody').innerHTML = `<div class="fade-up text-center rounded-3xl border ${rec ? 'border-accent/50 bg-accent/5' : 'border-white/10 bg-ink-900'} p-8">
+    ${rec ? `<p class="inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1 text-sm font-semibold text-ink-950"><i data-lucide="trophy" class="w-4 h-4"></i>${t('newRecord')}</p>` : `<p class="text-sm uppercase tracking-wider text-zinc-500">${t('result')}</p>`}
+    ${ok ? `<p class="mt-4 text-6xl font-extrabold text-white tabular-nums">${G.fmt(v)}</p>` : `<p class="mt-4 text-zinc-400">${t('noScore')}</p>`}
+    <p class="mt-3 text-sm text-zinc-500">${L(G.modes.find(m => m.k === mode).name)} · ${t('best')}: ${bestOf(G, mode) == null ? '—' : G.fmt(bestOf(G, mode))} · ${t('sessions')}: ${hist(G.id, mode).length}</p>
+    <div class="mt-5">${spark(G, hist(G.id, mode).slice(-30))}</div>
+    <div class="mt-6 flex flex-wrap justify-center gap-3">
+      <button id="gStart" class="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3 font-semibold text-ink-950 hover:brightness-110 transition"><i data-lucide="rotate-ccw" class="w-4 h-4"></i>${t('again')}</button>
+      <button data-tab="play" class="rounded-xl border border-white/10 px-6 py-3 font-semibold hover:bg-white/5 transition">${t('toModes')}</button>
+      <button data-tab="help" class="rounded-xl border border-white/10 px-6 py-3 font-semibold hover:bg-white/5 transition">${t('help')}</button>
+    </div></div>`;
+  icons();
+}
+function renderHelp() {
+  const { G } = cur, h = G.help;
+  const block = (k, ic, txt) => `<div class="rounded-2xl border border-white/10 bg-ink-900 p-5"><h3 class="flex items-center gap-2 font-semibold text-white"><i data-lucide="${ic}" class="w-4 h-4 text-accent"></i>${t(k)}</h3><p class="mt-2 text-sm text-zinc-400 leading-relaxed">${txt}</p></div>`;
+  $('#gBody').innerHTML = `<div class="fade-up space-y-3">
+    <div class="flex flex-wrap gap-2">${G.tags.map(tagHTML).join('')}</div>
+    ${block('hAbout', 'info', L(h.about))}${block('hHow', 'gamepad-2', L(h.how))}${block('hTips', 'lightbulb', L(h.tips))}${block('hSci', 'flask-conical', L(h.sci))}
+    ${h.src.length ? `<p class="pt-2 text-xs text-zinc-500">${t('hSrc')}: ${h.src.map(([n, u]) => `<a class="underline hover:text-white" href="${u}" target="_blank" rel="noopener">${n}</a>`).join(' · ')}</p>` : ''}
+  </div>`;
+}
+function renderGameStats() {
+  const { G } = cur;
+  $('#gBody').innerHTML = `<div class="fade-up grid sm:grid-cols-2 gap-3">${G.modes.map(m => {
+    const h = hist(G.id, m.k), b = bestOf(G, m.k);
+    return `<div class="rounded-2xl border border-white/10 bg-ink-900 p-5">
+      <p class="font-semibold text-white">${L(m.name)}</p>
+      <div class="mt-3 grid grid-cols-3 gap-2 text-center">
+        <div><p class="text-xs text-zinc-500">${t('best')}</p><p class="font-bold text-white">${b == null ? '—' : G.fmt(b)}</p></div>
+        <div><p class="text-xs text-zinc-500">${t('last')}</p><p class="font-bold text-white">${h.length ? G.fmt(h[h.length - 1].v) : '—'}</p></div>
+        <div><p class="text-xs text-zinc-500">${t('sessions')}</p><p class="font-bold text-white">${h.length}</p></div>
+      </div><div class="mt-3">${spark(G, h.slice(-30))}</div></div>`;
+  }).join('')}</div>`;
+}
+$('#game').addEventListener('click', e => {
+  const tab = e.target.closest('[data-tab]')?.dataset.tab, mode = e.target.closest('[data-mode]')?.dataset.mode;
+  if (tab) { stopGame(); cur.tab = tab; return renderGame() }
+  if (mode) { cur.mode = mode; store.set(`bf-mode:${cur.G.id}`, mode); return renderGame() }
+  if (e.target.closest('#gStart')) { cur.tab = 'play'; return startGame() }
+});
+$('#gClose').onclick = closeGame;
+document.addEventListener('keydown', e => {
+  if (!cur) return;
+  if (e.key === 'Escape') return closeGame();
+  cur.ctx?.key(e);
+});
+
+/* ================= PAGE ================= */
+function renderText() {
+  document.documentElement.lang = lang;
+  $$('[data-i18n]').forEach(el => el.textContent = t(el.dataset.i18n));
+  $$('[data-i18n-html]').forEach(el => el.innerHTML = t(el.dataset.i18nHtml));
+  const on = 'bg-white text-ink-950', off = 'text-zinc-400 hover:text-white';
+  $$('[data-lang]').forEach(b => b.className = `px-2.5 py-1.5 rounded-md transition ${b.dataset.lang === lang ? on : off}`);
+  $('#statGames').textContent = GAMES.length;
+  $('#statModes').textContent = GAMES.reduce((n, G) => n + G.modes.length, 0);
+}
+function renderCards() {
+  $$('[data-cat]').forEach(box => box.innerHTML = GAMES.filter(G => G.cat === box.dataset.cat).map(G => {
+    const m = modeKey(G.id), b = bestOf(G, m);
+    return `<button data-open="${G.id}" class="group text-left rounded-2xl border border-white/10 bg-ink-900 p-5 hover:border-accent/50 transition flex flex-col">
+      <div class="flex items-start justify-between gap-3">
+        <span class="grid place-items-center w-11 h-11 rounded-xl bg-accent/10 text-accent group-hover:bg-accent group-hover:text-ink-950 transition"><i data-lucide="${G.icon}" class="w-5 h-5"></i></span>
+        <span class="flex flex-wrap justify-end gap-1.5">${G.tags.map(tagHTML).join('')}</span>
+      </div>
+      <h3 class="mt-4 text-lg font-semibold text-white">${L(G.name)}</h3>
+      <p class="mt-1 text-sm text-zinc-400 leading-relaxed">${L(G.short)}</p>
+      <div class="mt-auto pt-4 flex items-center justify-between text-sm">
+        <span class="text-zinc-500">${t('best')}: <b class="text-white">${b == null ? '—' : G.fmt(b)}</b></span>
+        <span class="inline-flex items-center gap-1 font-semibold text-accent">${t('play')}<i data-lucide="chevron-right" class="w-4 h-4"></i></span>
+      </div></button>`;
+  }).join(''));
+}
+let warm = [];
+function pickWarm() { warm = ['memory', 'speed', 'vision'].map(cat => { const g = GAMES.filter(G => G.cat === cat); return g[rnd(0, g.length - 1)].id }) }
+function renderHero() {
+  $('#statPlayed').textContent = totalPlayed();
+  $('#warmList').innerHTML = warm.map((id, i) => {
+    const G = GAME[id], b = bestOf(G, modeKey(id));
+    return `<button data-open="${id}" class="w-full flex items-center gap-4 rounded-2xl border border-white/10 bg-ink-950 p-4 text-left hover:border-accent/50 transition">
+      <span class="font-mono text-sm text-zinc-600">0${i + 1}</span>
+      <span class="grid place-items-center w-10 h-10 shrink-0 rounded-xl bg-accent/10 text-accent"><i data-lucide="${G.icon}" class="w-5 h-5"></i></span>
+      <span class="min-w-0 flex-1"><span class="block font-semibold text-white truncate">${L(G.name)}</span><span class="block text-xs text-zinc-500">${t('best')}: ${b == null ? '—' : G.fmt(b)}</span></span>
+      <i data-lucide="play" class="w-4 h-4 text-accent"></i></button>`;
+  }).join('');
+}
+function renderMethods() {
+  $('#metGrid').innerHTML = METHODS.map(m => `<div class="rounded-2xl border border-white/10 bg-ink-900 p-5 flex flex-col">
+    <div class="flex items-start justify-between gap-3">
+      <span class="grid place-items-center w-10 h-10 shrink-0 rounded-xl bg-accent/10 text-accent"><i data-lucide="${m.icon}" class="w-5 h-5"></i></span>
+      <span class="flex flex-wrap justify-end gap-1.5">${m.tags.map(tagHTML).join('')}</span>
+    </div>
+    <p class="mt-4 font-mono text-xs text-accent">${typeof m.era === 'string' ? m.era : L(m.era)}</p>
+    <h3 class="mt-1 font-semibold text-white">${L(m.t)}</h3>
+    <p class="mt-2 text-sm text-zinc-400 leading-relaxed">${L(m.d)}</p>
+    <div class="mt-auto pt-4">${m.game ? `<button data-open="${m.game}" class="inline-flex items-center gap-1 text-sm font-semibold text-accent hover:text-white transition">${L(GAME[m.game].name)}<i data-lucide="chevron-right" class="w-4 h-4"></i></button>`
+      : `<a href="${m.link}" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-sm font-semibold text-accent hover:text-white transition">SumerFast<i data-lucide="external-link" class="w-4 h-4"></i></a>`}</div></div>`).join('');
+  $('#tipsList').innerHTML = TIPS.map(([ic, s]) => `<li class="flex items-start gap-3"><span class="grid place-items-center w-8 h-8 shrink-0 rounded-lg bg-white/5 text-accent"><i data-lucide="${ic}" class="w-4 h-4"></i></span><span class="pt-1 text-sm text-zinc-300 leading-relaxed">${L(s)}</span></li>`).join('');
+}
+function renderStats() {
+  $('#statsGrid').innerHTML = GAMES.map(G => `<button data-open="${G.id}" data-open-tab="stats" class="text-left rounded-2xl border border-white/10 bg-ink-900 p-5 hover:border-accent/50 transition">
+    <div class="flex items-center gap-3"><i data-lucide="${G.icon}" class="w-4 h-4 text-accent"></i><span class="font-semibold text-white">${L(G.name)}</span></div>
+    <div class="mt-3 space-y-1.5 text-sm">${G.modes.map(m => { const b = bestOf(G, m.k), n = hist(G.id, m.k).length; return `<div class="flex justify-between gap-3"><span class="text-zinc-500">${L(m.name)}</span><span class="${n ? 'text-white font-semibold' : 'text-zinc-600'}">${n ? `${G.fmt(b)} <span class="text-xs font-normal text-zinc-500">· ${n}</span>` : t('statsEmpty')}</span></div>` }).join('')}</div>
+  </button>`).join('');
+}
+function renderMore() {
+  $('#moreGrid').innerHTML = SITES.map(s => `<a href="${s.url}" target="_blank" rel="noopener" class="group flex items-center gap-4 rounded-2xl border border-white/10 bg-ink-900 p-5 hover:border-accent/50 transition">
+    <span class="grid place-items-center w-14 h-14 shrink-0 rounded-2xl bg-accent/10 text-accent text-2xl font-bold">${s.glyph}</span>
+    <span class="min-w-0"><span class="block font-bold text-white"><span>${s.name[0]}<span class="text-accent">${s.name[1]}</span></span></span><span class="block mt-1 text-sm text-zinc-400 leading-relaxed">${L(s.d)}</span></span></a>`).join('');
+}
+function navFill() {
+  $('#navMenu > div').innerHTML = $$('header nav > div.lg\\:flex a').map(a => `<a href="${a.getAttribute('href')}" class="rounded-lg px-3 py-2.5 text-zinc-300 hover:bg-white/5 hover:text-white transition">${a.textContent}</a>`).join('');
+}
+function navToggle(open = $('#navMenu').classList.contains('hidden')) {
+  $('#navMenu').classList.toggle('hidden', !open);
+  $('#navBtn').setAttribute('aria-expanded', open);
+  $$('#navBtn .nav-closed').forEach(i => i.classList.toggle('hidden', open));
+  $$('#navBtn .nav-opened').forEach(i => i.classList.toggle('hidden', !open));
+}
+$('#navBtn').onclick = e => { e.stopPropagation(); navToggle() };
+$('#navMenu').addEventListener('click', e => e.target.closest('a') && navToggle(false));
+document.addEventListener('click', e => {
+  if (!e.target.closest('header')) navToggle(false);
+  const o = e.target.closest('[data-open]');
+  if (o && !e.target.closest('#game')) openGame(o.dataset.open, o.dataset.openTab || 'play');
+});
+$('#warmShuffle').onclick = () => { pickWarm(); renderHero(); icons() };
+$('#statsReset').onclick = () => {
+  if (!confirm(t('statsConfirm'))) return;
+  GAMES.forEach(G => G.modes.forEach(m => store.del(SK(G.id, m.k))));
+  renderAll();
+};
+
+function renderAll() {
+  renderText(); renderCards(); renderHero(); renderMethods(); renderStats(); renderMore(); navFill();
+  if (cur) renderGame();
+  icons();
+}
+$$('[data-lang]').forEach(b => b.onclick = () => { lang = b.dataset.lang; store.set('bf-lang', lang); stopGame(); renderAll() });
+
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target) } }), { threshold: .08 });
+$$('.reveal').forEach(el => io.observe(el));
+pickWarm();
+renderAll();
+</script>
+</body>
+</html>
