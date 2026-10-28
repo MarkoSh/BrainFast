@@ -61,6 +61,8 @@ tailwind.config = {
       <a href="#memory" class="hover:text-white transition" data-i18n="navMemory"></a>
       <a href="#speed" class="hover:text-white transition" data-i18n="navSpeed"></a>
       <a href="#vision" class="hover:text-white transition" data-i18n="navVision"></a>
+      <a href="#starter" class="hover:text-white transition" data-i18n="navStarter"></a>
+      <a href="#modes" class="hover:text-white transition" data-i18n="navModes"></a>
       <a href="#methods" class="hover:text-white transition" data-i18n="navMethods"></a>
       <a href="#stats" class="hover:text-white transition" data-i18n="navStats"></a>
     </div>
@@ -92,7 +94,7 @@ tailwind.config = {
         <p class="mt-6 text-lg text-zinc-400 max-w-xl" data-i18n="heroSub"></p>
         <div class="mt-8 flex flex-wrap gap-3">
           <a href="#memory" class="inline-flex items-center gap-2 rounded-xl bg-accent px-5 py-3 font-semibold text-ink-950 hover:brightness-110 transition"><span data-i18n="heroCta"></span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>
-          <a href="#methods" class="inline-flex items-center gap-2 rounded-xl border border-white/10 px-5 py-3 font-semibold text-white hover:bg-white/5 transition"><i data-lucide="scroll-text" class="w-4 h-4"></i><span data-i18n="heroCta2"></span></a>
+          <a href="#starter" class="inline-flex items-center gap-2 rounded-xl border border-white/10 px-5 py-3 font-semibold text-white hover:bg-white/5 transition"><i data-lucide="zap" class="w-4 h-4 text-accent"></i><span data-i18n="heroCta2"></span></a>
         </div>
         <dl class="mt-10 grid grid-cols-3 gap-6 max-w-md">
           <div><dt class="text-2xl font-bold text-white" id="statGames"></dt><dd class="text-sm text-zinc-500" data-i18n="statGames"></dd></div>
@@ -147,11 +149,36 @@ tailwind.config = {
     </div>
   </section>
 
+  <!-- STARTER -->
+  <section id="starter" class="py-20 md:py-28 border-t border-white/5 bg-ink-900/40">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="reveal max-w-2xl">
+        <p class="font-mono text-sm text-accent">04</p>
+        <h2 class="mt-2 text-3xl md:text-4xl font-bold text-white tracking-tight" data-i18n="snTitle"></h2>
+        <p class="mt-3 text-zinc-400" data-i18n="snSub"></p>
+      </div>
+      <div id="snBox" class="reveal mt-10"></div>
+    </div>
+  </section>
+
+  <!-- BRAIN MODES -->
+  <section id="modes" class="py-20 md:py-28 border-t border-white/5">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="reveal max-w-2xl">
+        <p class="font-mono text-sm text-accent">05</p>
+        <h2 class="mt-2 text-3xl md:text-4xl font-bold text-white tracking-tight" data-i18n="bmTitle"></h2>
+        <p class="mt-3 text-zinc-400" data-i18n="bmSub"></p>
+      </div>
+      <div id="bmGrid" class="reveal mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+      <p class="reveal mt-8 text-xs text-zinc-500 leading-relaxed" data-i18n="bmNote"></p>
+    </div>
+  </section>
+
   <!-- METHODS -->
   <section id="methods" class="py-20 md:py-28 border-t border-white/5 bg-ink-900/40">
     <div class="max-w-6xl mx-auto px-4">
       <div class="reveal max-w-2xl">
-        <p class="font-mono text-sm text-accent">04</p>
+        <p class="font-mono text-sm text-accent">06</p>
         <h2 class="mt-2 text-3xl md:text-4xl font-bold text-white tracking-tight" data-i18n="metTitle"></h2>
         <p class="mt-3 text-zinc-400" data-i18n="metSub"></p>
       </div>
@@ -168,7 +195,7 @@ tailwind.config = {
     <div class="max-w-6xl mx-auto px-4">
       <div class="reveal flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div class="max-w-2xl">
-          <p class="font-mono text-sm text-accent">05</p>
+          <p class="font-mono text-sm text-accent">07</p>
           <h2 class="mt-2 text-3xl md:text-4xl font-bold text-white tracking-tight" data-i18n="statsTitle"></h2>
           <p class="mt-3 text-zinc-400" data-i18n="statsSub"></p>
         </div>
@@ -212,10 +239,21 @@ tailwind.config = {
 /* ================= UI TEXT ================= */
 const T = {
   ru: {
+    navStarter: 'Стартер', navModes: 'Режимы мозга', heroCta2: 'Стартер на 5 минут',
+    snTitle: 'Стартер: включить режим учёбы', snSub: 'Пять минут перед любой тренировкой — здесь, в ThaiFast, EngFast или SumerFast. Каждый шаг опирается на исследование, а в конце — 25 минут занятий, 2 минуты тишины и заслуженная награда.',
+    snBegin: 'Начать стартер', snSkip: 'Дальше', snBack: 'Назад', snStep: 'Шаг', snWhy: 'Почему это работает', snDone: 'Режим включён', snDoneSub: 'Следующие 25 минут — только учёба. Курс откроется в новой вкладке, таймер останется здесь.',
+    snGo: 'Запустить 25 минут', snStop: 'Остановить', snLeft: 'осталось', snRest: 'Время вышло! Теперь 2 минуты тихого отдыха: закройте глаза и ничего не делайте — так мозг закрепляет выученное.', snRestBtn: 'Начать отдых',
+    snReward: 'Заслужили: {r}. Приятного!', snAgain: 'Ещё один стартер', snCount: 'Стартов: {a} · доведённых сессий: {b}',
+    snCourse: 'Что учим', snTask: 'Что сделать с информацией', snPrize: 'Награда после тренировки', snOwn: 'Свой вариант', snPlan: 'Произнесите вслух:',
+    snPlanText: 'Следующие 25 минут моя задача — {t}: {c}.{w} Когда закончу, меня ждёт {r}.', snWhyMe: 'Зачем это лично мне? Одной фразой — представьте, что от этого правда многое зависит.', snWhyTpl: ' Мне это нужно, чтобы {w}.', snQ: 'Какой вопрос по теме мне по-настоящему интересен?', snGuess: 'Попробуйте угадать ответ — даже неверная догадка поможет запомнить правильный.', snWorry: 'Что отвлекает или тревожит? Выпишите — и голова освободится (необязательно, ничего не сохраняется).',
+    snIn: 'Вдох', snIn2: 'Ещё вдох', snOut: 'Долгий выдох', snCountHint: 'Медленно дышите — каждый выдох на одно число меньше. Сбились — начните с 10.', snRestart: 'Сбился — с 10',
+    bmTitle: 'Режимы мозга: что доказано', bmSub: 'Медитация, дыхание, награды, кофеин, «подсознание» и добавки — что из этого подтверждают исследования, а что пока нет.',
+    bmNote: 'Это обзор исследований, а не медицинский совет. Добавки и кофеин при болезнях, беременности и приёме лекарств — только после разговора с врачом.',
+    tagMyth: 'Не подтверждено',
     navMemory: 'Память', navSpeed: 'Скорость', navVision: 'Внимание', navMethods: 'Методики', navStats: 'Статистика',
     heroBadge: '10 минут в день · игры на очки', heroTitle: 'Тренируй мозг.<br><span class="text-accent">Быстро и честно.</span>',
     heroSub: 'Память, скорость мышления и периферическое зрение: короткие игры, свой рекорд в каждом режиме и методики — от дворца памяти Симонида до исследований, которые реально проверяли пользу.',
-    heroCta: 'Начать с памяти', heroCta2: 'Методики',
+    heroCta: 'Начать с памяти', 
     statGames: 'игр', statModes: 'режимов', statPlayed: 'сыграно',
     warmTitle: 'Разминка дня', warmSub: 'По одной игре из каждого раздела — минут на десять.',
     catMemory: 'Память', catMemorySub: 'Удерживать, повторять, связывать: рабочая память, зрительно-пространственная память и древний дворец памяти.',
@@ -240,10 +278,21 @@ const T = {
     colors: ['красный', 'зелёный', 'синий', 'жёлтый'],
   },
   en: {
+    navStarter: 'Starter', navModes: 'Brain modes', heroCta2: '5-minute starter',
+    snTitle: 'Starter: switch into study mode', snSub: 'Five minutes before any session — here, in ThaiFast, EngFast or SumerFast. Every step rests on a study, and at the end come 25 minutes of work, 2 minutes of quiet and a well-earned reward.',
+    snBegin: 'Begin the starter', snSkip: 'Next', snBack: 'Back', snStep: 'Step', snWhy: 'Why it works', snDone: 'Study mode on', snDoneSub: 'The next 25 minutes are for learning only. The course opens in a new tab; the timer stays here.',
+    snGo: 'Start 25 minutes', snStop: 'Stop', snLeft: 'left', snRest: 'Time’s up! Now 2 minutes of quiet rest: close your eyes and do nothing — this is when the brain locks in what you learned.', snRestBtn: 'Start resting',
+    snReward: 'You earned it: {r}. Enjoy!', snAgain: 'Another starter', snCount: 'Starters: {a} · sessions finished: {b}',
+    snCourse: 'What we study', snTask: 'What to do with it', snPrize: 'Reward after the session', snOwn: 'My own', snPlan: 'Say it out loud:',
+    snPlanText: 'For the next 25 minutes my task is to {t}: {c}.{w} When I finish, {r} is waiting for me.', snWhyMe: 'Why does this matter to me? One phrase — imagine a lot really depends on it.', snWhyTpl: ' I need it so that {w}.', snQ: 'What question about the topic really interests me?', snGuess: 'Try to guess the answer — even a wrong guess helps you remember the right one.', snWorry: 'What distracts or worries you? Write it down and your head clears (optional, nothing is saved).',
+    snIn: 'Inhale', snIn2: 'Top up', snOut: 'Long exhale', snCountHint: 'Breathe slowly — each exhale is one number lower. Lost count? Start again at 10.', snRestart: 'Lost it — back to 10',
+    bmTitle: 'Brain modes: what is proven', bmSub: 'Meditation, breathing, rewards, caffeine, “the subconscious” and supplements — what research supports and what it does not (yet).',
+    bmNote: 'This is a review of research, not medical advice. Supplements and caffeine with illness, pregnancy or medication — only after talking to a doctor.',
+    tagMyth: 'Not supported',
     navMemory: 'Memory', navSpeed: 'Speed', navVision: 'Attention', navMethods: 'Methods', navStats: 'Stats',
     heroBadge: '10 minutes a day · games with scores', heroTitle: 'Train your brain.<br><span class="text-accent">Fast and honest.</span>',
     heroSub: 'Memory, thinking speed and peripheral vision: short games, your own record in every mode, and methods from Simonides’ memory palace to the studies that actually tested what works.',
-    heroCta: 'Start with memory', heroCta2: 'Methods',
+    heroCta: 'Start with memory', 
     statGames: 'games', statModes: 'modes', statPlayed: 'played',
     warmTitle: 'Daily warm-up', warmSub: 'One game from each section — about ten minutes.',
     catMemory: 'Memory', catMemorySub: 'Hold, repeat, connect: working memory, visuospatial memory and the ancient memory palace.',
@@ -268,10 +317,21 @@ const T = {
     colors: ['red', 'green', 'blue', 'yellow'],
   },
   th: {
+    navStarter: 'สตาร์ตเตอร์', navModes: 'โหมดสมอง', heroCta2: 'สตาร์ตเตอร์ 5 นาที',
+    snTitle: 'สตาร์ตเตอร์: เปิดโหมดเรียน', snSub: 'ห้านาทีก่อนการฝึกทุกครั้ง ทั้งที่นี่ ใน ThaiFast, EngFast หรือ SumerFast ทุกขั้นมีงานวิจัยรองรับ จบด้วยการเรียน 25 นาที พักเงียบ ๆ 2 นาที และรางวัลที่สมควรได้',
+    snBegin: 'เริ่มสตาร์ตเตอร์', snSkip: 'ถัดไป', snBack: 'ย้อนกลับ', snStep: 'ขั้น', snWhy: 'ทำไมจึงได้ผล', snDone: 'เปิดโหมดเรียนแล้ว', snDoneSub: '25 นาทีต่อจากนี้สำหรับการเรียนเท่านั้น คอร์สจะเปิดในแท็บใหม่ ส่วนตัวจับเวลาอยู่ที่นี่',
+    snGo: 'เริ่ม 25 นาที', snStop: 'หยุด', snLeft: 'เหลือ', snRest: 'หมดเวลาแล้ว! ต่อไปพักเงียบ ๆ 2 นาที หลับตาและไม่ต้องทำอะไร ช่วงนี้แหละที่สมองตอกย้ำสิ่งที่เรียนมา', snRestBtn: 'เริ่มพัก',
+    snReward: 'สมควรได้รับ: {r} ขอให้มีความสุข!', snAgain: 'เริ่มสตาร์ตเตอร์อีกครั้ง', snCount: 'สตาร์ตเตอร์: {a} · เรียนจนจบ: {b}',
+    snCourse: 'เรียนอะไร', snTask: 'จะทำอะไรกับข้อมูล', snPrize: 'รางวัลหลังการฝึก', snOwn: 'ตั้งเอง', snPlan: 'พูดออกมาดัง ๆ:',
+    snPlanText: '25 นาทีต่อจากนี้ งานของฉันคือ{t}: {c}{w} เมื่อเสร็จแล้ว {r} รอฉันอยู่', snWhyMe: 'เรื่องนี้สำคัญกับฉันอย่างไร? ตอบสั้น ๆ ประโยคเดียว ลองนึกว่ามีอะไรขึ้นอยู่กับมันจริง ๆ', snWhyTpl: ' ฉันต้องการสิ่งนี้เพื่อ{w}', snQ: 'คำถามเกี่ยวกับเรื่องนี้ที่ฉันอยากรู้จริง ๆ คืออะไร?', snGuess: 'ลองเดาคำตอบดู แม้เดาผิดก็ช่วยให้จำคำตอบที่ถูกได้ดีขึ้น', snWorry: 'มีอะไรรบกวนหรือทำให้กังวลไหม? เขียนออกมา แล้วหัวจะโล่งขึ้น (ไม่บังคับ และไม่มีการบันทึก)',
+    snIn: 'หายใจเข้า', snIn2: 'เข้าอีกนิด', snOut: 'หายใจออกยาว ๆ', snCountHint: 'หายใจช้า ๆ ทุกครั้งที่หายใจออกให้ลดลงหนึ่ง ถ้านับพลาด เริ่มใหม่ที่ 10', snRestart: 'นับพลาด เริ่มที่ 10',
+    bmTitle: 'โหมดสมอง: อะไรพิสูจน์แล้ว', bmSub: 'การทำสมาธิ การหายใจ รางวัล คาเฟอีน “จิตใต้สำนึก” และอาหารเสริม อะไรที่งานวิจัยรองรับ และอะไรที่ยังไม่มีหลักฐาน',
+    bmNote: 'นี่คือการสรุปงานวิจัย ไม่ใช่คำแนะนำทางการแพทย์ อาหารเสริมและคาเฟอีนสำหรับผู้มีโรคประจำตัว ตั้งครรภ์ หรือใช้ยาอยู่ ควรปรึกษาแพทย์ก่อน',
+    tagMyth: 'ยังไม่มีหลักฐาน',
     navMemory: 'ความจำ', navSpeed: 'ความเร็ว', navVision: 'สมาธิ', navMethods: 'วิธีฝึก', navStats: 'สถิติ',
     heroBadge: 'วันละ 10 นาที · เกมเก็บคะแนน', heroTitle: 'ฝึกสมอง<br><span class="text-accent">เร็วและตรงไปตรงมา</span>',
     heroSub: 'ความจำ ความเร็วในการคิด และการมองเห็นรอบข้าง: เกมสั้น ๆ สถิติสูงสุดของคุณในทุกโหมด และวิธีฝึกตั้งแต่วังแห่งความจำของซิโมนิดีสไปจนถึงงานวิจัยที่พิสูจน์ผลจริง',
-    heroCta: 'เริ่มที่ความจำ', heroCta2: 'วิธีฝึก',
+    heroCta: 'เริ่มที่ความจำ', 
     statGames: 'เกม', statModes: 'โหมด', statPlayed: 'เล่นแล้ว',
     warmTitle: 'วอร์มสมองประจำวัน', warmSub: 'เล่นเกมละหนึ่งจากแต่ละหมวด ประมาณสิบนาที',
     catMemory: 'ความจำ', catMemorySub: 'จำ ทวน และเชื่อมโยง: ความจำใช้งาน ความจำเชิงภาพและตำแหน่ง และวังแห่งความจำแบบโบราณ',
@@ -901,7 +961,7 @@ GAMES.push({
 
 /* ================= METHODS & TIPS ================= */
 const TAGS = { ancient: ['tagAncient', 'text-violet-300 border-violet-400/30 bg-violet-400/5'], proof: ['tagProof', 'text-emerald-300 border-emerald-400/30 bg-emerald-400/5'],
-  data: ['tagData', 'text-accent border-accent/30 bg-accent/5'], classic: ['tagClassic', 'text-sky-300 border-sky-400/30 bg-sky-400/5'], debate: ['tagDebate', 'text-rose-300 border-rose-400/30 bg-rose-400/5'] };
+  data: ['tagData', 'text-accent border-accent/30 bg-accent/5'], classic: ['tagClassic', 'text-sky-300 border-sky-400/30 bg-sky-400/5'], debate: ['tagDebate', 'text-rose-300 border-rose-400/30 bg-rose-400/5'], myth: ['tagMyth', 'text-zinc-400 border-zinc-500/40 bg-zinc-500/5'] };
 const tagHTML = k => `<span class="shrink-0 rounded-full border px-2.5 py-0.5 text-xs font-medium ${TAGS[k][1]}">${t(TAGS[k][0])}</span>`;
 const METHODS = [
   { era: tri('~500 до н. э.', '~500 BCE', '~500 ปีก่อน ค.ศ.'), icon: 'castle', tags: ['ancient', 'proof'], game: 'palace',
@@ -948,6 +1008,224 @@ const SITES = [
   { url: 'https://sumer.dateonymous.com/', name: ['Sumer', 'Fast'], glyph: '𒀭', t: tri('Шумерский и клинопись', 'Sumerian & cuneiform', 'ภาษาสุเมเรียนและอักษรลิ่ม'),
     d: tri('Язык первых табличек: клинопись, грамматика и строки из настоящих текстов.', 'The language of the first tablets: cuneiform, grammar and lines from real texts.', 'ภาษาของแผ่นดินเหนียวยุคแรก: อักษรลิ่ม ไวยากรณ์ และข้อความจากต้นฉบับจริง') },
 ];
+
+
+/* ================= BRAIN MODES ================= */
+const MODES = [
+  { icon: 'flower-2', tags: ['proof'], t: tri('Медитация внимания', 'Focused-attention meditation', 'สมาธิแบบจดจ่อ'),
+    d: tri('Мозг не «выдаёт информации критическую значимость», но кое-что реальное есть: меньше блуждания мыслей, лучше внимание и рабочая память. Две недели практики подняли результат теста чтения GRE на 16 перцентилей (Mrazek, 2013), а даже 4 дня по 20 минут улучшили тесты на внимание (Zeidan, 2010).', 'The brain does not grant information “critical importance”, but something real happens: less mind-wandering, better attention and working memory. Two weeks of practice raised GRE reading scores by 16 percentile points (Mrazek, 2013), and even 4 days of 20 minutes improved attention tests (Zeidan, 2010).', 'สมองไม่ได้ให้ “ความสำคัญขั้นวิกฤต” กับข้อมูล แต่มีผลจริงบางอย่าง คือใจลอยน้อยลง สมาธิและความจำใช้งานดีขึ้น การฝึกสองสัปดาห์ทำให้คะแนนการอ่านของ GRE สูงขึ้น 16 เปอร์เซ็นไทล์ (Mrazek ค.ศ. 2013) และแม้ฝึกเพียง 4 วัน วันละ 20 นาที ก็ทำแบบทดสอบสมาธิได้ดีขึ้น (Zeidan ค.ศ. 2010)'),
+    src: [['Mrazek et al., 2013', 'https://doi.org/10.1177/0956797612459659'], ['Zeidan et al., 2010', 'https://doi.org/10.1016/j.concog.2010.03.014']] },
+  { icon: 'wind', tags: ['data'], t: tri('Дыхание с длинным выдохом', 'Breathing with a long exhale', 'การหายใจออกยาว'),
+    d: tri('«Физиологический вздох» — два вдоха носом и долгий выдох ртом. 5 минут в день месяц подряд улучшали настроение и снижали тревогу сильнее медитации (Balban, 2023). Медленное дыхание, около 6 вдохов в минуту, успокаивает пульс и нервную систему.', 'The “physiological sigh” — two inhales through the nose and a long exhale through the mouth. 5 minutes a day for a month lifted mood and eased anxiety more than meditation (Balban, 2023). Slow breathing, about 6 breaths a minute, calms the heart rate and nervous system.', '“การถอนหายใจแบบสรีรวิทยา” คือหายใจเข้าทางจมูกสองครั้งแล้วหายใจออกทางปากยาว ๆ วันละ 5 นาทีต่อเนื่องหนึ่งเดือนช่วยให้อารมณ์ดีขึ้นและลดความกังวลได้มากกว่าการทำสมาธิ (Balban ค.ศ. 2023) การหายใจช้า ๆ ราว 6 ครั้งต่อนาทีช่วยให้ชีพจรและระบบประสาทสงบลง'),
+    src: [['Balban et al., 2023', 'https://doi.org/10.1016/j.xcrm.2022.100895']] },
+  { icon: 'footprints', tags: ['proof'], t: tri('Движение перед учёбой', 'Movement before learning', 'ขยับร่างกายก่อนเรียน'),
+    d: tri('10 минут совсем лёгкой нагрузки сразу улучшили память и связи гиппокампа (Suwabe, 2018). Мета-анализ: даже однократная тренировка помогает долговременной памяти (Roig, 2013). Минута в стартере — разминка, полный эффект — от 10 минут.', '10 minutes of very light exercise immediately improved memory and hippocampal connectivity (Suwabe, 2018). A meta-analysis found even a single workout helps long-term memory (Roig, 2013). The starter’s minute is a warm-up; the full effect starts at 10 minutes.', 'การออกกำลังเบา ๆ เพียง 10 นาทีช่วยให้ความจำและการเชื่อมต่อของฮิปโปแคมปัสดีขึ้นทันที (Suwabe ค.ศ. 2018) การวิเคราะห์อภิมานพบว่าแม้ออกกำลังครั้งเดียวก็ช่วยความจำระยะยาว (Roig ค.ศ. 2013) หนึ่งนาทีในสตาร์ตเตอร์คือการวอร์ม ผลเต็มที่เริ่มที่ 10 นาที'),
+    src: [['Suwabe et al., 2018', 'https://doi.org/10.1073/pnas.1805668115'], ['Roig et al., 2013', 'https://doi.org/10.1016/j.neubiorev.2013.06.012']] },
+  { icon: 'gift', tags: ['proof'], t: tri('Награда, которую ждёшь', 'A reward you look forward to', 'รางวัลที่รอคอย'),
+    d: tri('Ты прав: мозг это любит. Когда за запоминание обещана награда, дофаминовая система включается ещё до того, как информация появилась, — и выученное лучше держится на следующий день (Adcock, 2006). Эффект особенно заметен через время и даже для скучного материала (Murayama, 2011).', 'You are right: the brain loves it. When a reward is promised for remembering, the dopamine system switches on before the material even appears — and what you learn holds better the next day (Adcock, 2006). The effect shows most after a delay, even for dull material (Murayama, 2011).', 'คุณพูดถูก สมองชอบแบบนี้ เมื่อมีรางวัลรออยู่สำหรับการจำ ระบบโดปามีนจะทำงานตั้งแต่ก่อนข้อมูลปรากฏ และสิ่งที่เรียนจะติดอยู่ดีกว่าในวันรุ่งขึ้น (Adcock ค.ศ. 2006) ผลจะเห็นชัดหลังผ่านไปสักพัก แม้กับเนื้อหาที่น่าเบื่อ (Murayama ค.ศ. 2011)'),
+    src: [['Adcock et al., 2006', 'https://doi.org/10.1016/j.neuron.2006.03.036'], ['Murayama & Kuhbandner, 2011', 'https://doi.org/10.1016/j.cognition.2011.01.012']] },
+  { icon: 'coffee', tags: ['data'], t: tri('Награда в связке', 'Temptation bundling', 'จับคู่กับสิ่งที่ชอบ'),
+    d: tri('Связывайте удовольствие с делом: в опыте Милкман (2014) люди, которым любимые аудиокниги давали только в спортзале, ходили туда на 29–51% чаще. Отсюда правило стартера: любимое — после тренировки, и только после неё.', 'Tie a treat to the task: in Milkman’s study (2014), people allowed their favourite audiobooks only at the gym went 29–51% more often. Hence the starter rule: the treat comes after the session, and only after it.', 'ผูกความสุขเข้ากับงาน ในงานวิจัยของ Milkman (ค.ศ. 2014) คนที่ได้ฟังหนังสือเสียงเรื่องโปรดเฉพาะตอนอยู่ยิม ไปยิมบ่อยขึ้น 29–51% จึงเป็นกฎของสตาร์ตเตอร์ว่า ของโปรดต้องมาหลังการฝึก และหลังการฝึกเท่านั้น'),
+    src: [['Milkman et al., 2014', 'https://doi.org/10.1287/mnsc.2013.1784']] },
+  { icon: 'target', tags: ['proof'], t: tri('Сказать вслух, что сделать', 'Say what you will do', 'พูดออกมาว่าจะทำอะไร'),
+    d: tri('Твой «аутотренинг» близок к планам «если — то»: «когда начну, я выучу двадцать слов». Мета-анализ 94 исследований показал заметный рост выполнения целей (Gollwitzer & Sheeran, 2006). Чёткая цель вслух — дешёвый и сильный приём.', 'Your “autotraining” is close to if-then plans: “when I start, I will learn twenty words”. A meta-analysis of 94 studies found a clear rise in reaching goals (Gollwitzer & Sheeran, 2006). A clear goal said aloud is a cheap and strong trick.', '“การฝึกสะกดจิตตัวเอง” ของคุณใกล้เคียงกับแผน “ถ้า… ก็…” เช่น “เมื่อเริ่มแล้ว ฉันจะจำคำศัพท์ยี่สิบคำ” การวิเคราะห์อภิมานจาก 94 งานวิจัยพบว่าทำให้บรรลุเป้าหมายได้มากขึ้นชัดเจน (Gollwitzer & Sheeran ค.ศ. 2006) การพูดเป้าหมายที่ชัดเจนออกมาเป็นวิธีที่ง่ายแต่ได้ผล'),
+    src: [['Gollwitzer & Sheeran, 2006', 'https://doi.org/10.1016/S0065-2601(06)38002-1']] },
+  { icon: 'circle-help', tags: ['data'], t: tri('Любопытство и догадка', 'Curiosity and a guess', 'ความอยากรู้และการเดา'),
+    d: tri('Когда нам любопытно, включается тот же дофаминовый контур, что и при награде, и запоминается лучше — даже то, что попалось попутно (Gruber, 2014). А попытка угадать ответ до изучения, даже неверная, помогает запомнить правильный (Kornell, 2009).', 'When we are curious, the same dopamine circuit as for rewards switches on and memory improves — even for things we meet along the way (Gruber, 2014). And guessing an answer before studying, even wrongly, helps you remember the right one (Kornell, 2009).', 'เมื่อเราอยากรู้ วงจรโดปามีนเดียวกับตอนได้รางวัลจะทำงาน และเราจะจำได้ดีขึ้น แม้แต่สิ่งที่ผ่านมาโดยบังเอิญ (Gruber ค.ศ. 2014) และการลองเดาคำตอบก่อนเรียน แม้เดาผิด ก็ช่วยให้จำคำตอบที่ถูกได้ (Kornell ค.ศ. 2009)'),
+    src: [['Gruber et al., 2014', 'https://doi.org/10.1016/j.neuron.2014.08.060'], ['Kornell et al., 2009', 'https://doi.org/10.1037/a0015729']] },
+  { icon: 'pen-line', tags: ['data'], t: tri('Выписать тревогу', 'Write the worry out', 'เขียนความกังวลออกมา'),
+    d: tri('Тревога съедает рабочую память. Ученики, которые 10 минут перед экзаменом писали о своих страхах, сдали лучше тех, кто просто сидел (Ramirez & Beilock, 2011, Science). В стартере это необязательный шаг.', 'Worry eats working memory. Students who spent 10 minutes before an exam writing about their fears scored better than those who just sat (Ramirez & Beilock, 2011, Science). In the starter it is an optional step.', 'ความกังวลกินความจำใช้งาน นักเรียนที่เขียนเรื่องความกลัวของตัวเอง 10 นาทีก่อนสอบได้คะแนนดีกว่าคนที่นั่งเฉย ๆ (Ramirez & Beilock ค.ศ. 2011 วารสาร Science) ในสตาร์ตเตอร์ขั้นนี้ไม่บังคับ'),
+    src: [['Ramirez & Beilock, 2011', 'https://doi.org/10.1126/science.1199427']] },
+  { icon: 'bed-single', tags: ['data'], t: tri('Тишина после учёбы', 'Quiet after learning', 'ความเงียบหลังเรียน'),
+    d: tri('10 минут спокойного отдыха с закрытыми глазами сразу после заучивания улучшили запоминание через неделю — по сравнению с теми, кто сразу переключился на другое (Dewar, 2012). Поэтому сессия заканчивается двумя минутами тишины, а не телефоном.', '10 minutes of quiet rest with eyes closed right after learning improved recall a week later, compared with switching straight to something else (Dewar, 2012). That is why the session ends with two quiet minutes, not the phone.', 'การพักเงียบ ๆ หลับตา 10 นาทีหลังท่องจำ ช่วยให้จำได้ดีขึ้นในอีกหนึ่งสัปดาห์ เทียบกับคนที่เปลี่ยนไปทำอย่างอื่นทันที (Dewar ค.ศ. 2012) ช่วงเรียนจึงจบด้วยความเงียบสองนาที ไม่ใช่โทรศัพท์'),
+    src: [['Dewar et al., 2012', 'https://doi.org/10.1177/0956797612441220']] },
+  { icon: 'cup-soda', tags: ['data'], t: tri('Кофеин и чай', 'Caffeine and tea', 'คาเฟอีนและชา'),
+    d: tri('Надёжный эффект кофеина — бодрость и внимание; на саму память он действует непостоянно: в одних опытах помогает закреплению (200 мг после заучивания, Borota, 2014), в других эффекта нет. С L-теанином из чая внимание лучше, чем от одного кофеина (Owen, 2008). Здоровым взрослым безопасно до 400 мг в день — около 3–4 чашек кофе.', 'Caffeine’s reliable effect is alertness and attention; its effect on memory itself is inconsistent: some studies find better consolidation (200 mg after learning, Borota, 2014), others none. With L-theanine from tea, attention is better than with caffeine alone (Owen, 2008). Up to 400 mg a day is safe for healthy adults — about 3–4 cups of coffee.', 'ผลที่แน่นอนของคาเฟอีนคือความตื่นตัวและสมาธิ ส่วนผลต่อความจำไม่คงที่ บางงานพบว่าช่วยตอกย้ำความจำ (200 มิลลิกรัมหลังท่องจำ Borota ค.ศ. 2014) บางงานไม่พบผล เมื่อรวมกับแอล-ธีอะนีนในชา สมาธิดีกว่าคาเฟอีนอย่างเดียว (Owen ค.ศ. 2008) ผู้ใหญ่สุขภาพดีรับได้วันละไม่เกิน 400 มิลลิกรัม ราว 3–4 แก้วกาแฟ'),
+    src: [['Borota et al., 2014', 'https://doi.org/10.1038/nn.3623'], ['Owen et al., 2008', 'https://doi.org/10.1179/147683008X301513']] },
+  { icon: 'siren', tags: ['proof'], t: tri('«Словно от этого зависит жизнь»', '“As if your life depended on it”', '“ราวกับชีวิตขึ้นอยู่กับมัน”'),
+    d: tri('Если оценивать информацию вопросом «пригодится ли это, чтобы выжить», она запоминается лучше почти любой другой техники — эффект повторён десятки раз (Nairne, 2007). Работает не страх, а глубина и личная значимость: мозг сильнее прорабатывает то, что связано с важным для нас. Отсюда в стартере вопрос «зачем это лично мне».', 'Rating information by “would this help me survive?” makes it stick better than almost any other technique — the effect has been replicated dozens of times (Nairne, 2007). It is not fear that works but depth and personal relevance: the brain processes harder whatever is tied to what matters to us. Hence the starter’s question “why does this matter to me”.', 'ถ้าประเมินข้อมูลด้วยคำถามว่า “สิ่งนี้ช่วยให้รอดชีวิตได้ไหม” จะจำได้ดีกว่าเทคนิคแทบทุกแบบ ผลนี้ถูกทดลองซ้ำหลายสิบครั้ง (Nairne ค.ศ. 2007) ที่ได้ผลไม่ใช่ความกลัว แต่คือความลึกและความสำคัญต่อตัวเรา สมองประมวลผลสิ่งที่ผูกกับเรื่องสำคัญของเราได้หนักกว่า สตาร์ตเตอร์จึงมีคำถามว่า “เรื่องนี้สำคัญกับฉันอย่างไร”'),
+    src: [['Nairne et al., 2007', 'https://doi.org/10.1037/0278-7393.33.2.263']] },
+  { icon: 'key', tags: ['classic'], t: tri('Ритуал как ключ к памяти', 'A ritual as a memory key', 'พิธีกรรมเป็นกุญแจความจำ'),
+    d: tri('Вспоминается легче в той же обстановке и в том же состоянии, в которых учили: водолазы лучше вспоминали слова, выученные под водой, снова под водой (Godden & Baddeley, 1975). Повторяйте тот же стартер и перед проверкой себя — он станет знакомым контекстом. Новизна тоже помогает: она включает дофаминовый контур памяти (Lisman & Grace, 2005).', 'Recall is easier in the same setting and state as learning: divers remembered words learned underwater better when back underwater (Godden & Baddeley, 1975). Repeat the same starter before testing yourself and it becomes a familiar context. Novelty helps too: it switches on the brain’s dopamine memory loop (Lisman & Grace, 2005).', 'เราจะนึกออกง่ายขึ้นในสถานที่และสภาวะเดียวกับตอนเรียน นักดำน้ำจำคำที่เรียนใต้น้ำได้ดีกว่าเมื่อกลับลงไปใต้น้ำ (Godden & Baddeley ค.ศ. 1975) ทำสตาร์ตเตอร์แบบเดิมก่อนทดสอบตัวเองด้วย แล้วมันจะกลายเป็นบริบทที่คุ้นเคย ความแปลกใหม่ก็ช่วย เพราะกระตุ้นวงจรโดปามีนของความจำ (Lisman & Grace ค.ศ. 2005)'),
+    src: [['Godden & Baddeley, 1975', 'https://doi.org/10.1111/j.2044-8295.1975.tb01468.x'], ['Lisman & Grace, 2005', 'https://doi.org/10.1016/j.neuron.2005.05.002']] },
+  { icon: 'moon-star', tags: ['proof'], t: tri('Сон закрепляет', 'Sleep consolidates', 'การนอนช่วยตอกย้ำ'),
+    d: tri('Во сне мозг «проигрывает» выученное днём и переносит в долговременную память. Учить новое во сне нельзя, но подсказки во сне укрепляют уже выученное: запах, который был во время учёбы, усилил память, когда его давали в глубоком сне (Rasch, 2007, Science).', 'During sleep the brain replays the day’s learning and moves it into long-term memory. You cannot learn new things asleep, but cues during sleep strengthen what you already learned: an odour present while studying boosted memory when given again in deep sleep (Rasch, 2007, Science).', 'ระหว่างนอน สมองจะ “เล่นซ้ำ” สิ่งที่เรียนตอนกลางวันและย้ายไปเป็นความจำระยะยาว เรียนเรื่องใหม่ตอนหลับไม่ได้ แต่สิ่งกระตุ้นตอนหลับช่วยตอกย้ำสิ่งที่เรียนแล้ว กลิ่นที่ได้กลิ่นตอนเรียนช่วยความจำเมื่อได้กลิ่นอีกครั้งตอนหลับลึก (Rasch ค.ศ. 2007 วารสาร Science)'),
+    src: [['Rasch et al., 2007', 'https://doi.org/10.1126/science.1138581']] },
+  { icon: 'pill', tags: ['myth'], t: tri('DMAE, бромелайн, витамины', 'DMAE, bromelain, vitamins', 'DMAE โบรมีเลน วิตามิน'),
+    d: tri('Надёжных исследований, что DMAE или бромелайн улучшают память здоровых людей, нет: по DMAE прямых клинических проверок почти не делали, а положительные данные о бромелайне получены только на крысах и мышах. Витамины помогают при дефиците (B12, D) — его проверяют анализом. В большом исследовании COSMOS поливитамины дали пожилым небольшой плюс к памяти. Чудо-таблетки не найдено.', 'There is no solid research showing DMAE or bromelain improve memory in healthy people: DMAE has barely been tested in clinical trials, and the positive bromelain data come only from rats and mice. Vitamins help with a deficiency (B12, D), which a blood test finds. In the large COSMOS trial, multivitamins gave older adults a small memory benefit. No miracle pill has been found.', 'ยังไม่มีงานวิจัยที่น่าเชื่อถือว่า DMAE หรือโบรมีเลนช่วยความจำของคนสุขภาพดี DMAE แทบไม่เคยถูกทดสอบทางคลินิก ส่วนข้อมูลเชิงบวกของโบรมีเลนมาจากหนูทดลองเท่านั้น วิตามินช่วยได้เมื่อขาด (B12, D) ซึ่งตรวจเลือดได้ ในงานวิจัยขนาดใหญ่ COSMOS วิตามินรวมช่วยความจำของผู้สูงอายุได้เล็กน้อย ยังไม่พบยาวิเศษ'),
+    src: [['COSMOS (Yeung et al., 2023)', 'https://doi.org/10.1016/j.ajcnut.2023.05.011']] },
+  { icon: 'headphones', tags: ['debate'], t: tri('Бинауральные ритмы и «эффект Моцарта»', 'Binaural beats and the “Mozart effect”', 'คลื่นเสียงไบนอรัลและ “ปรากฏการณ์โมสาร์ท”'),
+    d: tri('Бинауральные ритмы в наушниках в мета-анализе дали небольшой и неустойчивый эффект на внимание и память — исследования сильно расходятся. «Эффект Моцарта» оказался просто приятным возбуждением от музыки: интеллект он не поднимает. Любимая музыка без слов фоном — пожалуйста, но ждать чуда не стоит.', 'Binaural beats through headphones showed a small, unstable effect on attention and memory in a meta-analysis — studies disagree a lot. The “Mozart effect” turned out to be the pleasant arousal music gives: it does not raise intelligence. Favourite instrumental music in the background is fine, but don’t expect miracles.', 'คลื่นเสียงไบนอรัลผ่านหูฟังมีผลต่อสมาธิและความจำเพียงเล็กน้อยและไม่แน่นอนในการวิเคราะห์อภิมาน งานวิจัยยังขัดแย้งกันมาก “ปรากฏการณ์โมสาร์ท” เป็นแค่ความตื่นตัวที่น่ารื่นรมย์จากดนตรี ไม่ได้เพิ่มเชาวน์ปัญญา เปิดดนตรีบรรเลงที่ชอบคลอได้ แต่อย่าหวังปาฏิหาริย์'),
+    src: [['Garcia-Argibay et al., 2019', 'https://doi.org/10.1007/s00426-018-1066-8']] },
+  { icon: 'eye-off', tags: ['myth'], t: tri('Подсознательное обучение', 'Subliminal learning', 'การเรียนรู้ผ่านจิตใต้สำนึก'),
+    d: tri('Записи «для подсознания», учёба во сне и «25-й кадр» не работают: в строгих проверках люди не запоминали новые факты, которых не видели или не слышали осознанно. Единственный короткий путь к памяти — через внимание, а внимание как раз и настраивает стартер.', 'Tapes “for the subconscious”, learning in your sleep and hidden frames do not work: in rigorous tests people did not learn new facts they had not consciously seen or heard. The only shortcut to memory runs through attention — which is exactly what the starter tunes.', 'เทป “สำหรับจิตใต้สำนึก” การเรียนตอนหลับ และ “เฟรมที่ 25” ใช้ไม่ได้ผล ในการทดสอบอย่างเข้มงวด คนไม่ได้จำข้อเท็จจริงใหม่ที่ไม่ได้เห็นหรือได้ยินอย่างรู้ตัว ทางลัดเดียวสู่ความจำคือความใส่ใจ ซึ่งเป็นสิ่งที่สตาร์ตเตอร์ช่วยปรับ'),
+    src: [] },
+];
+
+/* ================= STARTER ================= */
+// five steps, each tied to a study in MODES; then 25 minutes of study, 2 minutes of quiet rest and the reward
+const SN_COURSES = [['thai', tri('Тайский', 'Thai', 'ภาษาไทย'), 'https://thai.dateonymous.com/'], ['eng', tri('Английский', 'English', 'ภาษาอังกฤษ'), 'https://eng.dateonymous.com/'],
+  ['sumer', tri('Шумерский', 'Sumerian', 'ภาษาสุเมเรียน'), 'https://sumer.dateonymous.com/'], ['brain', tri('Тренажёры мозга', 'Brain trainers', 'เกมฝึกสมอง'), '#memory']];
+const SN_TASKS = [['words', tri('запомнить новые слова', 'memorise new words', 'จำคำศัพท์ใหม่')], ['explain', tri('понять и пересказать объяснение', 'understand and retell an explanation', 'เข้าใจและเล่าคำอธิบายได้')],
+  ['skill', tri('натренировать навык до скорости', 'drill a skill up to speed', 'ฝึกทักษะให้คล่อง')], ['record', tri('побить свой рекорд', 'beat my record', 'ทำลายสถิติของตัวเอง')]];
+const SN_PRIZES = [['coffee', 'coffee', tri('чашка любимого кофе или чая', 'a cup of my favourite coffee or tea', 'กาแฟหรือชาแก้วโปรด')], ['candy', 'candy', tri('любимое лакомство', 'my favourite treat', 'ขนมที่ชอบ')],
+  ['walk', 'tree-pine', tri('прогулка на свежем воздухе', 'a walk outside', 'การเดินเล่นข้างนอก')], ['show', 'tv', tri('серия любимого сериала', 'an episode of my favourite show', 'ซีรีส์เรื่องโปรดหนึ่งตอน')], ['music', 'music', tri('любимый альбом', 'my favourite album', 'อัลบั้มเพลงโปรด')]];
+const SN_STEPS = [
+  { k: 'breath', icon: 'wind', sec: 60, mode: 1, t: tri('Физиологический вздох', 'Physiological sigh', 'การถอนหายใจแบบสรีรวิทยา'),
+    how: tri('Следите за кругом: два вдоха носом подряд — второй короткий, «добрать» воздух, — и долгий медленный выдох ртом. Минута.', 'Follow the circle: two inhales through the nose — the second short, to top up — then a long slow exhale through the mouth. One minute.', 'มองตามวงกลม หายใจเข้าทางจมูกสองครั้ง ครั้งที่สองสั้น ๆ เพื่อเติมอากาศ แล้วหายใจออกทางปากยาวและช้า หนึ่งนาที') },
+  { k: 'move', icon: 'footprints', sec: 60, mode: 2, t: tri('Минута движения', 'A minute of movement', 'ขยับร่างกายหนึ่งนาที'),
+    how: tri('Встаньте и двигайтесь в лёгком темпе: шаг на месте, 15 приседаний, круги руками, наклоны. Не до одышки — до тепла. А потом сядьте не так, как обычно: новизна тоже включает режим обучения.', 'Stand up and move at an easy pace: march on the spot, 15 squats, arm circles, side bends. Not until breathless — until warm. Then sit somewhere or somehow different from usual: novelty also switches on learning mode.', 'ลุกขึ้นและขยับเบา ๆ ย่ำเท้าอยู่กับที่ สควอต 15 ครั้ง หมุนแขน เอียงตัว ไม่ต้องถึงขั้นหอบ แค่รู้สึกอุ่นตัว แล้วนั่งต่างไปจากปกติ ความแปลกใหม่ก็ช่วยเปิดโหมดเรียนรู้') },
+  { k: 'goal', icon: 'target', sec: 0, mode: 5, t: tri('Цель и награда', 'Goal and reward', 'เป้าหมายและรางวัล'),
+    how: tri('Выберите, что учите, что сделать с информацией и чем наградите себя после. Затем произнесите план вслух.', 'Choose what you study, what to do with it and how you will reward yourself afterwards. Then say the plan out loud.', 'เลือกว่าจะเรียนอะไร จะทำอะไรกับข้อมูล และจะให้รางวัลตัวเองอย่างไรหลังจากนั้น แล้วพูดแผนออกมาดัง ๆ') },
+  { k: 'curious', icon: 'circle-help', sec: 0, mode: 6, t: tri('Вопрос и догадка', 'A question and a guess', 'คำถามและการเดา'),
+    how: tri('Сформулируйте вопрос, ответ на который хотите получить сегодня, и попробуйте угадать ответ.', 'Put into words a question you want answered today, and try to guess the answer.', 'ตั้งคำถามที่อยากได้คำตอบวันนี้ แล้วลองเดาคำตอบดู') },
+  { k: 'count', icon: 'focus', sec: 0, mode: 0, t: tri('Десять выдохов', 'Ten exhales', 'สิบลมหายใจออก'),
+    how: tri('Смотрите на точку и медленно дышите — около 6 вдохов в минуту. Каждый выдох — на одно число меньше: от 10 до 1.', 'Look at the dot and breathe slowly — about 6 breaths a minute. Each exhale is one number lower: from 10 to 1.', 'มองที่จุด แล้วหายใจช้า ๆ ราว 6 ครั้งต่อนาที ทุกครั้งที่หายใจออกให้ลดลงหนึ่ง จาก 10 ถึง 1') },
+];
+const SN_KEY = 'bf:starter';
+const snStats = () => { try { return JSON.parse(store.get(SN_KEY, '{}')) } catch (e) { return {} } };
+const snSave = o => store.set(SN_KEY, JSON.stringify({ ...snStats(), ...o }));
+let sn = { step: -1, timers: [], choice: { course: 'thai', task: 'words', prize: 'coffee', own: '' } };
+try { Object.assign(sn.choice, JSON.parse(store.get('bf:starter-choice', '{}'))) } catch (e) {}
+const snClear = () => { sn.timers.forEach(clearTimeout); sn.timers = [] };
+const snLater = (f, ms) => sn.timers.push(setTimeout(f, ms));
+const snEvery = (f, ms) => sn.timers.push(setInterval(f, ms));
+// a short soft tone between steps (WebAudio, no files)
+function beep(f = 660, ms = 180) {
+  try {
+    const ac = beep.ac || (beep.ac = new (window.AudioContext || window.webkitAudioContext)()), o = ac.createOscillator(), g = ac.createGain();
+    o.frequency.value = f; g.gain.setValueAtTime(.0001, ac.currentTime); g.gain.exponentialRampToValueAtTime(.15, ac.currentTime + .02); g.gain.exponentialRampToValueAtTime(.0001, ac.currentTime + ms / 1000);
+    o.connect(g).connect(ac.destination); o.start(); o.stop(ac.currentTime + ms / 1000 + .05);
+  } catch (e) {}
+}
+const planText = () => { const c = SN_COURSES.find(x => x[0] === sn.choice.course), k = SN_TASKS.find(x => x[0] === sn.choice.task); return fill(t('snPlanText'), { t: L(k[1]), c: L(c[1]), r: prizeText(), w: sn.choice.why ? fill(t('snWhyTpl'), { w: sn.choice.why }) : '' }) };
+const prizeText = () => sn.choice.prize === 'own' ? (sn.choice.own || L(SN_PRIZES[0][2])) : L(SN_PRIZES.find(x => x[0] === sn.choice.prize)[2]);
+const mm = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+const snBtn = 'inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-semibold transition';
+function snWhy(st) {
+  const m = MODES[st.mode];
+  return `<details class="mt-6 rounded-2xl border border-white/10 bg-ink-950 p-4 text-sm"><summary class="cursor-pointer font-semibold text-zinc-300">${t('snWhy')}</summary><p class="mt-2 text-zinc-400 leading-relaxed">${L(m.d)}</p></details>`;
+}
+function renderStarter() {
+  snClear();
+  const box = $('#snBox'), stats = snStats();
+  const head = `<p class="text-xs text-zinc-500">${fill(t('snCount'), { a: stats.starts || 0, b: stats.done || 0 })}</p>`;
+  if (sn.step === -1 && !sn.ready && !sn.finished && !stats.rest && !(stats.sessionEnd > Date.now())) {
+    box.innerHTML = `<div class="rounded-3xl border border-white/10 bg-ink-900 p-6 md:p-8">${head}
+      <ol class="mt-5 grid sm:grid-cols-5 gap-3">${SN_STEPS.map((st, i) => `<li class="rounded-2xl border border-white/10 bg-ink-950 p-4"><span class="font-mono text-xs text-accent">0${i + 1}</span><i data-lucide="${st.icon}" class="mt-2 block w-5 h-5 text-accent"></i><p class="mt-2 text-sm font-semibold text-white">${L(st.t)}</p></li>`).join('')}</ol>
+      <button id="snBegin" class="mt-6 ${snBtn} bg-accent text-ink-950 hover:brightness-110"><i data-lucide="play" class="w-4 h-4"></i>${t('snBegin')}</button></div>`;
+    return icons();
+  }
+  if (sn.step === -1 || sn.step >= SN_STEPS.length) return renderSession();
+  const st = SN_STEPS[sn.step];
+  const nav = `<div class="mt-6 flex flex-wrap gap-3">${sn.step ? `<button data-sn="back" class="${snBtn} border border-white/10 hover:bg-white/5">${t('snBack')}</button>` : ''}<button data-sn="next" class="${snBtn} bg-accent text-ink-950 hover:brightness-110">${t('snSkip')}<i data-lucide="arrow-right" class="w-4 h-4"></i></button></div>`;
+  let body = '';
+  if (st.k === 'breath') body = `<div class="mt-8 grid place-items-center"><div id="snCircle" class="grid place-items-center w-40 h-40 rounded-full bg-accent/15 border-2 border-accent/60" style="transform:scale(.6)"><span id="snPhase" class="text-sm font-semibold text-white"></span></div></div>`;
+  if (st.k === 'move') body = `<ul class="mt-6 grid sm:grid-cols-2 gap-2 text-sm text-zinc-300">${[tri('Шаг на месте', 'March on the spot', 'ย่ำเท้าอยู่กับที่'), tri('15 приседаний', '15 squats', 'สควอต 15 ครั้ง'), tri('Круги руками', 'Arm circles', 'หมุนแขน'), tri('Наклоны в стороны', 'Side bends', 'เอียงตัวไปด้านข้าง')].map(x => `<li class="rounded-xl border border-white/10 bg-ink-950 px-4 py-3">${L(x)}</li>`).join('')}</ul>`;
+  if (st.k === 'goal') {
+    const chips = (list, key) => list.map(([k, a, b]) => { const label = typeof a === 'string' ? L(b) : L(a); const ic = typeof a === 'string' ? `<i data-lucide="${a}" class="w-3.5 h-3.5"></i>` : ''; return `<button data-pick="${key}:${k}" class="${chip(sn.choice[key] === k)}">${ic}${label}</button>` }).join('');
+        body = `<p class="mt-6 text-xs uppercase tracking-wider text-zinc-500">${t('snCourse')}</p><div class="mt-2 flex flex-wrap gap-2">${chips(SN_COURSES.map(([k, n]) => [k, n]), 'course')}</div>
+      <p class="mt-5 text-xs uppercase tracking-wider text-zinc-500">${t('snTask')}</p><div class="mt-2 flex flex-wrap gap-2">${chips(SN_TASKS, 'task')}</div>
+      <p class="mt-5 text-xs uppercase tracking-wider text-zinc-500">${t('snPrize')}</p><div class="mt-2 flex flex-wrap gap-2">${chips(SN_PRIZES, 'prize')}<button data-pick="prize:own" class="${chip(sn.choice.prize === 'own')}"><i data-lucide="gift" class="w-3.5 h-3.5"></i>${t('snOwn')}</button></div>
+      ${sn.choice.prize === 'own' ? `<input id="snOwn" value="${esc(sn.choice.own)}" class="mt-3 w-full rounded-xl border border-white/10 bg-ink-950 px-4 py-3 text-white focus:outline-none focus:border-accent">` : ''}
+      <label class="mt-5 block text-sm text-zinc-300">${t('snWhyMe')}<input id="snWhyIn" value="${esc(sn.choice.why || '')}" class="mt-2 w-full rounded-xl border border-white/10 bg-ink-950 px-4 py-3 text-white focus:outline-none focus:border-accent"></label>
+      <div class="mt-6 rounded-2xl border border-accent/40 bg-accent/5 p-5"><p class="text-xs uppercase tracking-wider text-accent">${t('snPlan')}</p><p id="snPlanTxt" class="mt-2 text-lg font-semibold text-white leading-snug">${esc(planText())}</p></div>`;
+  }
+  if (st.k === 'curious') body = `<label class="mt-6 block text-sm text-zinc-300">${t('snQ')}<textarea rows="2" class="mt-2 w-full rounded-xl border border-white/10 bg-ink-950 px-4 py-3 text-white focus:outline-none focus:border-accent"></textarea></label>
+      <label class="mt-4 block text-sm text-zinc-300">${t('snGuess')}<textarea rows="2" class="mt-2 w-full rounded-xl border border-white/10 bg-ink-950 px-4 py-3 text-white focus:outline-none focus:border-accent"></textarea></label>
+      <label class="mt-4 block text-sm text-zinc-500">${t('snWorry')}<textarea rows="2" class="mt-2 w-full rounded-xl border border-white/10 bg-ink-950 px-4 py-3 text-white focus:outline-none focus:border-accent"></textarea></label>`;
+  if (st.k === 'count') body = `<div class="mt-8 grid place-items-center"><div id="snCircle" class="grid place-items-center w-44 h-44 rounded-full border-2 border-accent/50" style="transform:scale(.7)"><span id="snNum" class="text-6xl font-extrabold text-white tabular-nums">10</span></div><p id="snPhase" class="mt-4 text-sm text-zinc-400"></p>
+      <button data-sn="restart" class="mt-4 ${snBtn} border border-white/10 text-sm text-zinc-400 hover:text-white">${t('snRestart')}</button></div><p class="mt-4 text-center text-sm text-zinc-500">${t('snCountHint')}</p>`;
+  box.innerHTML = `<div class="fade-up rounded-3xl border border-white/10 bg-ink-900 p-6 md:p-8">
+    <div class="flex items-center justify-between gap-4"><p class="font-mono text-xs text-accent">${t('snStep')} ${sn.step + 1} / ${SN_STEPS.length}</p>${st.sec ? `<p class="font-mono text-sm text-zinc-400 tabular-nums" id="snTime">${mm(st.sec)}</p>` : ''}</div>
+    <div class="mt-2 h-1 rounded-full bg-white/10 overflow-hidden"><div class="h-full bg-accent transition-all" style="width:${(sn.step + 1) / SN_STEPS.length * 100}%"></div></div>
+    <h3 class="mt-5 flex items-center gap-3 text-2xl font-bold text-white"><i data-lucide="${st.icon}" class="w-6 h-6 text-accent"></i>${L(st.t)}</h3>
+    <p class="mt-2 text-zinc-400 leading-relaxed">${L(st.how)}</p>${body}${snWhy(st)}${nav}</div>`;
+  icons();
+  if (st.sec) {
+    const t0 = Date.now();
+    snEvery(() => { const left = st.sec - (Date.now() - t0) / 1000, el = $('#snTime'); if (el) el.textContent = mm(Math.max(0, left)); if (left <= 0) { beep(880); snNext() } }, 250);
+  }
+  if (st.k === 'breath') {
+    const c = $('#snCircle'), ph = $('#snPhase');
+    const cycle = () => {
+      const set = (scale, sec, txt) => { c.style.transition = `transform ${sec}s ease-in-out`; c.style.transform = `scale(${scale})`; ph.textContent = txt };
+      set(.9, 2, t('snIn')); snLater(() => set(1, 1, t('snIn2')), 2000); snLater(() => set(.6, 6, t('snOut')), 3000); snLater(cycle, 9000);
+    };
+    snLater(cycle, 300);
+  }
+  if (st.k === 'count') {
+    let n = 10;
+    const c = $('#snCircle'), ph = $('#snPhase'), num = $('#snNum');
+    const breathe = () => {
+      c.style.transition = 'transform 4s ease-in-out'; c.style.transform = 'scale(1)'; ph.textContent = t('snIn');
+      snLater(() => { c.style.transition = 'transform 6s ease-in-out'; c.style.transform = 'scale(.7)'; ph.textContent = t('snOut') }, 4000);
+      snLater(() => { if (--n < 1) { beep(880); return snNext() } num.textContent = n; beep(520, 90); breathe() }, 10000);
+    };
+    sn.restartCount = () => { snClear(); n = 10; num.textContent = n; breathe() };
+    snLater(breathe, 300);
+  }
+}
+function snNext() { snClear(); sn.step++; if (sn.step >= SN_STEPS.length) { snSave({ starts: (snStats().starts || 0) + 1 }); sn.step = -1; sn.ready = true } renderStarter() }
+// after the steps: launch pad, 25-minute timer (kept across reloads), quiet rest, reward
+function renderSession() {
+  const box = $('#snBox'), stats = snStats(), end = stats.sessionEnd || 0, now = Date.now();
+  if (end > now) {
+    box.innerHTML = `<div class="fade-up rounded-3xl border border-accent/40 bg-ink-900 p-6 md:p-8 text-center"><p class="text-sm uppercase tracking-wider text-accent">${t('snDone')}</p>
+      <p id="snClock" class="mt-4 text-7xl font-extrabold text-white tabular-nums">${mm((end - now) / 1000)}</p><p class="mt-1 text-sm text-zinc-500">${t('snLeft')}</p>
+      <div class="mt-6 flex flex-wrap justify-center gap-2">${SN_COURSES.map(([k, n, u]) => `<a href="${u}" ${u.startsWith('#') ? '' : 'target="_blank" rel="noopener"'} class="${chip(k === sn.choice.course)}">${L(n)}<i data-lucide="${u.startsWith('#') ? 'arrow-down' : 'external-link'}" class="w-3.5 h-3.5"></i></a>`).join('')}</div>
+      <p class="mt-6 text-sm text-zinc-400"><i data-lucide="gift" class="inline w-4 h-4 text-accent"></i> ${esc(stats.prize || prizeText())}</p>
+      <button data-sn="stop" class="mt-6 ${snBtn} border border-white/10 text-sm text-zinc-400 hover:text-white">${t('snStop')}</button></div>`;
+    icons();
+    snEvery(() => {
+      const left = (snStats().sessionEnd || 0) - Date.now(), el = $('#snClock');
+      if (el) el.textContent = mm(Math.max(0, left / 1000));
+      document.title = `${mm(Math.max(0, left / 1000))} · BrainFast`;
+      if (left <= 0) { beep(880, 400); snSave({ sessionEnd: 0, rest: 1 }); document.title = 'BrainFast'; renderSession() }
+    }, 500);
+    return;
+  }
+  if (stats.rest) {
+    box.innerHTML = `<div class="fade-up rounded-3xl border border-white/10 bg-ink-900 p-6 md:p-8 text-center"><i data-lucide="bed-single" class="mx-auto w-8 h-8 text-accent"></i>
+      <p class="mt-4 text-lg text-white leading-relaxed">${t('snRest')}</p><p id="snRestClock" class="mt-4 text-5xl font-extrabold text-white tabular-nums">2:00</p>
+      <button data-sn="rest" class="mt-6 ${snBtn} bg-accent text-ink-950 hover:brightness-110">${t('snRestBtn')}</button></div>`;
+    return icons();
+  }
+  box.innerHTML = `<div class="fade-up rounded-3xl border border-accent/40 bg-ink-900 p-6 md:p-8 text-center">
+    <i data-lucide="${sn.ready ? 'zap' : 'party-popper'}" class="mx-auto w-9 h-9 text-accent"></i>
+    <p class="mt-3 text-2xl font-bold text-white">${sn.ready ? t('snDone') : esc(fill(t('snReward'), { r: stats.prize || prizeText() }))}</p>
+    ${sn.ready ? `<p class="mt-2 text-zinc-400">${t('snDoneSub')}</p><button data-sn="go" class="mt-6 ${snBtn} bg-accent text-ink-950 hover:brightness-110"><i data-lucide="timer" class="w-4 h-4"></i>${t('snGo')}</button>` : ''}
+    <div class="mt-4"><button data-sn="again" class="${snBtn} border border-white/10 text-sm text-zinc-400 hover:text-white">${t('snAgain')}</button></div></div>`;
+  icons();
+}
+$('#snBox').addEventListener('click', e => {
+  const a = e.target.closest('[data-sn]')?.dataset.sn, pick = e.target.closest('[data-pick]')?.dataset.pick;
+  if (e.target.closest('#snBegin')) { beep(); sn.step = 0; return renderStarter() }
+  if (pick) { const [k, v] = pick.split(':'); sn.choice[k] = v; store.set('bf:starter-choice', JSON.stringify(sn.choice)); return renderStarter() }
+  if (a === 'next') { beep(); return snNext() }
+  if (a === 'back') { snClear(); sn.step = Math.max(0, sn.step - 1); return renderStarter() }
+  if (a === 'restart') return sn.restartCount?.();
+  if (a === 'go') { beep(); sn.ready = false; snSave({ sessionEnd: Date.now() + 25 * 60 * 1000, prize: prizeText() }); return renderStarter() }
+  if (a === 'stop') { snClear(); snSave({ sessionEnd: 0 }); document.title = 'BrainFast'; sn.ready = true; return renderStarter() }
+  if (a === 'rest') {
+    snClear(); const t0 = Date.now(); e.target.closest('button').remove();
+    snEvery(() => { const left = 120 - (Date.now() - t0) / 1000, el = $('#snRestClock'); if (el) el.textContent = mm(Math.max(0, left)); if (left <= 0) { beep(880, 400); snSave({ rest: 0, done: (snStats().done || 0) + 1 }); sn.finished = true; renderStarter() } }, 250);
+    return;
+  }
+  if (a === 'again') { sn.ready = false; sn.finished = false; sn.step = 0; return renderStarter() }
+});
+$('#snBox').addEventListener('input', e => {
+  const k = { snOwn: 'own', snWhyIn: 'why' }[e.target.id]; if (!k) return;
+  sn.choice[k] = e.target.value.trim(); store.set('bf:starter-choice', JSON.stringify(sn.choice));
+  const p = $('#snPlanTxt'); if (p) p.textContent = planText();
+});
+
+function renderModes() {
+  $('#bmGrid').innerHTML = MODES.map(m => `<div class="rounded-2xl border border-white/10 bg-ink-900 p-5 flex flex-col">
+    <div class="flex items-start justify-between gap-3"><span class="grid place-items-center w-10 h-10 shrink-0 rounded-xl bg-accent/10 text-accent"><i data-lucide="${m.icon}" class="w-5 h-5"></i></span><span class="flex flex-wrap justify-end gap-1.5">${m.tags.map(tagHTML).join('')}</span></div>
+    <h3 class="mt-4 font-semibold text-white">${L(m.t)}</h3><p class="mt-2 text-sm text-zinc-400 leading-relaxed">${L(m.d)}</p>
+    ${m.src.length ? `<p class="mt-auto pt-4 text-xs text-zinc-500">${m.src.map(([n, u]) => `<a class="underline hover:text-white" href="${u}" target="_blank" rel="noopener">${n}</a>`).join(' · ')}</p>` : ''}</div>`).join('');
+}
 
 /* ================= GAME OVERLAY ================= */
 const GAME = Object.fromEntries(GAMES.map(G => [G.id, G]));
@@ -1158,7 +1436,7 @@ $('#statsReset').onclick = () => {
 };
 
 function renderAll() {
-  renderText(); renderCards(); renderHero(); renderMethods(); renderStats(); renderMore(); navFill();
+  renderText(); renderCards(); renderHero(); renderStarter(); renderModes(); renderMethods(); renderStats(); renderMore(); navFill();
   if (cur) renderGame();
   icons();
 }
