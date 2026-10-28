@@ -25,6 +25,8 @@ tailwind.config = {
 <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
 <style>
   body { background: #09090b; }
+  /* narrow phones (Galaxy Fold cover ~280px): grids may shrink, long unbroken strings wrap only if they would overflow */
+  .grid > * { min-width: 0; } .font-mono, p, li, h3 { overflow-wrap: anywhere; }
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s, transform .7s cubic-bezier(.2,.8,.2,1); }
   .reveal.in { opacity: 1; transform: none; }
   @keyframes shake { 20%,60% { transform: translateX(-6px) } 40%,80% { transform: translateX(6px) } }
@@ -1348,7 +1350,7 @@ function renderText() {
   $$('[data-i18n]').forEach(el => el.textContent = t(el.dataset.i18n));
   $$('[data-i18n-html]').forEach(el => el.innerHTML = t(el.dataset.i18nHtml));
   const on = 'bg-white text-ink-950', off = 'text-zinc-400 hover:text-white';
-  $$('[data-lang]').forEach(b => b.className = `px-2.5 py-1.5 rounded-md transition ${b.dataset.lang === lang ? on : off}`);
+  $$('[data-lang]').forEach(b => b.className = `px-2 min-[360px]:px-2.5 py-1.5 rounded-md transition ${b.dataset.lang === lang ? on : off}`);
   $('#statGames').textContent = GAMES.length;
   $('#statModes').textContent = GAMES.reduce((n, G) => n + G.modes.length, 0);
 }
@@ -1402,8 +1404,8 @@ function renderStats() {
 }
 function renderMore() {
   $('#moreGrid').innerHTML = SITES.map(x => `
-    <a href="${x.url}" target="_blank" rel="noopener" class="group flex items-center gap-5 rounded-3xl border border-white/10 bg-ink-900 p-6 hover:border-accent/50 hover:-translate-y-1 transition duration-300">
-      <span class="grid place-items-center w-16 h-16 shrink-0 rounded-2xl bg-accent/10 text-3xl font-semibold text-accent" style="font-family:'Noto Sans Thai','Noto Sans Cuneiform',Inter,sans-serif">${x.glyph}</span>
+    <a href="${x.url}" target="_blank" rel="noopener" class="group flex items-center gap-3 sm:gap-5 rounded-3xl border border-white/10 bg-ink-900 p-4 sm:p-6 hover:border-accent/50 hover:-translate-y-1 transition duration-300">
+      <span class="grid place-items-center w-12 h-12 sm:w-16 sm:h-16 shrink-0 rounded-2xl bg-accent/10 text-2xl sm:text-3xl font-semibold text-accent" style="font-family:'Noto Sans Thai','Noto Sans Cuneiform',Inter,sans-serif">${x.glyph}</span>
       <span class="flex-1 min-w-0">
         <span class="flex items-center gap-1.5 text-sm font-bold text-white"><i data-lucide="zap" class="w-3.5 h-3.5 text-accent"></i><span>${x.name[0]}<span class="text-accent">${x.name[1]}</span></span></span>
         <span class="block mt-1 text-lg font-semibold text-white">${L(x.t)}</span>
