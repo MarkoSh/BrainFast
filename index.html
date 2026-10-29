@@ -1267,7 +1267,7 @@ function renderGame() {
   ({ play: renderStart, help: renderHelp, stats: renderGameStats })[cur.tab]();
   icons();
 }
-const chip = on => `rounded-xl border px-4 py-2 text-sm font-semibold transition ${on ? 'border-accent bg-accent/10 text-white' : 'border-white/10 text-zinc-400 hover:text-white'}`;
+const chip = on => `inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-semibold transition ${on ? 'border-accent bg-accent/10 text-white' : 'border-white/10 text-zinc-400 hover:text-white'}`;
 function renderStart() {
   const { G, mode } = cur, b = bestOf(G, mode);
   $('#gBody').innerHTML = `<div class="fade-up">
