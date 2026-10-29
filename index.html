@@ -60,10 +60,10 @@ tailwind.config = {
       <span class="hidden min-[360px]:inline">BrainFast</span>
     </a>
     <div class="hidden lg:flex items-center gap-5 text-sm text-zinc-400">
+      <a href="#starter" class="hover:text-white transition" data-i18n="navStarter"></a>
       <a href="#memory" class="hover:text-white transition" data-i18n="navMemory"></a>
       <a href="#speed" class="hover:text-white transition" data-i18n="navSpeed"></a>
       <a href="#vision" class="hover:text-white transition" data-i18n="navVision"></a>
-      <a href="#starter" class="hover:text-white transition" data-i18n="navStarter"></a>
       <a href="#modes" class="hover:text-white transition" data-i18n="navModes"></a>
       <a href="#methods" class="hover:text-white transition" data-i18n="navMethods"></a>
       <a href="#stats" class="hover:text-white transition" data-i18n="navStats"></a>
@@ -115,11 +115,23 @@ tailwind.config = {
     </div>
   </section>
 
-  <!-- MEMORY -->
-  <section id="memory" class="py-20 md:py-28 border-t border-white/5">
-    <div class="max-w-6xl mx-auto px-4">
+  <!-- STARTER -->
+  <section id="starter" class="py-20 md:py-28 border-t border-white/5">
+    <div class="max-w-4xl mx-auto px-4">
       <div class="reveal max-w-2xl">
         <p class="font-mono text-sm text-accent">01</p>
+        <h2 class="mt-2 text-3xl md:text-4xl font-bold text-white tracking-tight" data-i18n="snTitle"></h2>
+        <p class="mt-3 text-zinc-400" data-i18n="snSub"></p>
+      </div>
+      <div id="snBox" class="reveal mt-10"></div>
+    </div>
+  </section>
+
+  <!-- MEMORY -->
+  <section id="memory" class="py-20 md:py-28 border-t border-white/5 bg-ink-900/40">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="reveal max-w-2xl">
+        <p class="font-mono text-sm text-accent">02</p>
         <h2 class="mt-2 text-3xl md:text-4xl font-bold text-white tracking-tight" data-i18n="catMemory"></h2>
         <p class="mt-3 text-zinc-400" data-i18n="catMemorySub"></p>
       </div>
@@ -128,10 +140,10 @@ tailwind.config = {
   </section>
 
   <!-- SPEED -->
-  <section id="speed" class="py-20 md:py-28 border-t border-white/5 bg-ink-900/40">
+  <section id="speed" class="py-20 md:py-28 border-t border-white/5">
     <div class="max-w-6xl mx-auto px-4">
       <div class="reveal max-w-2xl">
-        <p class="font-mono text-sm text-accent">02</p>
+        <p class="font-mono text-sm text-accent">03</p>
         <h2 class="mt-2 text-3xl md:text-4xl font-bold text-white tracking-tight" data-i18n="catSpeed"></h2>
         <p class="mt-3 text-zinc-400" data-i18n="catSpeedSub"></p>
       </div>
@@ -140,26 +152,14 @@ tailwind.config = {
   </section>
 
   <!-- VISION -->
-  <section id="vision" class="py-20 md:py-28 border-t border-white/5">
+  <section id="vision" class="py-20 md:py-28 border-t border-white/5 bg-ink-900/40">
     <div class="max-w-6xl mx-auto px-4">
       <div class="reveal max-w-2xl">
-        <p class="font-mono text-sm text-accent">03</p>
+        <p class="font-mono text-sm text-accent">04</p>
         <h2 class="mt-2 text-3xl md:text-4xl font-bold text-white tracking-tight" data-i18n="catVision"></h2>
         <p class="mt-3 text-zinc-400" data-i18n="catVisionSub"></p>
       </div>
       <div data-cat="vision" class="reveal mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-    </div>
-  </section>
-
-  <!-- STARTER -->
-  <section id="starter" class="py-20 md:py-28 border-t border-white/5 bg-ink-900/40">
-    <div class="max-w-4xl mx-auto px-4">
-      <div class="reveal max-w-2xl">
-        <p class="font-mono text-sm text-accent">04</p>
-        <h2 class="mt-2 text-3xl md:text-4xl font-bold text-white tracking-tight" data-i18n="snTitle"></h2>
-        <p class="mt-3 text-zinc-400" data-i18n="snSub"></p>
-      </div>
-      <div id="snBox" class="reveal mt-10"></div>
     </div>
   </section>
 
